@@ -27,19 +27,6 @@ namespace BACnetInteropApp
 
             // this whole section http://www.bacnetwiki.com/wiki/index.php?title=BACnet_Virtual_Link_Control
 
-            /*
-                        temp = new byte[2];
-                        temp[0] = bytes[7];
-                        temp[1] = bytes[6];
-                        int destNet = BitConverter.ToUInt16(temp, 0);
-                        Console.WriteLine("Destination network: " + destNet);
-
-                        Console.WriteLine("Dest. MAC layer address: " + bytes[8]);
-
-                        Console.WriteLine("Hop count: " + bytes[9]);
-
-            */
-
             if (bytes[0] != BACnetEnums.BACNET_BVLC_TYPE_BIP)
             {
                 // todo3, panic log
@@ -66,7 +53,7 @@ namespace BACnetInteropApp
                     break;
             }
 
-            int len = bytes[2] + bytes[3];
+//            int len = bytes[2] + bytes[3];
 
             if (bytes[npdu_offset] != BACnetEnums.BACNET_PROTOCOL_VERSION)
             {
@@ -91,6 +78,13 @@ namespace BACnetInteropApp
             {
                 Console.WriteLine("This is an unconfirmed request");
             }
+            else
+            {
+                // todo
+                return;
+            }
+
+            
 
             if (bytes[apdu_offset + 1] == (byte)BACnetEnums.BACNET_UNCONFIRMED_SERVICE.SERVICE_UNCONFIRMED_WHO_IS)
             {
@@ -98,38 +92,51 @@ namespace BACnetInteropApp
             }
             else if (bytes[apdu_offset + 1] == (byte)BACnetEnums.BACNET_UNCONFIRMED_SERVICE.SERVICE_UNCONFIRMED_I_AM)
             {
-                Console.WriteLine("We have received an 'i-Am'");
+                Console.WriteLine("We have received an 'I-Am'");
+                
+                // I-Am described right here: http://www.bacnetwiki.com/wiki/index.php?title=I-Am
 
                 Device D = new Device();
 
-                //bytes[12];
-                //bytes[13];
-                //bytes[14];
-                //bytes[15];
-                temp = new byte[4];
-                temp[0] = bytes[apdu_offset + 6];
-                temp[1] = bytes[apdu_offset + 5];
-                temp[2] = bytes[apdu_offset + 4];
-                temp[3] = 0x00;
-                int deviceId = BitConverter.ToInt32(temp, 0);
+                // first encoded entity is the Device Identifier...
+                // Encoding described here: http://www.bacnetwiki.com/wiki/index.php?title=Encoding
+
+                // Decode Device Identifier
+
+                uint deviceId;
+
+                int offset = BACnetEncoding.BACnetDecode_uint( bytes, apdu_offset + 2, out deviceId);
+
+                offset += apdu_offset + 2;
+
+
+                // todo - brute force mask off the object type field 
+                deviceId &= 0x03fffff ; 
                 Console.WriteLine("This is device: " + deviceId);
 
                 D.DeviceId = deviceId;
 
 
-                //bytes[17];
-                temp = new byte[2];
-                temp[0] = bytes[apdu_offset + 9];
-                temp[1] = bytes[apdu_offset + 8];
-                //int maxAPDULen = bytes[18];
-                int maxAPDULen = BitConverter.ToInt16(temp, 0);
+                uint maxAPDULen;
+
+                offset += BACnetEncoding.BACnetDecode_uint(bytes, offset, out maxAPDULen);
+
                 Console.WriteLine("Max APDU length accepted: " + maxAPDULen);
 
-                //bytes[19];
-                //bytes[20];
 
-                // todo, we are not decoding an encoded value properly here
-                int vendorId = bytes[apdu_offset + 14] + bytes[apdu_offset + 13] * 256;
+
+                uint segmentation_supported;
+
+                offset += BACnetEncoding.BACnetDecode_uint(bytes, offset, out segmentation_supported );
+
+                Console.WriteLine("Segmentation Supported: " + segmentation_supported );
+
+
+
+                uint vendorId ;
+
+                offset += BACnetEncoding.BACnetDecode_uint(bytes, offset, out vendorId );
+
                 Console.WriteLine("VendorId: " + vendorId);
 
                 D.VendorId = vendorId;

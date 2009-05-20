@@ -9,10 +9,11 @@ namespace BACnetInteropApp
     {
         #region Fields & Constants
 
-        private int vendorId;
         public int NetworkNumber;
-        private int deviceId;
-        public int I_Am_Count = 0 ;
+        public int I_Am_Count = 0;
+
+        private uint vendorId;
+        private uint deviceId;
 
         private bool segmentationSupported;
 
@@ -22,13 +23,13 @@ namespace BACnetInteropApp
 
         #region Properties
 
-        public int VendorId
+        public uint VendorId
         {
             get { return vendorId; }
             set { vendorId = value; }
         }
 
-        public int DeviceId
+        public uint DeviceId
         {
             get { return this.deviceId; }
             set { this.deviceId = value; }
@@ -63,7 +64,7 @@ namespace BACnetInteropApp
             temp[1] = bytes[1];
             temp[2] = bytes[0];
             temp[3] = 0x00;
-            this.deviceId = BitConverter.ToInt32(temp, 0);
+            // todo this.deviceId = BitConverter.ToInt32(temp, 0);
 
             //bytes[17];
             temp = new byte[2];

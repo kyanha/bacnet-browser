@@ -834,6 +834,9 @@ namespace BACnetInteropApp
             CHARACTER_ISO8859 = 5
         }
 
+
+        // http://www.bacnetwiki.com/wiki/index.php?title=Tag_Number
+
         public enum BACNET_APPLICATION_TAG
         {
             BACNET_APPLICATION_TAG_NULL = 0,
