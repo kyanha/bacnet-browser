@@ -9,9 +9,9 @@ using System.Resources;
 [assembly: AssemblyTitle("BACnet Browser")]
 [assembly: AssemblyDescription("BACnet Browser")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("BACnet Interoperability Test Services, Inc.")]
+[assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("BACnet Browser")]
-[assembly: AssemblyCopyright("Copyright © BACnet Interoperability Test Services, Inc. 2009")]
+[assembly: AssemblyCopyright("")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -33,6 +33,6 @@ using System.Resources;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.0.0.2")]
-[assembly: AssemblyFileVersion("1.0.0.1")]
+[assembly: AssemblyVersion("0.0.0.3")]
+[assembly: AssemblyFileVersion("")]
 [assembly: NeutralResourcesLanguageAttribute("")]

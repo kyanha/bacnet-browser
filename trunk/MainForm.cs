@@ -35,44 +35,85 @@ namespace BACnetInteropApp
 
             bacnet_master_socket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.Broadcast, true);
 
+            // BVLC Part
+            // http://www.bacnetwiki.com/wiki/index.php?title=BACnet_Virtual_Link_Control
+
             data[optr++] = BACnetEnums.BACNET_BVLC_TYPE_BIP ;
             data[optr++] = BACnetEnums.BACNET_ORIGINAL_BROADCAST_NPDU;
-            data[optr++] = 0x00;
+            data[optr++] = 0x00;        // Length (2 octets)
             data[optr++] = 0x0c;
-            data[optr++] = 0x01;
-            data[optr++] = 0x20;
-            data[optr++] = 0xff;
-            data[optr++] = 0xff;
-            data[optr++] = 0x00;
-            data[optr++] = 0xff;
-            data[optr++] = 0x10;
-            data[optr++] = 0x08;
 
-            Console.WriteLine("Sending\n");
+            // Start of NPDU
+            // http://www.bacnetwiki.com/wiki/index.php?title=NPDU
+
+            data[optr++] = 0x01;        // Always 1
+            data[optr++] = 0x20;        // Control (Destination present, no source)
+            data[optr++] = 0xff;        // DNET Network - B'cast
+            data[optr++] = 0xff;
+            data[optr++] = 0x00;        // DLEN
+            data[optr++] = 0xff;        // Hop count
+
+            // APDU start
+            // http://www.bacnetwiki.com/wiki/index.php?title=APDU
+
+            data[optr++] = 0x10;        // Encoded APDU type == 01 == Unconfirmed Request
+            data[optr++] = 0x08;        // Unconfirmed Service Choice: Who-Is
 
             bacnet_master_socket.SendTo(data, optr, SocketFlags.None, ipep);
 
-            //IPEndPoint sender = new IPEndPoint(IPAddress.Any, 0);
-            //EndPoint tmpRemote = (EndPoint)sender;
 
-            //data = new byte[1024];
-            //int recv = bacnet_master_socket.ReceiveFrom(data, ref tmpRemote);
 
-            //Console.WriteLine("Message received from {0}:", tmpRemote.ToString());
-            //Console.WriteLine(Encoding.ASCII.GetString(data, 0, recv));
-            //Console.WriteLine(Encoding.ASCII.GetBytes((char[])data, 0, recv));
-            /*
-                        server.SendTo(Encoding.ASCII.GetBytes("message 1"), tmpRemote);
-                        server.SendTo(Encoding.ASCII.GetBytes("message 2"), tmpRemote);
-                        server.SendTo(Encoding.ASCII.GetBytes("message 3"), tmpRemote);
-                        server.SendTo(Encoding.ASCII.GetBytes("message 4"), tmpRemote);
-                        server.SendTo(Encoding.ASCII.GetBytes("message 5"), tmpRemote);
-            */
 
-            // Console.WriteLine("Stopping client");
+            //  sending another who-is, this time with SNET, SADR present..
+
+            optr = 0;
+
+            // BVLC Part
+            // http://www.bacnetwiki.com/wiki/index.php?title=BACnet_Virtual_Link_Control
+
+            data[optr++] = BACnetEnums.BACNET_BVLC_TYPE_BIP;
+            data[optr++] = BACnetEnums.BACNET_ORIGINAL_BROADCAST_NPDU;
+            data[optr++] = 0x00;        // Length (2 octets)
+            data[optr++] = 21;
+
+            // Start of NPDU
+            // http://www.bacnetwiki.com/wiki/index.php?title=NPDU
+
+            data[optr++] = 0x01;        // Always 1
+            data[optr++] = 0x28;        // Control (Destination present, Source present)
+            data[optr++] = 0xff;        // DNET - Network - B'cast
+            data[optr++] = 0xff;
+            data[optr++] = 0x00;        // DLEN
+
+            // source address
+
+            data[optr++] = 0x00;        // SNET - 0x11
+            data[optr++] = 0x11;
+
+            data[optr++] = 0x06;        // SLEN = 6 (MAC Layer Address is an IP/Port combination
+            data[optr++] = 192;         // Harcoding an IP address for now
+            data[optr++] = 168;         // IP Addr
+            data[optr++] = 0;
+            data[optr++] = 3;
+            data[optr++] = 0xBA;         // Port number
+            data[optr++] = 0xC1;        
+
+            data[optr++] = 0xff;        // Hop count
+
+            // APDU start
+            // http://www.bacnetwiki.com/wiki/index.php?title=APDU
+
+            data[optr++] = 0x10;        // Encoded APDU type == 01 == Unconfirmed Request
+            data[optr++] = 0x08;        // Unconfirmed Service Choice: Who-Is
+
+            // todo, re-enable once server can process multiple messages
+            // bacnet_master_socket.SendTo(data, optr, SocketFlags.None, ipep);
+
             bacnet_master_socket.Close();
-
         }
+
+
+
 
         Alpha oAlpha;
         Thread oThread;
@@ -95,8 +136,6 @@ namespace BACnetInteropApp
         private void ExpandAllButton_Click(object sender, EventArgs e)
         {
             this.treeView2.ExpandAll();     
-
-
         }
 
         private void CollapseAllButton_Click(object sender, EventArgs e)
@@ -106,35 +145,16 @@ namespace BACnetInteropApp
 
         private void button4_Click(object sender, EventArgs e)
         {
-            TreeNode mainNode = new TreeNode();
-
-            mainNode.Name = "mainNode";
-
-            mainNode.Text = "Added";
-
-            this.treeView2.Nodes.Add(mainNode);
         }
 
 
         private void addToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            TreeNode nod = new TreeNode();
-            nod.Name = "able bunny";
-            nod.Text = "able bunny2";
-            nod.Tag = "able bunny3";
-            this.treeView2.SelectedNode.Nodes.Add(nod);
-            this.treeView2.SelectedNode.ExpandAll();
         }
 
 
         private void button5_Click(object sender, EventArgs e)
         {
-            TreeNode nod = new TreeNode();
-            nod.Name = "able bunny";
-            nod.Text = "able bunny2";
-            nod.Tag = "able bunny3";
-            this.treeView2.SelectedNode.Nodes.Add(nod);
-            this.treeView2.SelectedNode.Expand();
         }
 
         static int snode = 0;
@@ -151,11 +171,6 @@ namespace BACnetInteropApp
 
             mab.ShowDialog();
         }
-
-        //private void toolStripButton1_Click(object sender, EventArgs e)
-        //{
-
-        //}
 
         private void SendWhoIsButton(object sender, EventArgs e)
         {
@@ -250,6 +265,11 @@ namespace BACnetInteropApp
             }
 
             Application.Exit();
+        }
+
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+
         }
 
         // on shutdown

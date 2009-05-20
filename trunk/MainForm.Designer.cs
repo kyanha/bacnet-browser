@@ -182,7 +182,8 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MinimumSize = new System.Drawing.Size(522, 465);
             this.Name = "MainForm";
-            this.Text = "BACnet Browser";
+            this.Text = "BACnet Browser (2)";
+            this.Load += new System.EventHandler(this.MainForm_Load);
             this.contextMenuStrip1.ResumeLayout(false);
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
