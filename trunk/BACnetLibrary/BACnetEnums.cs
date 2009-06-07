@@ -37,20 +37,13 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace BACnetInteropApp
+namespace BACnetLibraryNS
 {
     public class BACnetEnums
     {
         public const int BACNET_MAX_INSTANCE = 0x3FFFFF;
 
         public const int BACNET_PROTOCOL_VERSION = 0x1;
-
-        // BVLC Function Types. See http://www.bacnetwiki.com/wiki/index.php?title=BVLC_Function
-
-        public const int BACNET_UNICAST_NPDU = 0x0a;
-        public const int BACNET_FORWARDED_NPDU = 0x04 ;
-        public const int BACNET_ORIGINAL_BROADCAST_NPDU = 0x0b ;
-
 
         public const byte BACNET_BVLC_TYPE_BIP = 0x81;
 
@@ -993,7 +986,9 @@ namespace BACnetInteropApp
             MAX_BACNET_SERVICES_SUPPORTED = 40
         }
 
-        public enum BACNET_BVLC_FUNCTION 
+        // BVLC Function Types. See http://www.bacnetwiki.com/wiki/index.php?title=BVLC_Function
+
+        public enum BACNET_BVLC_FUNCTION : byte
         {
             BVLC_RESULT = 0,
             BVLC_WRITE_BROADCAST_DISTRIBUTION_TABLE = 1,
@@ -1082,6 +1077,9 @@ namespace BACnetInteropApp
         /*If Bit 7 of the control octet described in 6.2.2 is 1, */
         /* a message type octet shall be present as shown in Figure 6-1. */
         /* The following message types are indicated: */
+
+        // http://www.bacnetwiki.com/wiki/index.php?title=Network_Layer_Message_Type
+
         public enum BACNET_NETWORK_MESSAGE_TYPE 
         {
             NETWORK_MESSAGE_WHO_IS_ROUTER_TO_NETWORK = 0,

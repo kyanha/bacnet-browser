@@ -12,8 +12,8 @@
     <AssemblyName>BACnet Browser</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <ManifestCertificateThumbprint>403F0173156830CE4A7A9ADDE83D2476E9C8CAEA</ManifestCertificateThumbprint>
-    <ManifestKeyFile>BACnet Interoperability Test System_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestCertificateThumbprint>BBF71D1B57C5A4A7549BBACF0AFFA36136A3D317</ManifestCertificateThumbprint>
+    <ManifestKeyFile>BACnet Browser_1_TemporaryKey.pfx</ManifestKeyFile>
     <GenerateManifests>true</GenerateManifests>
     <SignManifests>true</SignManifests>
     <IsWebBootstrapper>false</IsWebBootstrapper>
@@ -75,7 +75,8 @@
     <Compile Include="AboutBox1.Designer.cs">
       <DependentUpon>AboutBox1.cs</DependentUpon>
     </Compile>
-    <Compile Include="BACnetEnums.cs" />
+    <Compile Include="Base.cs" />
+    <Compile Include="Packet.cs" />
     <Compile Include="Device.cs" />
     <Compile Include="Encoding.cs" />
     <Compile Include="Parse.cs" />
@@ -116,8 +117,8 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="ClassDiagram1.cd" />
-    <None Include="ClassDiagram2.cd" />
+    <None Include="BACnet Browser_1_TemporaryKey.pfx" />
+    <None Include="BACnet Browser_TemporaryKey.pfx" />
     <None Include="Resources\view_refresh.ico" />
   </ItemGroup>
   <ItemGroup>
@@ -144,6 +145,15 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="network_wired.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="BACnetLibrary\BACnetLibrary.csproj">
+      <Project>{8B4EE78E-6C18-4483-A818-2058E210227B}</Project>
+      <Name>BACnetLibrary</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

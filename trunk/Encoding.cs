@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+using BACnetLibraryNS;
+
 namespace BACnetInteropApp
 {
     class BACnetEncoding
@@ -59,7 +61,7 @@ namespace BACnetInteropApp
                             break;
                     }
                     break;
-                    break;
+                 
                 default:
                     // todo - panic
                     //throw;

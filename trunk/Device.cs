@@ -3,21 +3,27 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+using BACnetLibraryNS;
+
+
 namespace BACnetInteropApp
 {
     public class Device : IComparable<Device>, IEquatable<Device>
     {
         #region Fields & Constants
 
-        public int NetworkNumber;
+        public int NetworkNumber;           // The network number of the BACnet network that the Device is attached to
+        public int SourceAddress;
         public int I_Am_Count = 0;
 
         private uint vendorId;
         private uint deviceId;
 
-        private bool segmentationSupported;
+        public BACnetEnums.BACNET_SEGMENTATION SegmentationSupported;
 
         private int maxAPDULength;
+
+        public Packet packet;   // a place to store the source IP address and port number
 
         #endregion
 

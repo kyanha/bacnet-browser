@@ -44,6 +44,8 @@
             this.button1 = new System.Windows.Forms.Button();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.Quit = new System.Windows.Forms.Button();
+            this.whoisrouterbtn = new System.Windows.Forms.Button();
+            this.button4 = new System.Windows.Forms.Button();
             this.contextMenuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -118,7 +120,7 @@
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
-            this.toolStrip1.Size = new System.Drawing.Size(514, 25);
+            this.toolStrip1.Size = new System.Drawing.Size(543, 25);
             this.toolStrip1.TabIndex = 6;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -146,7 +148,7 @@
             // 
             this.button1.Location = new System.Drawing.Point(375, 56);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(101, 23);
+            this.button1.Size = new System.Drawing.Size(127, 23);
             this.button1.TabIndex = 10;
             this.button1.Text = "Send Who-Is";
             this.button1.UseVisualStyleBackColor = true;
@@ -166,13 +168,35 @@
             this.Quit.TabIndex = 11;
             this.Quit.Text = "Quit";
             this.Quit.UseVisualStyleBackColor = true;
-            this.Quit.Click += new System.EventHandler(this.button7_Click);
+            this.Quit.Click += new System.EventHandler(this.Quit_Click);
+            // 
+            // whoisrouterbtn
+            // 
+            this.whoisrouterbtn.Location = new System.Drawing.Point(375, 86);
+            this.whoisrouterbtn.Name = "whoisrouterbtn";
+            this.whoisrouterbtn.Size = new System.Drawing.Size(127, 23);
+            this.whoisrouterbtn.TabIndex = 12;
+            this.whoisrouterbtn.Text = "Send Who-Is-Router";
+            this.whoisrouterbtn.UseVisualStyleBackColor = true;
+            this.whoisrouterbtn.Click += new System.EventHandler(this.whoisrouterbtn_Click);
+            // 
+            // button4
+            // 
+            this.button4.Location = new System.Drawing.Point(375, 116);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(127, 23);
+            this.button4.TabIndex = 13;
+            this.button4.Text = "Query Routing Tables";
+            this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.Initialize_Routing_Table_Click);
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(514, 431);
+            this.ClientSize = new System.Drawing.Size(543, 431);
+            this.Controls.Add(this.button4);
+            this.Controls.Add(this.whoisrouterbtn);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.Quit);
             this.Controls.Add(this.toolStrip1);
@@ -182,7 +206,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MinimumSize = new System.Drawing.Size(522, 465);
             this.Name = "MainForm";
-            this.Text = "BACnet Browser (2)";
+            this.Text = "BACnet Browser";
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.contextMenuStrip1.ResumeLayout(false);
             this.toolStrip1.ResumeLayout(false);
@@ -208,6 +232,8 @@
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.Button Quit;
+        private System.Windows.Forms.Button whoisrouterbtn;
+        private System.Windows.Forms.Button button4;
     }
 }
 
