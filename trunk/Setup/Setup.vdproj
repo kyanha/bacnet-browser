@@ -3,7 +3,7 @@
 "VSVersion" = "3:800"
 "ProjectType" = "8:{978C614F-708E-4E1A-B201-565925725DBA}"
 "IsWebType" = "8:FALSE"
-"ProjectName" = "8:Setup"
+"ProjectName" = "8:Setup Browser"
 "LanguageId" = "3:1033"
 "CodePage" = "3:1252"
 "UILanguageId" = "3:1033"
@@ -21,6 +21,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_CF41C27996668A960806FAF88EEE650E"
+        "OwnerKey" = "8:_FE01E89813A840CE9DE54BD0F135C234"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_FE01E89813A840CE9DE54BD0F135C234"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -29,6 +35,12 @@
         {
         "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_FE01E89813A840CE9DE54BD0F135C234"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_CF41C27996668A960806FAF88EEE650E"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -156,6 +168,37 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_CF41C27996668A960806FAF88EEE650E"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:BACnetLibrary, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_CF41C27996668A960806FAF88EEE650E"
+                    {
+                    "Name" = "8:BACnetLibrary.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:BACnetLibrary.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_770D04398FCA49F58109C640696A7E81"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
         }
         "FileType"
         {
@@ -223,14 +266,14 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:BACnet Browser"
-        "ProductCode" = "8:{ED8588C7-99D4-4629-A118-490BC508AA76}"
-        "PackageCode" = "8:{3B77F1B3-A4D2-46F1-96A4-CE4203331034}"
+        "ProductCode" = "8:{B03732E1-4AA3-4F56-A1EB-52032A7BF579}"
+        "PackageCode" = "8:{7804AEC6-2ACD-42FE-A8E4-5188DD875EF9}"
         "UpgradeCode" = "8:{642A50A6-1D71-4FF1-BC8D-0ADBB0450307}"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:0.7"
+        "ProductVersion" = "8:0.0.12"
         "Manufacturer" = "8:BACnet Interoperability Testing Services, Inc."
         "ARPHELPTELEPHONE" = "8:+1 (302) 703 0035"
         "ARPHELPLINK" = "8:http://www.bac-test.com"

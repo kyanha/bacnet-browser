@@ -44,6 +44,10 @@ namespace BACnetInteropApp
             BAC1listener_thread = new Thread(new ThreadStart(BAC1listener_object.Beta));
             BAC1listener_thread.Start();
 
+            System.Diagnostics.Debug.WriteLine("Sending Who_is");
+            BACnetLibraryNS.BACnetLibraryCL.SendWhoIs();
+
+
         }
 
 
@@ -67,18 +71,6 @@ namespace BACnetInteropApp
         {
         }
 
-
-        //private void button5_Click(object sender, EventArgs e)
-        //{
-        //}
-
-        static int snode = 0;
-
-        //private void button6_Click(object sender, EventArgs e)
-        //{
-        //    this.treeView2.SelectedNode = this.treeView2.Nodes[snode++];
-        //    this.treeView2.SelectedNode.ExpandAll();
-        //}
 
         private void helpToolStripButton_Click(object sender, EventArgs e)
         {
@@ -162,28 +154,7 @@ namespace BACnetInteropApp
 
         private void Quit_Click(object sender, EventArgs e)
         {
-            BAC0listener_thread.Abort();
-            BAC1listener_thread.Abort();
-
-            //oThread.Join(2000);
-
-            // cancel our outstanding receive call
-            try
-            {
-                BAC0listener_object.BetaClose();
-                BAC1listener_object.BetaClose();
-            }
-            catch (Exception fe)
-            {
-                Console.WriteLine(fe);
-            }
-
             Application.Exit();
-        }
-
-        private void MainForm_Load(object sender, EventArgs e)
-        {
-
         }
 
         private void whoisrouterbtn_Click(object sender, EventArgs e)
@@ -335,6 +306,24 @@ namespace BACnetInteropApp
             data[store_length_here + 1] = (byte)optr;
 
             bacnet_master_socket.SendTo(data, optr, SocketFlags.None, ipep);
+        }
+
+        private void mainform_closing(object sender, FormClosingEventArgs e)
+        {
+            BAC0listener_thread.Abort();
+            BAC1listener_thread.Abort();
+
+            // cancel our outstanding socket receives
+            try
+            {
+                BAC0listener_object.BetaClose();
+                BAC1listener_object.BetaClose();
+            }
+            catch (Exception fe)
+            {
+                Console.WriteLine(fe);
+            }
+
         }
 
     }
