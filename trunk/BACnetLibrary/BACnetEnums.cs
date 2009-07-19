@@ -47,6 +47,17 @@ namespace BACnetLibraryNS
 
         public const byte BACNET_BVLC_TYPE_BIP = 0x81;
 
+        public enum BACNET_MODE
+        {
+            BACnetClient = 1,
+            BACnetServer,
+            BACnetRouter
+        }
+
+        public const int CLIENT_DEVICE_ID  = 1001 ;
+        public const int SERVER_DEVICE_ID  = 5001 ;
+
+        
         public enum BACNET_PROPERTY_ID 
         {
             PROP_ACKED_TRANSITIONS = 0,
