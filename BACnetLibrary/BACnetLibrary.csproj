@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.21022</ProductVersion>
+    <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{8B4EE78E-6C18-4483-A818-2058E210227B}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -26,7 +26,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>TRACE;BACNET_BROWSER</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -48,6 +48,12 @@
   <ItemGroup>
     <Compile Include="BACnetEnums.cs" />
     <Compile Include="BACnetLibrary.cs" />
+    <Compile Include="BACnetListener.cs" />
+    <Compile Include="BACnetManager.cs" />
+    <Compile Include="BACnetNetwork.cs" />
+    <Compile Include="Device.cs" />
+    <Compile Include="Encoding.cs" />
+    <Compile Include="Parse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -3,13 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-using BACnetLibraryNS;
-
-namespace BACnetInteropApp
+namespace BACnetLibraryNS
 {
     class BACnetEncoding
     {
-        public static int BACnetDecode_uint( byte[] buffer, int offset, out uint value)
+        public static uint BACnetDecode_uint( byte[] buffer, uint offset, out uint value)
         {
             // take a look at the first octet, this will indicate what type of encoded entity (Tag) we need to decode.
             // See: http://www.bacnetwiki.com/wiki/index.php?title=Encoding

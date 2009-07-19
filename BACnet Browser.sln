@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual Studio 2008
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BACnet Browser", "BACnet Browser.csproj", "{D4EB6E37-C3D0-4083-9CCE-9CB35F58C0AB}"
 EndProject
-Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Setup", "Setup\Setup.vdproj", "{644967BC-EFA6-4EE3-8777-B25CC9425FCB}"
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Setup Browser", "Setup\Setup.vdproj", "{644967BC-EFA6-4EE3-8777-B25CC9425FCB}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BACnetLibrary", "BACnetLibrary\BACnetLibrary.csproj", "{8B4EE78E-6C18-4483-A818-2058E210227B}"
 EndProject

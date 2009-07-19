@@ -18,36 +18,11 @@ namespace BACnetInteropApp
     public partial class MainForm : Form
     {
 
-        Alpha BAC0listener_object;
-        Thread BAC0listener_thread;
-
-        Alpha BAC1listener_object;
-        Thread BAC1listener_thread;
-
-
-        public static Base Controlbase = new Base();
-
+        BACnetmanager bnm = new BACnetmanager(0xBAC0, BACnetEnums.BACNET_MODE.BACnetClient, BACnetEnums.CLIENT_DEVICE_ID);
 
         public MainForm()
         {
             InitializeComponent();
-
-
-            // fire up a thread to watch for incoming packets
-
-            BAC0listener_object = new Alpha() { BACnet_port = 0xbac0 };
-            BAC1listener_object = new Alpha() { BACnet_port = 0xbac1 };
-
-            BAC0listener_thread = new Thread(new ThreadStart(BAC0listener_object.Beta));
-            BAC0listener_thread.Start();
-
-            BAC1listener_thread = new Thread(new ThreadStart(BAC1listener_object.Beta));
-            BAC1listener_thread.Start();
-
-            System.Diagnostics.Debug.WriteLine("Sending Who_is");
-            BACnetLibraryNS.BACnetLibraryCL.SendWhoIs();
-
-
         }
 
 
@@ -62,15 +37,6 @@ namespace BACnetInteropApp
             this.treeView2.CollapseAll();
         }
 
-        //private void button4_Click(object sender, EventArgs e)
-        //{
-        //}
-
-
-        private void addToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-        }
-
 
         private void helpToolStripButton_Click(object sender, EventArgs e)
         {
@@ -82,69 +48,108 @@ namespace BACnetInteropApp
         private void SendWhoIsButton(object sender, EventArgs e)
         {
             System.Diagnostics.Debug.WriteLine("Sending Who_is");
-            BACnetLibraryNS.BACnetLibraryCL.SendWhoIs();
+            BACnetLibraryNS.BACnetLibraryCL.SendWhoIs( bnm );
         }
 
 
 
         List<Device> ourdevices = new List<Device>();
+        List<BACnetNetwork> ourNetworks = new List<BACnetNetwork>();
 
         private void timer1_Tick(object sender, EventArgs e)
         {
             // Check to see if there is a new "I-Am" message to process.
 
-            while (Controlbase.NewDeviceQueue.Count != 0)
+            while ( bnm.NewDeviceQueue.Count != 0)
             {
 
-                Device D = Controlbase.NewDeviceQueue.Dequeue();
+                Device D = bnm.NewDeviceQueue.Dequeue();
 
-                // is this a new Device?
+                BACnetNetwork N = new BACnetNetwork() ;
+                
+                N.NetworkNumber = D.NetworkNumber;
 
-                if (!ourdevices.Contains(D))
+                // is this a new BACnet Network?
+
+                if (!ourNetworks.Contains(N))
                 {
-                    // is new
+                    // New network, let's add it
 
                     TreeNode NewNode = new TreeNode();
 
                     NewNode.Name = "NewNode";
 
-                    NewNode.Text = "Device " + D.DeviceId;
-                    NewNode.Tag = D.DeviceId;
+                    NewNode.Text = "Network " + N.NetworkNumber ;
+                    NewNode.Tag = N.NetworkNumber;
 
                     this.treeView2.Nodes.Add(NewNode);
                     this.treeView2.SelectedNode = NewNode;
 
-                    // add other paramters to our new node
+                    ourNetworks.Add(N);
 
-                    this.treeView2.SelectedNode.Nodes.Add("Vendor ID     " + D.VendorId);
-                    this.treeView2.SelectedNode.Nodes.Add("Network Number " + D.NetworkNumber);
-                    this.treeView2.SelectedNode.Nodes.Add("Source Address " + D.SourceAddress);
-                    this.treeView2.SelectedNode.Nodes.Add("Segmentation   " + (int) D.SegmentationSupported );
-                    this.treeView2.SelectedNode.Nodes.Add("IP Address     " + D.packet.Source_Address);
-                    this.treeView2.SelectedNode.Nodes.Add("Port           " + D.packet.Source_Port);
-                    this.treeView2.SelectedNode.Expand();
-
-                    ourdevices.Add(D);
                 }
-                else
+
+
+                // find the network and add device to it
+
+                for (int i = 0; i < this.treeView2.Nodes.Count; i++)
                 {
-                    //if we get here, we _know_ that treeview2 contains our node
+                    TreeNode tni = this.treeView2.Nodes[i];
 
-                    for (int i = 0; i < this.treeView2.Nodes.Count; i++)
+                    if (tni.Tag != null)
                     {
-                        TreeNode tni = this.treeView2.Nodes[i];
-
-                        if (tni.Tag != null)
+                        if (tni.Tag.Equals(N.NetworkNumber))
                         {
-                            if (tni.Tag.Equals(D.DeviceId))
+                            // found Network.. select it
+                            //this.treeView2.SelectedNode = tni;
+
+
+                            // check if node already exists
+                            
+                            bool founddeviceflag = false ;
+
+                            for (int j=0; j < tni.Nodes.Count; j++)
                             {
-                                // found it.. select it
-                                this.treeView2.SelectedNode = tni;
+                                TreeNode tnj = tni.Nodes[j] ;
 
+                                if ( tnj != null && tnj.Tag.Equals(D.DeviceId) )
+                                {
+                                    // found, so quit
+                                    founddeviceflag = true; 
+                                    break;
+                                }
                             }
-                        }
 
+                            // add a device node to the network node
+
+                            if ( founddeviceflag == false )
+                            {
+                                TreeNode NewNode = new TreeNode();
+
+                                NewNode.Name = "NewNode";
+
+                                NewNode.Text = "Device " + D.DeviceId;
+                                NewNode.Tag = D.DeviceId;
+
+                                // add other paramters to our new node
+
+                                NewNode.Nodes.Add("Vendor ID     " + D.VendorId);
+
+                                NewNode.Nodes.Add("Network Number " + D.NetworkNumber);
+                                NewNode.Nodes.Add("Source Address " + D.SourceAddress);
+                                NewNode.Nodes.Add("Segmentation   " + (int)D.SegmentationSupported);
+                                NewNode.Nodes.Add("IP Address     " + D.packet.Source_Address);
+                                NewNode.Nodes.Add("Port           " + D.packet.Source_Port);
+
+                                tni.Nodes.Add(NewNode);
+                                
+                                //NewNode.Expand();
+                            }
+
+
+                        }
                     }
+
                 }
 
             }
@@ -164,7 +169,7 @@ namespace BACnetInteropApp
 
             IPEndPoint ipep = new IPEndPoint(IPAddress.Broadcast, 0xBAC0);
 
-            IPEndPoint local_ipep = new IPEndPoint(0, 0xBAC1);// NOTE, NOT BAC0, so that we can run IUT bacnet server on same machine
+            IPEndPoint local_ipep = new IPEndPoint(0, 0xBAC0);
 
             Socket bacnet_master_socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
 
@@ -267,7 +272,7 @@ namespace BACnetInteropApp
 
             IPEndPoint ipep = new IPEndPoint(IPAddress.Broadcast, 0xBAC0);
 
-            IPEndPoint local_ipep = new IPEndPoint(0, 0xBAC1);// NOTE, NOT BAC0, so that we can run IUT bacnet server on same machine
+            IPEndPoint local_ipep = new IPEndPoint(0, 0xBAC0);
 
             Socket bacnet_master_socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
 
@@ -310,14 +315,14 @@ namespace BACnetInteropApp
 
         private void mainform_closing(object sender, FormClosingEventArgs e)
         {
-            BAC0listener_thread.Abort();
-            BAC1listener_thread.Abort();
+            bnm.BAClistener_thread.Abort();
+            //BAC1listener_thread.Abort();
 
             // cancel our outstanding socket receives
             try
             {
-                BAC0listener_object.BetaClose();
-                BAC1listener_object.BetaClose();
+                bnm.BAClistener_object.BACnetListenerClose();
+                //BAC1listener_object.BetaClose();
             }
             catch (Exception fe)
             {

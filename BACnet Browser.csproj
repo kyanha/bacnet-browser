@@ -75,11 +75,7 @@
     <Compile Include="AboutBox1.Designer.cs">
       <DependentUpon>AboutBox1.cs</DependentUpon>
     </Compile>
-    <Compile Include="Base.cs" />
     <Compile Include="Packet.cs" />
-    <Compile Include="Device.cs" />
-    <Compile Include="Encoding.cs" />
-    <Compile Include="Parse.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
