@@ -22,6 +22,8 @@ namespace BACnetLibraryNS
 
         public bool apdu_present, snet_present, da_present, sa_present, is_broadcast ;
 
+        public IPEndPoint FromAddress;
+
         public Packet()
         {
             this.apdu_present = false;
@@ -73,12 +75,21 @@ namespace BACnetLibraryNS
                 Byte[] received = new Byte[2000] ;
                 Packet packet = new Packet();
 
+                // Create an IPEndPoint to capture the identity of the sending host.
+                IPEndPoint sender = new IPEndPoint(IPAddress.Any, 0);
+                EndPoint senderRemote = (EndPoint)sender;
+
+
                 try
                 {
 
-                    //received = udpRecClient.Receive(ref remoteIpEndPoint);
+                    
+                    // bacnet_listen_socket.Receive(received);
+                    bacnet_listen_socket.ReceiveFrom(received, ref senderRemote);
 
-                    bacnet_listen_socket.Receive(received);
+                    Console.WriteLine("This message was sent from " + ((IPEndPoint) senderRemote).Address.ToString() + "  Port " + ((IPEndPoint) senderRemote).Port.ToString() ) ;
+
+                    packet.FromAddress = (IPEndPoint)senderRemote;
 
                     //Console.WriteLine("This message was sent from " +
                     //                            remoteIpEndPoint.Address.ToString() +
