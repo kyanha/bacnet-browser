@@ -25,6 +25,20 @@ namespace BACnetInteropApp
             InitializeComponent();
         }
 
+        private void mainform_closing(object sender, FormClosingEventArgs e)
+        {
+            bnm.BAClistener_thread.Abort();
+
+            // cancel our outstanding socket receives
+            try
+            {
+                bnm.BAClistener_object.BACnetListenerClose();
+            }
+            catch (Exception fe)
+            {
+                Console.WriteLine(fe);
+            }
+        }
 
 
         private void ExpandAllButton_Click(object sender, EventArgs e)
@@ -313,22 +327,10 @@ namespace BACnetInteropApp
             bacnet_master_socket.SendTo(data, optr, SocketFlags.None, ipep);
         }
 
-        private void mainform_closing(object sender, FormClosingEventArgs e)
+ 
+        private void buttonReadPropertyTest_Click(object sender, EventArgs e)
         {
-            bnm.BAClistener_thread.Abort();
-            //BAC1listener_thread.Abort();
-
-            // cancel our outstanding socket receives
-            try
-            {
-                bnm.BAClistener_object.BACnetListenerClose();
-                //BAC1listener_object.BetaClose();
-            }
-            catch (Exception fe)
-            {
-                Console.WriteLine(fe);
-            }
-
+            BACnetLibraryCL.ReadProperties(bnm);
         }
 
     }

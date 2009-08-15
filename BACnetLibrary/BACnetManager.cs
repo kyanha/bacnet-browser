@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
+using System.Net;
 
 namespace BACnetLibraryNS
 {
@@ -20,12 +21,23 @@ namespace BACnetLibraryNS
 
         public int BACnetManagerPort;
 
+        public IPHostEntry OurIPAddressEntry;
+        public IPAddress[] OurIPAddressList;
+
         public BACnetmanager(int BACnetManagerPort, BACnetEnums.BACNET_MODE mode, int deviceID)
         {
 
             this.BACnetManagerPort = BACnetManagerPort;
             this.mode = mode;
             this.ourdeviceID = deviceID;
+
+            // Establish our own IP address, port
+
+            String strHostName = Dns.GetHostName();
+            this.OurIPAddressEntry = Dns.GetHostEntry(strHostName);
+            this.OurIPAddressList = this.OurIPAddressEntry.AddressList;
+          
+
 
             // fire up a thread to watch for incoming packets
 

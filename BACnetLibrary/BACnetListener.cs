@@ -13,14 +13,15 @@ namespace BACnetLibraryNS
         public System.Net.IPAddress Source_Address;
         public int Source_Port;
         public byte[] buffer;
+        public uint length;
 
-        public uint npdu_offset ;
-        public uint nsdu_offset=0;
+        public uint npdu_offset;
+        public uint nsdu_offset = 0;
         public uint apdu_offset;
-        public uint slen, snet, sadr, sadr_len ;
+        public uint slen, snet, sadr, sadr_len;
         public uint dadr_len, dnet, hopcount;
 
-        public bool apdu_present, snet_present, da_present, sa_present, is_broadcast ;
+        public bool apdu_present, snet_present, da_present, sa_present, is_broadcast;
 
         public IPEndPoint FromAddress;
 
@@ -30,7 +31,7 @@ namespace BACnetLibraryNS
             this.sa_present = false;
             this.da_present = false;
             this.is_broadcast = false;
-            
+
         }
 
     }
@@ -53,7 +54,14 @@ namespace BACnetLibraryNS
 
         public void BACnetListenerClose()
         {
+            try
+            {
             bacnet_listen_socket.Close();
+            }
+            catch (Exception fe)
+            {
+                Console.WriteLine(fe);
+            }
         }
 
 
@@ -85,7 +93,7 @@ namespace BACnetLibraryNS
 
                     
                     // bacnet_listen_socket.Receive(received);
-                    bacnet_listen_socket.ReceiveFrom(received, ref senderRemote);
+                    packet.length = (uint)bacnet_listen_socket.ReceiveFrom(received, ref senderRemote);
 
                     Console.WriteLine("This message was sent from " + ((IPEndPoint) senderRemote).Address.ToString() + "  Port " + ((IPEndPoint) senderRemote).Port.ToString() ) ;
 
@@ -100,19 +108,8 @@ namespace BACnetLibraryNS
                     //packet.Source_Port = remoteIpEndPoint.Port;
                     packet.buffer = received;
 
-                    // attempting to find a way to get ipaddress of sender
-                    // todo - we need to ignore messages from ourselves... bacnet_listen_socket.RemoteEndPoint();
-                    // todo, for now, we will ignore device instance xxx if received and we are the client (bacnet browser - this has to be done in the parse function for now..)
-
-
-                    //Console.WriteLine("dataReceived: " + received.Length + " bytes...");
-                    Console.WriteLine("Packet received on port : " + BACnet_port);
 
                     BACnetParserClass.parse(packet, received, bnm );
-
-
-                    // clean up remoteIpEndPoint for the next go around
-                    //remoteIpEndPoint = new IPEndPoint(IPAddress.Any, 0);
                 }
                 catch (Exception efe)
                 {

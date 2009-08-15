@@ -249,8 +249,9 @@ namespace BACnetLibraryNS
 
             data[optr++] = BACnetEnums.BACNET_BVLC_TYPE_BIP;
             data[optr++] = (byte)BACnetEnums.BACNET_BVLC_FUNCTION.BVLC_ORIGINAL_BROADCAST_NPDU;
-            data[optr++] = 0x00;        // Length (2 octets)
-            data[optr++] = 0x0c;
+
+            int store_length_here = optr;
+            optr += 2;
 
             // Start of NPDU
             // http://www.bacnetwiki.com/wiki/index.php?title=NPDU
@@ -268,6 +269,10 @@ namespace BACnetLibraryNS
             data[optr++] = 0x10;        // Encoded APDU type == 01 == Unconfirmed Request
             data[optr++] = 0x08;        // Unconfirmed Service Choice: Who-Is
 
+
+            data[store_length_here] = 0;
+            data[store_length_here + 1] = (byte)optr;
+
             // if there is no available adapter, this try will throw
             try
             {
@@ -278,57 +283,147 @@ namespace BACnetLibraryNS
                 System.Windows.Forms.MessageBox.Show("Either the network cable is unplugged, or there is no configured Ethernet Port on this computer");
                 return;
             }
-
-
-
-
-            //  sending another who-is, this time with SNET, SADR present..
-
-            optr = 0;
-
-            // BVLC Part
-            // http://www.bacnetwiki.com/wiki/index.php?title=BACnet_Virtual_Link_Control
-
-            data[optr++] = BACnetEnums.BACNET_BVLC_TYPE_BIP;
-            data[optr++] = (byte)BACnetEnums.BACNET_BVLC_FUNCTION.BVLC_ORIGINAL_BROADCAST_NPDU;
-            data[optr++] = 0x00;        // Length (2 octets)
-            data[optr++] = 21;
-
-            // Start of NPDU
-            // http://www.bacnetwiki.com/wiki/index.php?title=NPDU
-
-            data[optr++] = 0x01;        // Always 1
-            data[optr++] = 0x28;        // Control (Destination present, Source present)
-            data[optr++] = 0xff;        // DNET - Network - B'cast
-            data[optr++] = 0xff;
-            data[optr++] = 0x00;        // DLEN
-
-            // source address
-
-            data[optr++] = 0x00;        // SNET - 0x11
-            data[optr++] = 0x11;
-
-            data[optr++] = 0x06;        // SLEN = 6 (MAC Layer Address is an IP/Port combination
-            data[optr++] = 192;         // Hardcoding an IP address for now
-            data[optr++] = 168;         // IP Addr
-            data[optr++] = 0;
-            data[optr++] = 3;
-            data[optr++] = 0xBA;         // Port number
-            data[optr++] = 0xC1;
-
-            data[optr++] = 0xff;        // Hop count
-
-            // APDU start
-            // http://www.bacnetwiki.com/wiki/index.php?title=APDU
-
-            data[optr++] = 0x10;        // Encoded APDU type == 01 == Unconfirmed Request
-            data[optr++] = 0x08;        // Unconfirmed Service Choice: Who-Is
-
-            // todo, re-enable once server can process multiple messages
-            // bacnet_master_socket.SendTo(data, optr, SocketFlags.None, ipep);
-
-            bacnet_master_socket.Close();
         }
 
+    
+
+    public static void ReadProperties(BACnetmanager bnm)
+       {
+           byte[] data = new byte[1024];
+           int optr = 0;
+           //--- this is the sender -----------------------------------
+           //IPEndPoint ipep = new IPEndPoint(IPAddress.Parse(segIP), bnm.BACnetManagerPort);
+           // hard coded for now is my devices IP address
+           IPEndPoint ipep = new IPEndPoint(IPAddress.Parse("192.168.1.30"), bnm.BACnetManagerPort);
+           //--- this is the listener ------------------------------------
+           IPEndPoint local_ipep = new IPEndPoint(0, bnm.BACnetManagerPort);
+           //
+           Socket bacnet_master_socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+           ////
+           bacnet_master_socket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.Broadcast, true);
+           bacnet_master_socket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
+           //
+           // bind the local end of the connection to BACnet port number
+           bacnet_master_socket.Bind(local_ipep);
+           //ANNEX J - BACnet/IP (NORMATIVE)
+           /*The format of the BACnet-Confirmed-Request-PDU is:
+           Bit Number:   7   6   5   4   3   2   1   0
+                       |---|---|---|---|---|---|---|---|
+                       | PDU Type  |   |SEG|MOR| SA| 0 |
+                       |---|---|---|---|---|---|---|---|
+                       | 0 |  Max Segs |  Max Resp     |
+                       |---|---|---|---|---|---|---|---|
+                       |             Invoke ID         |
+                       |---|---|---|---|---|---|---|---|
+                       |       Sequence Number         |    Only present if SEG = 1
+                       |---|---|---|---|---|---|---|---|
+                       |      Proposed Window Size     |    Only present if SEG = 1
+                       |---|---|---|---|---|---|---|---|
+                       |        Service Choice         |
+                       |---|---|---|---|---|---|---|---|
+                       |       Service Request         |
+                       |               .               |
+                       |               .               |
+                       |               .               |
+                       |---|---|---|---|---|---|---|---|
+            * 
+                      The PDU fields have the following values:
+            *
+                      PDU Type =       0 (BACnet-Confirmed-Service-Request-PDU)
+                           SEG =       0 (Unsegmented Request)
+                                       1 (Segmented Request)
+                           MOR =       0 (No More Segments Follow)
+                                       1 (More Segments Follow)
+                            SA =       0 (Segmented Response not accepted)
+                                       1 (Segmented Response accepted)
+                      Max Segs =       (0..7) (Number of response segments accepted per 20.1.2.4)
+                      Max Resp =       (0..15) (Size of Maximum APDU accepted per 20.1.2.5)
+                     Invoke ID =       (0..255)
+               Sequence Number =       (0..255) Only present if SEG = 1
+          Proposed Window Size =       (1..127) Only present if SEG = 1
+                Service Choice =       BACnetConfirmedServiceChoice
+               Service Request =       Variable Encoding per 20.2.
+            *
+          Bits shown in the diagram as '0' shall be set to zero. These bits are currently unused and are reserved by ASHRAE.
+          */
+           //Version   1 octet
+           //Control   1 octet
+           //DNET      2 octet
+           //DLEN      1 octet
+           //DADR      Variable
+           //SNET      2 octets
+           //SLEN      1 octet
+           //SADR      variable
+           //Hop Count 1 octet
+           //Message Type      1 octet
+           //Vendor ID 2 octet
+           //APDU      variable
+
+           // BVLC Part
+           // http://www.bacnetwiki.com/wiki/index.php?title=BACnet_Virtual_Link_Control
+
+           data[optr++] = BACnetEnums.BACNET_BVLC_TYPE_BIP;  // 81
+           data[optr++] = (byte)BACnetEnums.BACNET_BVLC_FUNCTION.BVLC_ORIGINAL_UNICAST_NPDU;  //0a
+           data[optr++] = 0x00;        // Length (2 octets)
+           data[optr++] = 0x1b;
+
+           // Start of NPDU
+           // http://www.bacnetwiki.com/wiki/index.php?title=NPDU
+
+           data[optr++] = 0x01;            //
+           data[optr++] = 0x24;            //
+
+           data[optr++] = 0x03;            //
+           data[optr++] = 0xea;
+           data[optr++] = 0x06;            //
+           data[optr++] = 0xc0;            //
+
+           // APDU start
+           // http://www.bacnetwiki.com/wiki/index.php?title=APDU
+
+           data[optr++] = 0xa8;            // Encoded APDU type == 01 == Unconfirmed Request
+           data[optr++] = 0x01;            // Unconfirmed Service Choice: Who-Is
+                                           //  Service Choice: readProperty (12)
+
+           data[optr++] = 0xcb;            //
+           data[optr++] = 0xba;            //
+
+
+           data[optr++] = 0xc0;            //
+           data[optr++] = 0xff;            //
+           data[optr++] = 0x02;            //
+           data[optr++] = 0x04;            //
+           data[optr++] = 0x01;            //  Invoke ID
+           data[optr++] = 0x0c;            //
+           data[optr++] = 0x0c;            //
+           data[optr++] = 0x02;            //
+
+
+
+           data[optr++] = 0x00;            //
+           data[optr++] = 0x01;            //  this = 256    000000001
+           data[optr++] = 0xf4;            //  this = 128    111110100  // this is my devices instance
+
+
+           data[optr++] = 0x19;            //  19  Context Tag: 1, Length/Value/Type: 1
+           data[optr++] = 0x4c;            //  4c  Property Identifier: object-list (76)
+
+           // if there is no available adapter, this try will throw
+           try
+           {
+               bacnet_master_socket.SendTo(data, optr, SocketFlags.None, ipep);
+           }
+           catch (SocketException)
+           {
+               System.Windows.Forms.MessageBox.Show("Either the network cable is unplugged, or there is no configured Ethernet Port on this computer");
+               return;
+           }
+          //  sending another who-is, this time with SNET, SADR present..
+
+           optr = 0;
+
+           bacnet_master_socket.Close();
+
+       }
     }
 }
