@@ -42,6 +42,7 @@
             this.Quit = new System.Windows.Forms.Button();
             this.whoisrouterbtn = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
+            this.buttonReadPropertyTest = new System.Windows.Forms.Button();
             this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -155,11 +156,22 @@
             this.button4.Visible = false;
             this.button4.Click += new System.EventHandler(this.Initialize_Routing_Table_Click);
             // 
+            // buttonReadPropertyTest
+            // 
+            this.buttonReadPropertyTest.Location = new System.Drawing.Point(375, 269);
+            this.buttonReadPropertyTest.Name = "buttonReadPropertyTest";
+            this.buttonReadPropertyTest.Size = new System.Drawing.Size(127, 23);
+            this.buttonReadPropertyTest.TabIndex = 14;
+            this.buttonReadPropertyTest.Text = "Read Property Test";
+            this.buttonReadPropertyTest.UseVisualStyleBackColor = true;
+            this.buttonReadPropertyTest.Click += new System.EventHandler(this.buttonReadPropertyTest_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(543, 431);
+            this.Controls.Add(this.buttonReadPropertyTest);
             this.Controls.Add(this.button4);
             this.Controls.Add(this.whoisrouterbtn);
             this.Controls.Add(this.button1);
@@ -194,6 +206,7 @@
         private System.Windows.Forms.Button Quit;
         private System.Windows.Forms.Button whoisrouterbtn;
         private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.Button buttonReadPropertyTest;
     }
 }
 

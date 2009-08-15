@@ -336,7 +336,7 @@ namespace BACnetLibraryNS
 
 
                 // at this point, if we are acting as a router, route the message.
-                // even if we are a router, the message may be addressed to the router's application layer - watch for that
+                // todo - even if we are a router, the message may be addressed to the router's application layer - watch for that
                 // if we are not a router, then check that the message is addressed to us before acting on it.
 
 #if BACNET_ROUTER
