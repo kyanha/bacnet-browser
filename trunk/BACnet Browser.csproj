@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.21022</ProductVersion>
+    <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{D4EB6E37-C3D0-4083-9CCE-9CB35F58C0AB}</ProjectGuid>
     <OutputType>WinExe</OutputType>
@@ -75,6 +75,7 @@
     <Compile Include="AboutBox1.Designer.cs">
       <DependentUpon>AboutBox1.cs</DependentUpon>
     </Compile>
+    <Compile Include="myTreeNode.cs" />
     <Compile Include="Packet.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
@@ -113,7 +114,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="BACnet Browser_1_TemporaryKey.pfx" />
     <None Include="BACnet Browser_TemporaryKey.pfx" />
     <None Include="Resources\view_refresh.ico" />
   </ItemGroup>

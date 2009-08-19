@@ -30,33 +30,42 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-            this.treeView2 = new System.Windows.Forms.TreeView();
+            this.BACnetInternetworkTreeView = new System.Windows.Forms.TreeView();
             this.button2 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.helpToolStripButton = new System.Windows.Forms.ToolStripButton();
-            this.button1 = new System.Windows.Forms.Button();
+            this.buttonSendWhoIs = new System.Windows.Forms.Button();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.Quit = new System.Windows.Forms.Button();
             this.whoisrouterbtn = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
+            this.button5 = new System.Windows.Forms.Button();
             this.buttonReadPropertyTest = new System.Windows.Forms.Button();
+            this.timerHeartbeatWhoIs = new System.Windows.Forms.Timer(this.components);
+            this.buttonSendReadProperty = new System.Windows.Forms.Button();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.mycontextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.whoIsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.readPropertyObjectListToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStrip1.SuspendLayout();
+            this.mycontextMenuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
-            // treeView2
+            // BACnetInternetworkTreeView
             // 
-            this.treeView2.HideSelection = false;
-            this.treeView2.Location = new System.Drawing.Point(12, 45);
-            this.treeView2.Name = "treeView2";
-            this.treeView2.Size = new System.Drawing.Size(307, 338);
-            this.treeView2.TabIndex = 2;
+            this.BACnetInternetworkTreeView.HideSelection = false;
+            this.BACnetInternetworkTreeView.Location = new System.Drawing.Point(12, 45);
+            this.BACnetInternetworkTreeView.Name = "BACnetInternetworkTreeView";
+            this.BACnetInternetworkTreeView.Size = new System.Drawing.Size(307, 338);
+            this.BACnetInternetworkTreeView.TabIndex = 2;
+            this.BACnetInternetworkTreeView.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.BACnetInternetworkTreeView_NodeMouseClick);
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(375, 190);
+            this.button2.Location = new System.Drawing.Point(375, 213);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(75, 23);
             this.button2.TabIndex = 3;
@@ -66,7 +75,7 @@
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(375, 219);
+            this.button3.Location = new System.Drawing.Point(375, 251);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(75, 23);
             this.button3.TabIndex = 4;
@@ -84,7 +93,7 @@
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
-            this.toolStrip1.Size = new System.Drawing.Size(543, 25);
+            this.toolStrip1.Size = new System.Drawing.Size(584, 25);
             this.toolStrip1.TabIndex = 6;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -108,15 +117,15 @@
             this.helpToolStripButton.Text = "He&lp";
             this.helpToolStripButton.Click += new System.EventHandler(this.helpToolStripButton_Click);
             // 
-            // button1
+            // buttonSendWhoIs
             // 
-            this.button1.Location = new System.Drawing.Point(375, 56);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(127, 23);
-            this.button1.TabIndex = 10;
-            this.button1.Text = "Send Who-Is";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.SendWhoIsButton);
+            this.buttonSendWhoIs.Location = new System.Drawing.Point(375, 56);
+            this.buttonSendWhoIs.Name = "buttonSendWhoIs";
+            this.buttonSendWhoIs.Size = new System.Drawing.Size(127, 23);
+            this.buttonSendWhoIs.TabIndex = 10;
+            this.buttonSendWhoIs.Text = "Send Who-Is";
+            this.buttonSendWhoIs.UseVisualStyleBackColor = true;
+            this.buttonSendWhoIs.Click += new System.EventHandler(this.SendWhoIsButton);
             // 
             // timer1
             // 
@@ -126,7 +135,7 @@
             // 
             // Quit
             // 
-            this.Quit.Location = new System.Drawing.Point(375, 360);
+            this.Quit.Location = new System.Drawing.Point(375, 422);
             this.Quit.Name = "Quit";
             this.Quit.Size = new System.Drawing.Size(75, 23);
             this.Quit.TabIndex = 11;
@@ -136,7 +145,7 @@
             // 
             // whoisrouterbtn
             // 
-            this.whoisrouterbtn.Location = new System.Drawing.Point(375, 86);
+            this.whoisrouterbtn.Location = new System.Drawing.Point(375, 122);
             this.whoisrouterbtn.Name = "whoisrouterbtn";
             this.whoisrouterbtn.Size = new System.Drawing.Size(127, 23);
             this.whoisrouterbtn.TabIndex = 12;
@@ -147,7 +156,7 @@
             // 
             // button4
             // 
-            this.button4.Location = new System.Drawing.Point(375, 116);
+            this.button4.Location = new System.Drawing.Point(375, 155);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(127, 23);
             this.button4.TabIndex = 13;
@@ -156,28 +165,86 @@
             this.button4.Visible = false;
             this.button4.Click += new System.EventHandler(this.Initialize_Routing_Table_Click);
             // 
+            // button5
+            // 
+            this.button5.Location = new System.Drawing.Point(375, 89);
+            this.button5.Name = "button5";
+            this.button5.Size = new System.Drawing.Size(127, 23);
+            this.button5.TabIndex = 14;
+            this.button5.Text = "Send Short Who-Is ";
+            this.button5.UseVisualStyleBackColor = true;
+            this.button5.Click += new System.EventHandler(this.button5_Click);
+            // 
             // buttonReadPropertyTest
             // 
-            this.buttonReadPropertyTest.Location = new System.Drawing.Point(375, 269);
+            this.buttonReadPropertyTest.Location = new System.Drawing.Point(0, 0);
             this.buttonReadPropertyTest.Name = "buttonReadPropertyTest";
-            this.buttonReadPropertyTest.Size = new System.Drawing.Size(127, 23);
-            this.buttonReadPropertyTest.TabIndex = 14;
-            this.buttonReadPropertyTest.Text = "Read Property Test";
-            this.buttonReadPropertyTest.UseVisualStyleBackColor = true;
-            this.buttonReadPropertyTest.Click += new System.EventHandler(this.buttonReadPropertyTest_Click);
+            this.buttonReadPropertyTest.Size = new System.Drawing.Size(75, 23);
+            this.buttonReadPropertyTest.TabIndex = 0;
+            // 
+            // timerHeartbeatWhoIs
+            // 
+            this.timerHeartbeatWhoIs.Interval = 20000;
+            this.timerHeartbeatWhoIs.Tick += new System.EventHandler(this.SendWhoIs_Tick);
+            // 
+            // buttonSendReadProperty
+            // 
+            this.buttonSendReadProperty.Location = new System.Drawing.Point(375, 309);
+            this.buttonSendReadProperty.Name = "buttonSendReadProperty";
+            this.buttonSendReadProperty.Size = new System.Drawing.Size(127, 23);
+            this.buttonSendReadProperty.TabIndex = 15;
+            this.buttonSendReadProperty.Text = "Send ReadProperty";
+            this.buttonSendReadProperty.UseVisualStyleBackColor = true;
+            this.buttonSendReadProperty.Click += new System.EventHandler(this.buttonSendReadProperty_Click);
+            // 
+            // checkBox1
+            // 
+            this.checkBox1.AutoSize = true;
+            this.checkBox1.Location = new System.Drawing.Point(13, 400);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(110, 17);
+            this.checkBox1.TabIndex = 16;
+            this.checkBox1.Text = "Who-Is Heartbeat";
+            this.checkBox1.UseVisualStyleBackColor = true;
+            this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
+            // 
+            // mycontextMenuStrip
+            // 
+            this.mycontextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.whoIsToolStripMenuItem,
+            this.readPropertyObjectListToolStripMenuItem});
+            this.mycontextMenuStrip.Name = "contextMenuStrip1";
+            this.mycontextMenuStrip.Size = new System.Drawing.Size(217, 70);
+            this.mycontextMenuStrip.Opening += new System.ComponentModel.CancelEventHandler(this.mycontextMenuStrip_Opening);
+            // 
+            // whoIsToolStripMenuItem
+            // 
+            this.whoIsToolStripMenuItem.Name = "whoIsToolStripMenuItem";
+            this.whoIsToolStripMenuItem.Size = new System.Drawing.Size(216, 22);
+            this.whoIsToolStripMenuItem.Text = "Who-Is";
+            this.whoIsToolStripMenuItem.Click += new System.EventHandler(this.whoIsToolStripMenuItem_Click);
+            // 
+            // readPropertyObjectListToolStripMenuItem
+            // 
+            this.readPropertyObjectListToolStripMenuItem.Name = "readPropertyObjectListToolStripMenuItem";
+            this.readPropertyObjectListToolStripMenuItem.Size = new System.Drawing.Size(216, 22);
+            this.readPropertyObjectListToolStripMenuItem.Text = "Read Property - Object List";
+            this.readPropertyObjectListToolStripMenuItem.Click += new System.EventHandler(this.readPropertyObjectListToolStripMenuItem_Click);
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(543, 431);
-            this.Controls.Add(this.buttonReadPropertyTest);
+            this.ClientSize = new System.Drawing.Size(584, 466);
+            this.Controls.Add(this.checkBox1);
+            this.Controls.Add(this.buttonSendReadProperty);
+            this.Controls.Add(this.button5);
             this.Controls.Add(this.button4);
             this.Controls.Add(this.whoisrouterbtn);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.buttonSendWhoIs);
             this.Controls.Add(this.Quit);
             this.Controls.Add(this.toolStrip1);
-            this.Controls.Add(this.treeView2);
+            this.Controls.Add(this.BACnetInternetworkTreeView);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.button2);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -187,6 +254,7 @@
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.mainform_closing);
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
+            this.mycontextMenuStrip.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -194,19 +262,26 @@
 
         #endregion
 
-        private System.Windows.Forms.TreeView treeView2;
+        private System.Windows.Forms.TreeView BACnetInternetworkTreeView;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.ToolStrip toolStrip1;
         private System.Windows.Forms.ToolStripButton toolStripButton1;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripButton helpToolStripButton;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button buttonSendWhoIs;
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.Button Quit;
         private System.Windows.Forms.Button whoisrouterbtn;
         private System.Windows.Forms.Button button4;
         private System.Windows.Forms.Button buttonReadPropertyTest;
+        private System.Windows.Forms.Button button5;
+        private System.Windows.Forms.Timer timerHeartbeatWhoIs;
+        private System.Windows.Forms.Button buttonSendReadProperty;
+        private System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.ContextMenuStrip mycontextMenuStrip;
+        private System.Windows.Forms.ToolStripMenuItem whoIsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem readPropertyObjectListToolStripMenuItem;
     }
 }
 
