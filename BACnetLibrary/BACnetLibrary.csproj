@@ -53,6 +53,7 @@
     <Compile Include="BACnetNetwork.cs" />
     <Compile Include="Device.cs" />
     <Compile Include="Encoding.cs" />
+    <Compile Include="OurSocket.cs" />
     <Compile Include="Parse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

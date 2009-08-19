@@ -72,22 +72,26 @@ namespace BACnetLibraryNS
                 packet.da_present = true;
 
                 // dnet, dadr and hop count present
-                packet.dnet = (uint)((bytes[packet.npdu_offset + 2] << 8) + bytes[packet.npdu_offset + 3]);
-                packet.dadr_len = (uint)(bytes[packet.npdu_offset + 4]);
 
-                if (packet.dadr_len == 0)
+                uint dAddrOffset = packet.npdu_offset + 2 ;
+                packet.dadr.Decode(bytes, ref dAddrOffset);
+
+                //packet.dnet = (uint)((bytes[packet.npdu_offset + 2] << 8) + bytes[packet.npdu_offset + 3]);
+                //packet.dadr_len = (uint)(bytes[packet.npdu_offset + 4]);
+
+                if (packet.dadr.MAClength == 0)
                 {
                     packet.is_broadcast = true;
 
                     // broadcast, but check the DNET
-                    if (packet.dnet != 0xffff)
+                    if (packet.dadr.networkNumber != 0xffff)
                     {
                         System.Windows.Forms.MessageBox.Show("Broadcast according to DLEN, but DNET not 0xffff");
                         // todo, this means directed broadcast, need to deal with this still
                         return;
                     }
                 }
-                if (packet.dadr_len != 1 && packet.dadr_len != 6 && packet.dadr_len != 0)
+                if (packet.dadr.MAClength != 1 && packet.dadr.MAClength != 6 && packet.dadr.MAClength != 0)
                 {
                     // panic
                     System.Windows.Forms.MessageBox.Show("Unexpected DADR len");
@@ -112,30 +116,34 @@ namespace BACnetLibraryNS
 
                 if (packet.da_present)
                 {
-                    sa_offset = packet.npdu_offset + 2 + 3 + packet.dadr_len;
+                    sa_offset = packet.npdu_offset + 2 + 3 + packet.dadr.MAClength;
                 }
 
                 // means SADR, SNET present
-                packet.snet = (uint)((bytes[sa_offset] << 8) + bytes[sa_offset + 1]);
-                packet.sadr_len = bytes[sa_offset + 2];
-                if (packet.sadr_len != 1 && packet.sadr_len != 6)
-                {
+
+                packet.sadr.Decode( bytes, ref sa_offset);
+
+                // packet.
+                //packet.snet = (uint)((bytes[sa_offset] << 8) + bytes[sa_offset + 1]);
+                //packet.sadr_len = bytes[sa_offset + 2];
+                //if (packet.sadr_len != 1 && packet.sadr_len != 6)
+                //{
                     // panic
-                    System.Windows.Forms.MessageBox.Show("Unexpected SADR len");
-                    return;
-                }
-                packet.sadr = bytes[sa_offset + 3];
+                //    System.Windows.Forms.MessageBox.Show("Unexpected SADR len");
+                //    return;
+                //}
+                //packet.sadr = bytes[sa_offset + 3];
             }
 
             if (packet.da_present)
             {
                 if (packet.sa_present)
                 {
-                    packet.hopcount = (uint)(bytes[packet.npdu_offset + 2 + 2 + 1 + packet.dadr_len + 2 + 1 + packet.sadr_len]);
+                    packet.hopcount = (uint)(bytes[packet.npdu_offset + 2 + 2 + 1 + packet.dadr.MAClength + 2 + 1 + packet.sadr.MAClength]);
                 }
                 else
                 {
-                    packet.hopcount = (uint)(bytes[packet.npdu_offset + 2 + 2 + 1 + packet.dadr_len]);
+                    packet.hopcount = (uint)(bytes[packet.npdu_offset + 2 + 2 + 1 + packet.dadr.MAClength]);
                 }
                 // true broadcast, but check the hopcount
 
@@ -156,22 +164,12 @@ namespace BACnetLibraryNS
 
                 packet.apdu_present = false;
 
-                //if ((bytes[packet.npdu_offset + 1] & 0x20) == 0x20)
-                //{
-                //    // means DADR, DNET present
-                //    packet.nsdu_offset = packet.npdu_offset + 6; // todo - variable length, fix
-                //}
-                //else
-                //{
-                //    packet.nsdu_offset = packet.npdu_offset + 2;
-                //}
-
                 // calculate offset to the NSDU
 
                 packet.nsdu_offset = packet.npdu_offset + 2;
 
-                if (packet.sa_present) packet.nsdu_offset += 2 + 1 + packet.sadr_len;
-                if (packet.da_present) packet.nsdu_offset += 2 + 1 + packet.dadr_len + 1;
+                if (packet.sa_present) packet.nsdu_offset += 2 + 1 + packet.sadr.MAClength;
+                if (packet.da_present) packet.nsdu_offset += 2 + 1 + packet.dadr.MAClength + 1;
 
                 switch ((BACnetEnums.BACNET_NETWORK_MESSAGE_TYPE)bytes[packet.nsdu_offset])
                 {
@@ -203,35 +201,10 @@ namespace BACnetLibraryNS
 
                 packet.apdu_present = true;
 
-                //if ((bytes[packet.npdu_offset + 1] & 0x08) == 0x08)
-                //{
-                //    // means SADR, SNET present
-                //    packet.snet = (uint)((bytes[packet.npdu_offset + 5] << 8) + bytes[packet.npdu_offset + 6]);
-                //    packet.sadr_len = bytes[packet.npdu_offset + 7];
-                //    if (packet.sadr_len != 1 && packet.sadr_len != 6)
-                //    {
-                //        // panic
-                //        System.Windows.Forms.MessageBox.Show("Unexpected SADR len");
-                //        return;
-                //    }
-                //    packet.sadr = bytes[packet.npdu_offset + 8];
-
-                //    packet.apdu_offset = packet.npdu_offset + 9 + packet.sadr_len;
-
-                //    packet.sa_present = true;
-                //}
-                //else
-                //{
-                //    // absent
-                //    packet.apdu_offset = packet.npdu_offset + 6;
-                //}
-
-                // calculate offset to the NSDU
-
                 packet.apdu_offset = packet.npdu_offset + 2;
 
-                if (packet.sa_present) packet.apdu_offset += 2 + 1 + packet.sadr_len;
-                if (packet.da_present) packet.apdu_offset += 2 + 1 + packet.dadr_len + 1 ;
+                if (packet.sa_present) packet.apdu_offset += 2 + 1 + packet.sadr.MAClength;
+                if (packet.da_present) packet.apdu_offset += 2 + 1 + packet.dadr.MAClength + 1;
 
 
 
@@ -274,32 +247,32 @@ namespace BACnetLibraryNS
 
                     // Decode Device Identifier
 
-                    uint deviceId;
+                    //uint offset = BACnetEncoding.BACnetDecode_uint(bytes, packet.apdu_offset + (uint)2, out deviceId);
 
-                    uint offset = BACnetEncoding.BACnetDecode_uint(bytes, packet.apdu_offset + (uint)2, out deviceId);
-
-                    offset += packet.apdu_offset + (uint)2;
+                    //offset += packet.apdu_offset + (uint)2;
 
 
                     // todo - brute force mask off the object type field 
-                    deviceId &= 0x03fffff;
-                    Console.WriteLine("This is device: " + deviceId);
+                    //deviceId &= 0x03fffff;
+
+                    uint offset = packet.apdu_offset + 2;
+
+                    D.deviceID.Decode(bytes, ref offset);
+                    Console.WriteLine("This is device: " + D.deviceID );
 
                     // todo, for now, we will ignore device insance xxx if received 
                     // and we are the client (bacnet browser )
 
-                    if (bnm.mode == BACnetEnums.BACNET_MODE.BACnetClient && deviceId == BACnetEnums.CLIENT_DEVICE_ID)
-                    {
-                        return;
-                    }
+                    //if (bnm.mode == BACnetEnums.BACNET_MODE.BACnetClient && D.deviceID == BACnetEnums.CLIENT_DEVICE_ID)
+                    //{
+                    //    return;
+                    //}
 
 
 
-                    D.DeviceId = deviceId;
+                    //D.deviceId = deviceId;
                     D.packet = packet;
-                    D.SourceAddress = packet.sadr;
-                    D.NetworkNumber = packet.snet;
-
+                    D.adr = packet.sadr ;
 
                     uint maxAPDULen;
 
@@ -340,7 +313,7 @@ namespace BACnetLibraryNS
                 // if we are not a router, then check that the message is addressed to us before acting on it.
 
 #if BACNET_ROUTER
-                RouterHandlerCL.RouterProcessPacket( packet );
+            RouterHandlerCL.RouterProcessOutgoingPacket(bnm, packet);
 #endif
 
 

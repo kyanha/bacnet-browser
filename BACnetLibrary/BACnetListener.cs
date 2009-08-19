@@ -18,8 +18,14 @@ namespace BACnetLibraryNS
         public uint npdu_offset;
         public uint nsdu_offset = 0;
         public uint apdu_offset;
-        public uint slen, snet, sadr, sadr_len;
-        public uint dadr_len, dnet, hopcount;
+        // public uint slen, snet, sadr, sadr_len;
+        public ADR sadr = new ADR();
+        public ADR dadr = new ADR();
+        // public uint dadr_len, dnet, hopcount;
+
+        // device id does not belong in a packet public BACnetObjectIdentifier deviceID;
+
+        public uint hopcount;
 
         public bool apdu_present, snet_present, da_present, sa_present, is_broadcast;
 
@@ -41,22 +47,19 @@ namespace BACnetLibraryNS
     {
         BACnetmanager bnm;
 
-        public int BACnet_port;
+        public OurSocket listen_socket;
 
-        Socket bacnet_listen_socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
-
-            
         public BACnetListenerCL(BACnetmanager bnm)
         {
             this.bnm = bnm;
         }
 
-
         public void BACnetListenerClose()
         {
             try
             {
-            bacnet_listen_socket.Close();
+                listen_socket.Shutdown(SocketShutdown.Both);
+                listen_socket.Close();
             }
             catch (Exception fe)
             {
@@ -67,46 +70,32 @@ namespace BACnetLibraryNS
 
 
         // This method that will be called when the thread is started
-        public void BACnetListenerMethod()
+        public void BACnetInsideListener()
         {
-            Console.WriteLine("Thread starting for port " + Convert.ToString(BACnet_port));
-
-            IPEndPoint local_ipep = new IPEndPoint(0, BACnet_port );
-
-            bacnet_listen_socket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
-
-            // bind the local end of the connection to BACnet port number
-            bacnet_listen_socket.Bind(local_ipep);
+            //Console.WriteLine("Thread starting for port " + Convert.ToString(BACnet_port));
 
             while (true)
             {
-                Byte[] received = new Byte[2000] ;
+                Byte[] received = new Byte[2000];
                 Packet packet = new Packet();
 
                 // Create an IPEndPoint to capture the identity of the sending host.
                 IPEndPoint sender = new IPEndPoint(IPAddress.Any, 0);
                 EndPoint senderRemote = (EndPoint)sender;
 
-
                 try
                 {
 
-                    
-                    // bacnet_listen_socket.Receive(received);
-                    packet.length = (uint)bacnet_listen_socket.ReceiveFrom(received, ref senderRemote);
 
-                    Console.WriteLine("This message was sent from " + ((IPEndPoint) senderRemote).Address.ToString() + "  Port " + ((IPEndPoint) senderRemote).Port.ToString() ) ;
+                    // bacnet_listen_socket.Receive(received);
+                    packet.length = (uint)listen_socket.ReceiveFrom(received, ref senderRemote);
+
+                    Console.WriteLine("This message was sent from " + ((IPEndPoint)senderRemote).Address.ToString() + "  Port " + ((IPEndPoint)senderRemote).Port.ToString());
 
                     packet.FromAddress = (IPEndPoint)senderRemote;
 
-                    //Console.WriteLine("This message was sent from " +
-                    //                            remoteIpEndPoint.Address.ToString() +
-                    //                            " on their port number " +
-                    //                            remoteIpEndPoint.Port.ToString());
-
-                    //packet.Source_Address = remoteIpEndPoint.Address;
-                    //packet.Source_Port = remoteIpEndPoint.Port;
                     packet.buffer = received;
+
 
 
                     BACnetParserClass.parse(packet, received, bnm );
@@ -117,6 +106,8 @@ namespace BACnetLibraryNS
                     Console.WriteLine(efe);
                 }
             }
+
         }
+
     }
 }

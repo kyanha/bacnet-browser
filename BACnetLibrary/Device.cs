@@ -10,16 +10,19 @@ using BACnetLibraryNS;
 
 namespace BACnetLibraryNS
 {
-    public class Device : IComparable<Device>, IEquatable<Device>
+    public class Device : IEquatable<Device>
     {
         #region Fields & Constants
 
-        public uint NetworkNumber;           // The network number of the BACnet network that the Device is attached to
-        public uint SourceAddress;
+        // public uint NetworkNumber;           // The network number of the BACnet network that the Device is attached to
+        public ADR adr ;
+
+        // public uint SourceAddress;
         public uint I_Am_Count = 0;
 
         private uint vendorId;
-        private uint deviceId;
+        public BACnetObjectIdentifier deviceID = new BACnetObjectIdentifier() ;              // note! This is NOT the same as the MAC address stored in dadr.
+
 
         public BACnetEnums.BACNET_SEGMENTATION SegmentationSupported;
 
@@ -37,32 +40,33 @@ namespace BACnetLibraryNS
             set { vendorId = value; }
         }
 
-        public uint DeviceId
-        {
-            get { return this.deviceId; }
-            set { this.deviceId = value; }
-        }
+        //public uint DeviceId
+        //{
+        //    get { return this.deviceId; }
+        //    set { this.deviceId = value; }
+        //}
 
         #endregion
 
-        public int CompareTo(Device d)
-        {
+        //public int CompareTo(Device d)
+        //{
 
-            // sort order is relevant...
-            if (this.NetworkNumber > d.NetworkNumber) return 1;
-            if (this.deviceId > d.deviceId) return 1;
+        //    // sort order is relevant...
+        //    if (this.NetworkNumber > d.NetworkNumber) return 1;
+        //    if (this.deviceId > d.deviceId) return 1;
 
-            if (this.NetworkNumber < d.NetworkNumber) return -1;
-            if (this.deviceId < d.deviceId) return -1;
+        //    if (this.NetworkNumber < d.NetworkNumber) return -1;
+        //    if (this.deviceId < d.deviceId) return -1;
 
-            // devices must be equal
-            return 0;
-        }
+        //    // devices must be equal
+        //    return 0;
+        //}
 
         public bool Equals(Device d)
         {
-            if (this.NetworkNumber == d.NetworkNumber && this.deviceId == d.deviceId) return true;
-            return false;
+            return this.adr.Equals(d.adr);
+
+            //todo, add check that device instances are equal here too...
         }
 
         public void parse(byte[] bytes)
@@ -110,7 +114,7 @@ namespace BACnetLibraryNS
 
             data[optr++] = BACnetEnums.BACNET_BVLC_TYPE_BIP;
 
-            if (NetworkNumber == 0)
+            if ( adr.networkNumber == 0)
             {
                 data[optr++] = (byte)BACnetEnums.BACNET_BVLC_FUNCTION.BVLC_ORIGINAL_BROADCAST_NPDU;
             }
@@ -126,7 +130,7 @@ namespace BACnetLibraryNS
             lengthOffset = optr;
             optr += 2;
 
-            if (NetworkNumber != 0)
+            if (adr.networkNumber != 0)
             {
                 // make space for the IP address (AKA MAC address)
                 // todo, dummy it up for now
@@ -144,7 +148,7 @@ namespace BACnetLibraryNS
 
             data[optr++] = 0x01;        // Always 1
 
-            if (NetworkNumber == 0)
+            if (adr.networkNumber == 0)
             {
                 data[optr++] = 0x20;        // Control (Destination present, no source)
             }
@@ -160,10 +164,10 @@ namespace BACnetLibraryNS
             data[optr++] = 0x00;        // DLEN
 
 
-            if (NetworkNumber != 0)
+            if (adr.networkNumber != 0)
             {
-                data[optr++] = (byte)((NetworkNumber >> 8) & 0xff);
-                data[optr++] = (byte)((NetworkNumber) & 0xff);
+                data[optr++] = (byte)((adr.networkNumber >> 8) & 0xff);
+                data[optr++] = (byte)((adr.networkNumber) & 0xff);
                 data[optr++] = 6;
                 data[optr++] = 192;
                 data[optr++] = 168;
@@ -187,7 +191,8 @@ namespace BACnetLibraryNS
 
             bnoid.SetType(BACnetEnums.BACNET_OBJECT_TYPE.OBJECT_DEVICE);
 
-            bnoid.SetInstance(DeviceId);
+            // todo - for now hard code the device ID
+            bnoid.SetInstance( 999 );
 
             bnoid.Encode(data, ref optr);
 
@@ -237,12 +242,12 @@ namespace BACnetLibraryNS
     public class ServerDevice : Device
     {
 
-        public ServerDevice(uint DeviceId, uint NetworkNumber)
+        public ServerDevice( /*DeviceId,*/ uint NetworkNumber)
         {
             // constructor 
 
-            this.DeviceId = DeviceId;
-            this.NetworkNumber = NetworkNumber;
+            //this.DeviceId = 999 ; // todo
+            this.adr.networkNumber = adr.networkNumber;
         }
     }
 

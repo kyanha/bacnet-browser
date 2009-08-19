@@ -18,37 +18,49 @@ namespace BACnetInteropApp
     public partial class MainForm : Form
     {
 
-        BACnetmanager bnm = new BACnetmanager(0xBAC0, BACnetEnums.BACNET_MODE.BACnetClient, BACnetEnums.CLIENT_DEVICE_ID);
+#if BACNET_TARGET_REMOTE
+        OurSocket inside_socket = new OurSocket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp, 0xEDD1);
+#else
+        OurSocket inside_socket = new OurSocket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp, 0xBAC0);
+#endif
+
+        BACnetmanager bnm;
+
+        IPEndPoint IPEPDestination;
 
         public MainForm()
         {
             InitializeComponent();
+
+#if BACNET_TARGET_REMOTE
+            IPHostEntry hostEntry = Dns.GetHostEntry("cloudrouter.dyndns.org");
+            IPEPDestination = new IPEndPoint(hostEntry.AddressList[0], 0xEDD1);
+#else
+            IPEPDestination = new IPEndPoint(IPAddress.Broadcast, 0xBAC0);
+#endif
+
+            bnm = new BACnetmanager(inside_socket, BACnetEnums.SERVER_DEVICE_ID, IPEPDestination);
+
         }
+
 
         private void mainform_closing(object sender, FormClosingEventArgs e)
         {
-            bnm.BAClistener_thread.Abort();
 
-            // cancel our outstanding socket receives
-            try
-            {
-                bnm.BAClistener_object.BACnetListenerClose();
-            }
-            catch (Exception fe)
-            {
-                Console.WriteLine(fe);
-            }
+            bnm.BACnetManagerClose();
+
+            Application.Exit();
         }
 
 
         private void ExpandAllButton_Click(object sender, EventArgs e)
         {
-            this.treeView2.ExpandAll();
+            this.BACnetInternetworkTreeView.ExpandAll();
         }
 
         private void CollapseAllButton_Click(object sender, EventArgs e)
         {
-            this.treeView2.CollapseAll();
+            this.BACnetInternetworkTreeView.CollapseAll();
         }
 
 
@@ -62,7 +74,7 @@ namespace BACnetInteropApp
         private void SendWhoIsButton(object sender, EventArgs e)
         {
             System.Diagnostics.Debug.WriteLine("Sending Who_is");
-            BACnetLibraryNS.BACnetLibraryCL.SendWhoIs( bnm );
+            BACnetLibraryNS.BACnetLibraryCL.SendWhoIs(bnm, true, IPEPDestination);
         }
 
 
@@ -74,14 +86,14 @@ namespace BACnetInteropApp
         {
             // Check to see if there is a new "I-Am" message to process.
 
-            while ( bnm.NewDeviceQueue.Count != 0)
+            while (bnm.NewDeviceQueue.Count != 0)
             {
 
                 Device D = bnm.NewDeviceQueue.Dequeue();
 
-                BACnetNetwork N = new BACnetNetwork() ;
-                
-                N.NetworkNumber = D.NetworkNumber;
+                BACnetNetwork N = new BACnetNetwork();
+
+                N.NetworkNumber = D.adr.networkNumber;
 
                 // is this a new BACnet Network?
 
@@ -89,15 +101,15 @@ namespace BACnetInteropApp
                 {
                     // New network, let's add it
 
-                    TreeNode NewNode = new TreeNode();
+                    myTreeNode NewNode = new myTreeNode();
 
                     NewNode.Name = "NewNode";
 
-                    NewNode.Text = "Network " + N.NetworkNumber ;
+                    NewNode.Text = "Network " + N.NetworkNumber;
                     NewNode.Tag = N.NetworkNumber;
 
-                    this.treeView2.Nodes.Add(NewNode);
-                    this.treeView2.SelectedNode = NewNode;
+                    this.BACnetInternetworkTreeView.Nodes.Add(NewNode);
+                    this.BACnetInternetworkTreeView.SelectedNode = NewNode;
 
                     ourNetworks.Add(N);
 
@@ -106,58 +118,60 @@ namespace BACnetInteropApp
 
                 // find the network and add device to it
 
-                for (int i = 0; i < this.treeView2.Nodes.Count; i++)
+                for (int i = 0; i < this.BACnetInternetworkTreeView.Nodes.Count; i++)
                 {
-                    TreeNode tni = this.treeView2.Nodes[i];
+                    myTreeNode tni = (myTreeNode)this.BACnetInternetworkTreeView.Nodes[i];
 
                     if (tni.Tag != null)
                     {
                         if (tni.Tag.Equals(N.NetworkNumber))
                         {
-                            // found Network.. select it
-                            //this.treeView2.SelectedNode = tni;
-
-
+                            // found Network..
                             // check if node already exists
-                            
-                            bool founddeviceflag = false ;
 
-                            for (int j=0; j < tni.Nodes.Count; j++)
+                            bool founddeviceflag = false;
+
+                            for (int j = 0; j < tni.Nodes.Count; j++)
                             {
-                                TreeNode tnj = tni.Nodes[j] ;
+                                myTreeNode tnj = (myTreeNode)tni.Nodes[j];
 
-                                if ( tnj != null && tnj.Tag.Equals(D.DeviceId) )
+                                if (tnj != null && tnj.device.Equals(D))
                                 {
                                     // found, so quit
-                                    founddeviceflag = true; 
+                                    founddeviceflag = true;
                                     break;
                                 }
                             }
 
                             // add a device node to the network node
 
-                            if ( founddeviceflag == false )
+                            if (founddeviceflag == false)
                             {
-                                TreeNode NewNode = new TreeNode();
+                                myTreeNode NewNode = new myTreeNode();
+
+                                NewNode.device = D;
 
                                 NewNode.Name = "NewNode";
 
-                                NewNode.Text = "Device " + D.DeviceId;
-                                NewNode.Tag = D.DeviceId;
+                                NewNode.Text = "Device  " + D.deviceID.objectInstance ;
+                                NewNode.Tag = D.deviceID.objectInstance ;
 
                                 // add other paramters to our new node
 
-                                NewNode.Nodes.Add("Vendor ID     " + D.VendorId);
+                                // todo, need to fix this, since we are adding TreeNodes here, not myTreeNodes...
 
-                                NewNode.Nodes.Add("Network Number " + D.NetworkNumber);
-                                NewNode.Nodes.Add("Source Address " + D.SourceAddress);
+                                NewNode.Nodes.Add("Vendor ID      " + D.VendorId);
+
+                                NewNode.Nodes.Add("Network Number " + D.adr.networkNumber);
+                                NewNode.Nodes.Add("MAC Address    " + D.adr.MACaddress);
                                 NewNode.Nodes.Add("Segmentation   " + (int)D.SegmentationSupported);
-                                NewNode.Nodes.Add("IP Address     " + D.packet.Source_Address);
-                                NewNode.Nodes.Add("Port           " + D.packet.Source_Port);
+                                NewNode.Nodes.Add("IP Address     " + D.packet.FromAddress.Address);
+                                NewNode.Nodes.Add("Port           " + D.packet.FromAddress.Port);
+
+                                NewNode.isDevice = true;
 
                                 tni.Nodes.Add(NewNode);
-                                
-                                //NewNode.Expand();
+
                             }
 
 
@@ -327,11 +341,95 @@ namespace BACnetInteropApp
             bacnet_master_socket.SendTo(data, optr, SocketFlags.None, ipep);
         }
 
- 
-        private void buttonReadPropertyTest_Click(object sender, EventArgs e)
+        private void button5_Click(object sender, EventArgs e)
         {
-            BACnetLibraryCL.ReadProperties(bnm);
+            BACnetLibraryNS.BACnetLibraryCL.SendWhoIs(bnm, false, IPEPDestination);
+
         }
+
+        private void SendWhoIs_Tick(object sender, EventArgs e)
+        {
+            BACnetLibraryNS.BACnetLibraryCL.SendWhoIs(bnm, true, IPEPDestination);
+        }
+
+        private void buttonSendReadProperty_Click(object sender, EventArgs e)
+        {
+            // todo- if the IP address does not exist, but is within our subnet, then there is no transmission, but neither is there
+            // an exception - simply nothing appears in Wireshark. Investigate and go proactive warning the user...\
+
+            // set up temporary device and packet information for the purposes of testing this function call
+            Device tempdevice = new Device();
+            tempdevice.packet = new Packet();
+            tempdevice.adr = new ADR( 77, 1, 4 );
+
+            tempdevice.packet.FromAddress = new IPEndPoint(IPAddress.Parse("192.168.0.68"), 0xBAC0);
+
+            BACnetLibraryCL.ReadProperties(bnm, tempdevice );
+        }
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBox1.Checked)
+            {
+                timerHeartbeatWhoIs.Enabled = true;
+                BACnetLibraryNS.BACnetLibraryCL.SendWhoIs(bnm, true, IPEPDestination);
+            }
+            else
+            {
+                timerHeartbeatWhoIs.Enabled = false;
+            }
+        }
+
+        private void mycontextMenuStrip1_Opening(object sender, CancelEventArgs e)
+        {
+
+        }
+
+        Device menuDevice;
+
+        private void BACnetInternetworkTreeView_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                // select the node, just to highlight the last item right clicked on
+                BACnetInternetworkTreeView.SelectedNode = e.Node;
+
+                if (((myTreeNode)e.Node).isDevice == true)
+                {
+                    // store the IP address, dest network, etc for the next action - todo, there must be a better way to do this; create a new class??
+
+                    menuDevice = ((myTreeNode)e.Node).device;
+
+                    mycontextMenuStrip.Show(BACnetInternetworkTreeView, e.Location);
+                }
+                else
+                {
+                    MessageBox.Show("You must right-click on a Device for the context menu");
+                }
+
+            }
+        }
+
+        private void mycontextMenuStrip_Opening(object sender, CancelEventArgs e)
+        {
+
+        }
+
+        //private void BACnetInternetworkTreeView_MouseClick(object sender, MouseEventArgs e)
+        //{
+        //}
+
+        private void whoIsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // when user right clicks on a device, and then selects the who-is menu item... we end up here
+            BACnetLibraryNS.BACnetLibraryCL.SendWhoIs(bnm, menuDevice);
+        }
+
+        private void readPropertyObjectListToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            BACnetLibraryCL.ReadProperties(bnm, menuDevice );
+        }
+
 
     }
 }

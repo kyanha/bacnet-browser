@@ -10,8 +10,8 @@ namespace BACnetLibraryNS
     public class BACnetmanager
     {
 
-        public BACnetListenerCL BAClistener_object;
-        public Thread BAClistener_thread;
+        public BACnetListenerCL BAClistener_insideobject;
+        public Thread BAClistener_insidethread;
 
         public List<Device> Devicelist = new List<Device>();
         public Queue<Device> NewDeviceQueue = new Queue<Device>();
@@ -24,12 +24,21 @@ namespace BACnetLibraryNS
         public IPHostEntry OurIPAddressEntry;
         public IPAddress[] OurIPAddressList;
 
-        public BACnetmanager(int BACnetManagerPort, BACnetEnums.BACNET_MODE mode, int deviceID)
+        public OurSocket insidesocket;
+
+        public void BACnetManagerClose()
+        {
+            BAClistener_insideobject.BACnetListenerClose();
+            
+            BAClistener_insidethread.Abort();
+            
+        }
+
+        public BACnetmanager( OurSocket insidesocket, int deviceID, IPEndPoint destination )
         {
 
-            this.BACnetManagerPort = BACnetManagerPort;
-            this.mode = mode;
             this.ourdeviceID = deviceID;
+            this.insidesocket = insidesocket;
 
             // Establish our own IP address, port
 
@@ -41,11 +50,9 @@ namespace BACnetLibraryNS
 
             // fire up a thread to watch for incoming packets
 
-            BAClistener_object = new BACnetListenerCL(this) { BACnet_port = BACnetManagerPort };
-            //BAC1listener_object = new Alpha() { BACnet_port = 0xbac1 };
-
-            BAClistener_thread = new Thread(new ThreadStart(BAClistener_object.BACnetListenerMethod));
-            BAClistener_thread.Start();
+            BAClistener_insideobject = new BACnetListenerCL(this) { listen_socket = insidesocket };
+            BAClistener_insidethread = new Thread(new ThreadStart(BAClistener_insideobject.BACnetInsideListener));
+            BAClistener_insidethread.Start();
 
 
 #if BACNET_SERVER
@@ -81,8 +88,9 @@ namespace BACnetLibraryNS
 
 #if BACNET_BROWSER
                 System.Diagnostics.Debug.WriteLine("Sending Who_is");
-                BACnetLibraryNS.BACnetLibraryCL.SendWhoIs( this );
+                BACnetLibraryNS.BACnetLibraryCL.SendWhoIs( this, true, destination );
 #endif
+
 
         }
 
