@@ -14,59 +14,73 @@ namespace BACnetLibraryNS
     {
         #region Fields & Constants
 
-        // public uint NetworkNumber;           // The network number of the BACnet network that the Device is attached to
-        public ADR adr ;
+        public BACnetEnums.DEVICE_TYPE type;
+
+        public ADR adr;
+
+        public myIPEndPoint directlyConnectedIPEndPointOfDevice ;           // this is the Router or the MAC address that is the IP address access to the device
+        public myIPEndPoint siteIPEndPoint;
 
         // public uint SourceAddress;
         public uint I_Am_Count = 0;
 
         private uint vendorId;
-        public BACnetObjectIdentifier deviceID = new BACnetObjectIdentifier() ;              // note! This is NOT the same as the MAC address stored in dadr.
+        public BACnetObjectIdentifier deviceObjectID = new BACnetObjectIdentifier();              // note! This is NOT the same as the MAC address stored in dadr.
 
 
         public BACnetEnums.BACNET_SEGMENTATION SegmentationSupported;
 
         private int maxAPDULength;
 
-        public Packet packet;   // a place to store the source IP address and port number
+        public BACnetPacket packet;   // a place to store the source IP address and port number
 
         #endregion
 
         #region Properties
 
+        // Todo, make this return manufacturer names.
         public uint VendorId
         {
             get { return vendorId; }
             set { vendorId = value; }
         }
 
-        //public uint DeviceId
-        //{
-        //    get { return this.deviceId; }
-        //    set { this.deviceId = value; }
-        //}
-
         #endregion
 
-        //public int CompareTo(Device d)
-        //{
-
-        //    // sort order is relevant...
-        //    if (this.NetworkNumber > d.NetworkNumber) return 1;
-        //    if (this.deviceId > d.deviceId) return 1;
-
-        //    if (this.NetworkNumber < d.NetworkNumber) return -1;
-        //    if (this.deviceId < d.deviceId) return -1;
-
-        //    // devices must be equal
-        //    return 0;
-        //}
 
         public bool Equals(Device d)
         {
-            return this.adr.Equals(d.adr);
+            // Devices are considered equal if their network numbers and MAC addresses match.
 
-            //todo, add check that device instances are equal here too...
+            if (this.adr == null && d.adr != null) return false;
+            if (this.adr != null && d.adr == null) return false;
+            if (this.adr != null && d.adr != null)
+            {
+                if (!this.adr.Equals(d.adr)) return false;
+            }
+
+#if TODO
+            // commented this out 11/2 because of the above rule...
+
+            if (!this.directlyConnectedIPEndPointOfDevice.Equals(d.directlyConnectedIPEndPointOfDevice)) return false;
+
+            if (this.siteIPEndPoint == null && d.siteIPEndPoint != null) return false;
+            if (this.siteIPEndPoint != null && d.siteIPEndPoint == null) return false;
+            if (this.siteIPEndPoint != null && d.siteIPEndPoint != null)
+            {
+                if (!this.siteIPEndPoint.Equals(d.siteIPEndPoint)) return false;
+            }
+
+            if (this.directlyConnectedIPEndPointOfDevice == null && d.directlyConnectedIPEndPointOfDevice != null) return false;
+            if (this.directlyConnectedIPEndPointOfDevice != null && d.directlyConnectedIPEndPointOfDevice == null) return false;
+            if (this.directlyConnectedIPEndPointOfDevice != null && d.directlyConnectedIPEndPointOfDevice != null)
+            {
+                if (!this.directlyConnectedIPEndPointOfDevice.Equals(d.directlyConnectedIPEndPointOfDevice)) return false;
+            }
+#endif 
+
+            return true;
+            //todo, add check that device instances (Device Object IDs) are equal here too... ( as a sanity check)
         }
 
         public void parse(byte[] bytes)
@@ -91,11 +105,11 @@ namespace BACnetLibraryNS
             this.vendorId = bytes[22];
         }
 
-        public void Send_IAm( BACnetmanager bnm )
+        public void Send_IAm(BACnetmanager bnm)
         {
             byte[] data = new byte[1024];
-            uint optr = 0;
-            uint lengthOffset;
+            int optr = 0;
+            int lengthOffset;
 
             IPEndPoint ipep = new IPEndPoint(IPAddress.Broadcast, bnm.BACnetManagerPort);
 
@@ -114,7 +128,7 @@ namespace BACnetLibraryNS
 
             data[optr++] = BACnetEnums.BACNET_BVLC_TYPE_BIP;
 
-            if ( adr.networkNumber == 0)
+            if (adr.networkNumber == 0)
             {
                 data[optr++] = (byte)BACnetEnums.BACNET_BVLC_FUNCTION.BVLC_ORIGINAL_BROADCAST_NPDU;
             }
@@ -192,7 +206,7 @@ namespace BACnetLibraryNS
             bnoid.SetType(BACnetEnums.BACNET_OBJECT_TYPE.OBJECT_DEVICE);
 
             // todo - for now hard code the device ID
-            bnoid.SetInstance( 999 );
+            bnoid.SetInstance(999);
 
             bnoid.Encode(data, ref optr);
 

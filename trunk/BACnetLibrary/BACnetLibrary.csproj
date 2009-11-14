@@ -46,15 +46,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AppManager.cs" />
     <Compile Include="BACnetEnums.cs" />
     <Compile Include="BACnetLibrary.cs" />
     <Compile Include="BACnetListener.cs" />
     <Compile Include="BACnetManager.cs" />
     <Compile Include="BACnetNetwork.cs" />
+    <Compile Include="BACnetPacket.cs" />
     <Compile Include="Device.cs" />
+    <Compile Include="DeviceTreeView.cs" />
     <Compile Include="Encoding.cs" />
+    <Compile Include="myTreeNode.cs" />
+    <Compile Include="NPDU.cs" />
     <Compile Include="OurSocket.cs" />
-    <Compile Include="Parse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

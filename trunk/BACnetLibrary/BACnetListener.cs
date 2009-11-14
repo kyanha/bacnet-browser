@@ -8,49 +8,25 @@ using System.Net.Sockets;
 
 namespace BACnetLibraryNS
 {
-    public class Packet
+
+
+    public class OutboundCopy
     {
-        public System.Net.IPAddress Source_Address;
-        public int Source_Port;
-        public byte[] buffer;
         public uint length;
-
-        public uint npdu_offset;
-        public uint nsdu_offset = 0;
-        public uint apdu_offset;
-        // public uint slen, snet, sadr, sadr_len;
-        public ADR sadr = new ADR();
-        public ADR dadr = new ADR();
-        // public uint dadr_len, dnet, hopcount;
-
-        // device id does not belong in a packet public BACnetObjectIdentifier deviceID;
-
-        public uint hopcount;
-
-        public bool apdu_present, snet_present, da_present, sa_present, is_broadcast;
-
-        public IPEndPoint FromAddress;
-
-        public Packet()
-        {
-            this.apdu_present = false;
-            this.sa_present = false;
-            this.da_present = false;
-            this.is_broadcast = false;
-
-        }
-
+        public byte[] buffer;
     }
 
 
     public class BACnetListenerCL
     {
+        AppManager _apm;
         BACnetmanager bnm;
 
         public OurSocket listen_socket;
 
-        public BACnetListenerCL(BACnetmanager bnm)
+        public BACnetListenerCL(AppManager apm, BACnetmanager bnm)
         {
+            _apm = apm;
             this.bnm = bnm;
         }
 
@@ -77,7 +53,7 @@ namespace BACnetLibraryNS
             while (true)
             {
                 Byte[] received = new Byte[2000];
-                Packet packet = new Packet();
+                BACnetPacket packet = new BACnetPacket(_apm);
 
                 // Create an IPEndPoint to capture the identity of the sending host.
                 IPEndPoint sender = new IPEndPoint(IPAddress.Any, 0);
@@ -88,17 +64,24 @@ namespace BACnetLibraryNS
 
 
                     // bacnet_listen_socket.Receive(received);
-                    packet.length = (uint)listen_socket.ReceiveFrom(received, ref senderRemote);
+                    packet.length = listen_socket.ReceiveFrom(received, ref senderRemote);
 
                     Console.WriteLine("This message was sent from " + ((IPEndPoint)senderRemote).Address.ToString() + "  Port " + ((IPEndPoint)senderRemote).Port.ToString());
 
-                    packet.FromAddress = (IPEndPoint)senderRemote;
+                    // packet.fromBIP = (IPEndPoint) senderRemote;
+
+                    packet.fromBIP = new myIPEndPoint();
+                    packet.fromBIP.Port = ((IPEndPoint)senderRemote).Port;
+                    packet.fromBIP.Address = ((IPEndPoint)senderRemote).Address;
 
                     packet.buffer = received;
 
+                    packet.DecodeBACnet(received, 0);
 
+                    // now do something with the decoded packet
 
-                    BACnetParserClass.parse(packet, received, bnm );
+                    bnm.newPacketQueue.Enqueue(packet);
+
                 }
                 catch (Exception efe)
                 {

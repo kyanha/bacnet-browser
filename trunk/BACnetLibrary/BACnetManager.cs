@@ -4,18 +4,22 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Net;
+using System.Windows.Forms;
+//using System.Diagnostics;
 
 namespace BACnetLibraryNS
 {
     public class BACnetmanager
     {
+        AppManager _apm;
 
         public BACnetListenerCL BAClistener_insideobject;
         public Thread BAClistener_insidethread;
 
         public List<Device> Devicelist = new List<Device>();
-        public Queue<Device> NewDeviceQueue = new Queue<Device>();
+        public Queue<BACnetPacket> newPacketQueue = new Queue<BACnetPacket>();
 
+        public Queue<String> DiagnosticLogMessage = new Queue<string>();
         public BACnetEnums.BACNET_MODE mode;
         public int ourdeviceID;
 
@@ -26,12 +30,20 @@ namespace BACnetLibraryNS
 
         public OurSocket insidesocket;
 
+
         public void BACnetManagerClose()
         {
+            // here we have a conundrum; the thread we are about to abort is most likely blocked waiting for an ethernet packet to arrive.
+            // if we destroy the socket that the thread is using, the thread will do something nasty.
+            // if we abort the thread, it will possibly never end since it is waiting for that packet to arrive..
+            // ... so we destroy the socket, and catch the thread exception.
+
             BAClistener_insideobject.BACnetListenerClose();
-            
+
             BAClistener_insidethread.Abort();
-            
+            // Wait until the thread terminates
+            BAClistener_insidethread.Join();
+
         }
 
         public BACnetmanager( OurSocket insidesocket, int deviceID, IPEndPoint destination )
@@ -50,7 +62,7 @@ namespace BACnetLibraryNS
 
             // fire up a thread to watch for incoming packets
 
-            BAClistener_insideobject = new BACnetListenerCL(this) { listen_socket = insidesocket };
+            BAClistener_insideobject = new BACnetListenerCL( _apm, this) { listen_socket = insidesocket };
             BAClistener_insidethread = new Thread(new ThreadStart(BAClistener_insideobject.BACnetInsideListener));
             BAClistener_insidethread.Start();
 
@@ -86,12 +98,39 @@ namespace BACnetLibraryNS
 
 #endif
 
-#if BACNET_BROWSER
-                System.Diagnostics.Debug.WriteLine("Sending Who_is");
-                BACnetLibraryNS.BACnetLibraryCL.SendWhoIs( this, true, destination );
-#endif
 
 
+        }
+
+        public void MessageLog(string msg)
+        {
+            DiagnosticLogMessage.Enqueue(  msg+Environment.NewLine);
+        }
+
+
+        public void MessageProtocolError(string msg)
+        {
+            // These messages indicate an error in the protocol..
+            DiagnosticLogMessage.Enqueue("Proto: " + msg + Environment.NewLine);
+        }
+
+
+        public void MessageTodo(string msg)
+        {
+            DiagnosticLogMessage.Enqueue("Todo: " + msg + Environment.NewLine);
+        }
+
+
+        public void NewPanic(string panicmessage)
+        {
+            BACnetLibraryCL.Panic(panicmessage);
+
+            // todo - figure out how to make this form behave...
+
+            //_panicForm.textBoxError.Text = panicmessage;
+            //_panicForm.Show();
+            //_panicForm.PerformLayout();
+            //_panicForm.Update();
         }
 
     }

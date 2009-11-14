@@ -22,5 +22,17 @@ namespace BACnetInteropApp.Properties {
                 return defaultInstance;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("47808")]
+        public int BACnetPort {
+            get {
+                return ((int)(this["BACnetPort"]));
+            }
+            set {
+                this["BACnetPort"] = value;
+            }
+        }
     }
 }
