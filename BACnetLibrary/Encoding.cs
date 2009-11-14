@@ -7,7 +7,68 @@ namespace BACnetLibraryNS
 {
     class BACnetEncoding
     {
-        public static uint BACnetDecode_uint( byte[] buffer, uint offset, out uint value)
+        public static uint DecodeTagContextUint(byte[] buf, ref int offset, int expectedTagValue)
+        {
+            // is the next parameter even a context tag 
+            if ((buf[offset] & 0x08) != 0x08)
+            {
+                // we have an unexpected context tag, sort this out
+                BACnetLibraryCL.Panic("Not a context tag");
+                // todo, now is there a way to avoid creating the object? Have to flag it at least...
+                return 0 ;
+            }
+
+            if ((buf[offset] & 0xf0) != (expectedTagValue << 4))
+            {
+                // we have an unexpected context tag, sort this out
+                BACnetLibraryCL.Panic("Unexpected context tag");
+                // todo, now is there a way to avoid creating the object? Have to flag it at least...
+                return 0;
+            }
+
+            int contextTagSize = buf[offset] & 0x07;
+            int a = 0;
+
+            switch (contextTagSize )
+            {
+                case 1:
+                    a = buf[offset+1];
+                    offset += 2;
+                    return (uint) a;
+
+                case 2:
+                    a = buf[offset + 1] << 8 ;
+                    a |= buf[offset + 2] ;
+                    offset += 3;
+                    return (uint)a;
+
+                case 3:
+                    a = buf[offset + 1] << 16;
+                    a |= buf[offset + 2] << 8;
+                    a |= buf[offset + 3];
+                    offset += 4;
+                    return (uint) a;
+
+                case 4:
+                    a = buf[offset + 1] << 24;
+                    a |= buf[offset + 2] << 16;
+                    a |= buf[offset + 3] << 8 ;
+                    a |= buf[offset + 4] ;
+                    offset += 5;
+                    return (uint)a;
+
+                default:
+                    // we have an unexpected context tag, sort this out
+                    BACnetLibraryCL.Panic("Unbelievable length of object identifier");
+                    // todo, now is there a way to avoid creating the object? Have to flag it at least...
+                    offset += 1;
+                    return 0 ;
+            }
+
+        }
+
+
+        public static int BACnetDecode_uint( byte[] buffer, int offset, out uint value)
         {
             // take a look at the first octet, this will indicate what type of encoded entity (Tag) we need to decode.
             // See: http://www.bacnetwiki.com/wiki/index.php?title=Encoding

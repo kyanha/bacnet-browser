@@ -1,8 +1,7 @@
 ﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <PublishUrlHistory>C:\temp\bitspub\</PublishUrlHistory>
-    <InstallUrlHistory>
-    </InstallUrlHistory>
+    <PublishUrlHistory>ftp://ftp.bac-test.com/Downloads/|ftp://bac-test.com/Downloads/|http://www.bac-test.com/Downloads/|http://www.bac-test/Downloads/|ftp://bac-test.com/Download/</PublishUrlHistory>
+    <InstallUrlHistory>http://www.bac-test.com/Downloads/|http://bac-test.com/Downloads/|http://www.bac-test.com/download.php/</InstallUrlHistory>
     <SupportUrlHistory>
     </SupportUrlHistory>
     <UpdateUrlHistory>
@@ -12,5 +11,8 @@
     <FallbackCulture>en-US</FallbackCulture>
     <VerifyUploadedFiles>false</VerifyUploadedFiles>
     <ProjectView>ProjectFiles</ProjectView>
+    <ErrorReportUrlHistory>
+    </ErrorReportUrlHistory>
+    <EnableSecurityDebugging>false</EnableSecurityDebugging>
   </PropertyGroup>
 </Project>
