@@ -41,38 +41,59 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace BACnetLibrary
+using BACnetLibrary;
+
+namespace BACnetInteropApp
 {
-    public class BACnetNetwork : IComparable<BACnetNetwork>, IEquatable<BACnetNetwork>
+    public class OurApplication
     {
-        public uint NetworkNumber;
-        public bool directlyConnected = false ;
+        AppManager _apm;
+        BACnetManager _bnm;
 
-        //public BACnetNetwork(int netnum)
-        //{
-        //    NetworkNumber = (uint)netnum;
-        //}
-
-        public int CompareTo(BACnetNetwork d)
+        public OurApplication(AppManager apm, BACnetManager bnm)
         {
-            if (this.directlyConnected == true && d.directlyConnected == false) return 1;
-            if (this.directlyConnected == false && d.directlyConnected == true) return -1;
-
-            // sort order is relevant...
-            if (this.NetworkNumber > d.NetworkNumber) return 1;
-
-            if (this.NetworkNumber < d.NetworkNumber) return -1;
-
-            // Networks must be equal
-            return 0;
+            _apm = apm;
+            _bnm = bnm;
         }
 
-        public bool Equals(BACnetNetwork d)
+
+        public void OurApplicationThread()
         {
-            if (this.directlyConnected != d.directlyConnected) return false;
-            if (this.NetworkNumber != d.NetworkNumber ) return false;
-            return true;
+            // order of business
+            //   send who-is-router
+            //   send who-is
+            //   for each discovered device
+            //      get services supported
+            //      get object list
+            //      for each object
+            //          get object type, name, pv etc.
+            // repeat
+
+
+            _apm.MessageProtocolError("Sending Who-Is-Router");
+            BACnetLibrary.BACnetUtil.SendWhoIsRouter(_apm, _bnm, BACnetPacket.ADDRESS_TYPE.GLOBAL_BROADCAST);
+            System.Threading.Thread.Sleep(500);
+
+            _apm.MessageProtocolError("Sending Who-Is");
+            BACnetLibrary.BACnetUtil.SendWhoIs(_apm, _bnm, BACnetPacket.ADDRESS_TYPE.GLOBAL_BROADCAST);
+            System.Threading.Thread.Sleep(1000);
+
+            // going to have to issue a invoke to the UI for this... move to MVC in future. Todo.
+            // BACnetLibrary.Diagnostic.();
+
+// todo            SetupDiagnostics();
+
+            _apm.MessageProtocolError("Scan complete");
         }
 
+
+
+        public void ASCtest()
+        {
+            // there is a potential read property, AI, status flags issue with ASC controls. 
+
+
+
+        }
     }
 }

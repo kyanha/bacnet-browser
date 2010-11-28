@@ -1,34 +1,74 @@
-﻿using System;
+﻿/*
+ * The MIT License
+ * 
+ * Copyright (c) 2010 BACnet Iteroperability Testing Services, Inc.
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ * 
+ *  BACnet Interoperability Testing Services, Inc.
+ *      http://www.bac-test.com
+ * 
+ * BACnet Wiki
+ *      http://www.bacnetwiki.com
+ * 
+ * MIT License - OSI (Open Source Initiative) Approved License
+ *      http://www.opensource.org/licenses/mit-license.php
+ * 
+*/
+
+/*
+ * 28 Nov 10    EKH Releasing under MIT license
+ */
+
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Net;
 using System.Windows.Forms;
-//using System.Diagnostics;
+using System.Diagnostics;
 
-namespace BACnetLibraryNS
+namespace BACnetLibrary
 {
-    public class BACnetmanager
+    public class BACnetManager
     {
         AppManager _apm;
 
-        public BACnetListenerCL BAClistener_insideobject;
+        public BACnetListener BAClistener_insideobject;
         public Thread BAClistener_insidethread;
 
         public List<Device> Devicelist = new List<Device>();
-        public Queue<BACnetPacket> newPacketQueue = new Queue<BACnetPacket>();
+        public myQueue<BACnetPacket> newPacketQueue = new myQueue<BACnetPacket>();
 
-        public Queue<String> DiagnosticLogMessage = new Queue<string>();
+        public myQueue<String> DiagnosticLogMessage = new myQueue<string>();
         public BACnetEnums.BACNET_MODE mode;
         public int ourdeviceID;
 
-        public int BACnetManagerPort;
+        // public int BACnetManagerPort;
 
         public IPHostEntry OurIPAddressEntry;
         public IPAddress[] OurIPAddressList;
 
-        public OurSocket insidesocket;
+        public OurSocket insideSocket;
+
+        public Stopwatch _stopWatch = Stopwatch.StartNew();
 
 
         public void BACnetManagerClose()
@@ -46,11 +86,13 @@ namespace BACnetLibraryNS
 
         }
 
-        public BACnetmanager( OurSocket insidesocket, int deviceID, IPEndPoint destination )
+        public BACnetManager( AppManager apm, OurSocket insidesocket, int deviceID, IPEndPoint destination )
         {
 
+            _apm = apm;
+
             this.ourdeviceID = deviceID;
-            this.insidesocket = insidesocket;
+            this.insideSocket = insidesocket;
 
             // Establish our own IP address, port
 
@@ -62,80 +104,39 @@ namespace BACnetLibraryNS
 
             // fire up a thread to watch for incoming packets
 
-            BAClistener_insideobject = new BACnetListenerCL( _apm, this) { listen_socket = insidesocket };
+            BAClistener_insideobject = new BACnetListener( _apm, this) { listen_socket = insidesocket };
             BAClistener_insidethread = new Thread(new ThreadStart(BAClistener_insideobject.BACnetInsideListener));
             BAClistener_insidethread.Start();
-
-
-#if BACNET_SERVER
-           
-
-                // send one i-am the old way for now
-
-                System.Diagnostics.Debug.WriteLine("Sending I-Am");
-                BACnetLibraryNS.BACnetLibraryCL.SendIAm(this);
-                
-                
-                // create many devices...
-
-                Devicelist.Add(new ServerDevice(BACnetEnums.SERVER_DEVICE_ID + 1, 0));          // todo, until we know better, assume net 0 is the local IP network
-                Devicelist.Add(new ServerDevice(BACnetEnums.SERVER_DEVICE_ID + 2, 0));
-
-                Devicelist.Add(new ServerDevice(BACnetEnums.SERVER_DEVICE_ID + 12, 100));
-                Devicelist.Add(new ServerDevice(BACnetEnums.SERVER_DEVICE_ID + 13, 100));
-
-                Devicelist.Add(new ServerDevice(BACnetEnums.SERVER_DEVICE_ID + 12, 200));
-                Devicelist.Add(new ServerDevice(BACnetEnums.SERVER_DEVICE_ID + 13, 200));
-
-                foreach (ServerDevice D in Devicelist)
-                {
-                    D.Send_IAm( this );
-
-                    // todo, why does this not output anything??
-                    System.Diagnostics.Debug.WriteLine("Sending I-Am" );
-                }
-
-
-#endif
-
-
-
         }
 
         public void MessageLog(string msg)
         {
-            DiagnosticLogMessage.Enqueue(  msg+Environment.NewLine);
+            DiagnosticLogMessage.myEnqueue(  msg+Environment.NewLine);
         }
 
 
         public void MessageProtocolError(string msg)
         {
             // These messages indicate an error in the protocol..
-            DiagnosticLogMessage.Enqueue("Proto: " + msg + Environment.NewLine);
+            DiagnosticLogMessage.myEnqueue("Proto: " + msg + Environment.NewLine);
         }
 
 
         public void MessageTodo(string msg)
         {
-            DiagnosticLogMessage.Enqueue("Todo: " + msg + Environment.NewLine);
+            DiagnosticLogMessage.myEnqueue("Todo: " + msg + Environment.NewLine);
         }
 
 
-        public void NewPanic(string panicmessage)
-        {
-            BACnetLibraryCL.Panic(panicmessage);
-
-            // todo - figure out how to make this form behave...
-
+        //public void NewPanic(string panicmessage)
+        //{
+        //    BACnetLibrary.Panic(panicmessage);
+        //    // todo - figure out how to make this form behave...
             //_panicForm.textBoxError.Text = panicmessage;
             //_panicForm.Show();
             //_panicForm.PerformLayout();
             //_panicForm.Update();
-        }
+        //}
 
     }
-
-#if ( ! BACNET_SERVER ) && ( ! BACNET_ROUTER ) && ( ! BACNET_BROWSER )
-    #error
-#endif
 }

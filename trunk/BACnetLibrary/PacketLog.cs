@@ -50,7 +50,7 @@ namespace BACnetLibraryNS
             this.BACnetPacket = packet;
         }
 
-        public static void TreeViewUpdate(BACnetmanager bnm, TreeView treeViewMessageLog)
+        public static void TreeViewUpdate(BACnetManager bnm, TreeView treeViewMessageLog)
         {
             if (bnm.BACnetMessageLog.Count > 0)
             {
@@ -75,29 +75,13 @@ namespace BACnetLibraryNS
 
                     if (pktlog.sending == true)
                     {
-                        if (pktlog.BACnetPacket != null)
-                        {
-                            ntn.Text = _count.ToString() + " Sent BACnet";
-                            ntn.BackColor = Color.LightPink;
-                        }
-                        else
-                        {
-                            ntn.Text = _count.ToString() + " Sent CRP";
-                            ntn.BackColor = Color.DeepPink;
-                        }
+                        ntn.Text = _count.ToString() + " Sent";
+                        ntn.BackColor = Color.LightPink;
                     }
                     else
                     {
-                        if (pktlog.BACnetPacket != null)
-                        {
-                            ntn.Text = _count.ToString() + " Recd BACnet";
-                            ntn.BackColor = Color.LightGreen ;
-                        }
-                        else
-                        {
-                            ntn.Text = _count.ToString() + " Recd CRP";
-                            ntn.BackColor = Color.Green;
-                        }
+                        ntn.Text = _count.ToString() + " Recd";
+                        ntn.BackColor = Color.LightGreen;
                     }
 
                     if (pktlog.CRPpacket != null)
@@ -141,6 +125,7 @@ namespace BACnetLibraryNS
                                 ntn.Nodes.Add("From: " + pktlog.ipep.ToString());
                             }
                         }
+
                     }
 
                     if (pktlog.BACnetPacket != null)
@@ -158,10 +143,6 @@ namespace BACnetLibraryNS
                             {
                                 ntn.Nodes.Add(pktlog.BACnetPacket.dadr.ToString());
                             }
-                            else
-                            {
-                                ntn.Nodes.Add( "From:   " + pktlog.BACnetPacket.directlyConnectedIPEndPointOfDevice.ToString() ) ;
-                            }
                         }
 
                         if (pktlog.BACnetPacket.npdu.expectingReply)
@@ -174,7 +155,44 @@ namespace BACnetLibraryNS
                             // todo, clean up this flag one day
                             ntn.Nodes.Add("NPDU Function: " + pktlog.BACnetPacket.npdu.function.ToString() ) ;
                         }
+
+
+                        if (pktlog.BACnetPacket.APDUunconfirmedServiceDecoded)
+                        {
+                            switch (pktlog.BACnetPacket.serviceType)
+                            {
+                                case BACnetEnums.BACNET_UNCONFIRMED_SERVICE.SERVICE_UNCONFIRMED_I_AM:
+                                    ntn.Text += " I-Am";
+                                    break;
+                                case BACnetEnums.BACNET_UNCONFIRMED_SERVICE.SERVICE_UNCONFIRMED_WHO_IS:
+                                    ntn.Text += " Who-Is";
+                                    break;
+                                default:
+                                    ntn.Text += " Unknown BACnet unconfirmed service type - fix line 142 PacketLog.cs";
+                                    break;
+                            }
+                        }
+
+                        if (pktlog.BACnetPacket.APDUconfirmedServiceTypeDecoded)
+                        {
+                            switch (pktlog.BACnetPacket.confirmedServiceType )
+                            {
+                                case BACnetEnums.BACNET_CONFIRMED_SERVICE.SERVICE_CONFIRMED_READ_PROPERTY:
+                                    ntn.Text += " Read Property";
+                                    break;
+                                case BACnetEnums.BACNET_CONFIRMED_SERVICE.SERVICE_CONFIRMED_READ_PROP_MULTIPLE:
+                                    ntn.Text += " Read Property Multiple";
+                                    break;
+                                default:
+                                    ntn.Text += " Unknown BACnet confirmed service type - fix line 156 PacketLog.cs";
+                                    break;
+                            }
+                        }
+
+
                     }
+
+
 
                     treeViewMessageLog.Nodes.Add(ntn);
                     treeViewMessageLog.ExpandAll();
@@ -184,7 +202,9 @@ namespace BACnetLibraryNS
                     {
                         treeViewMessageLog.Nodes.RemoveAt(0);
                     }
+
                 }
+
             }
         }
     }

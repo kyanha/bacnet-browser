@@ -105,5 +105,10 @@ namespace BACnetInteropApp
         {
 
         }
+
+        private void linkLabelBACTest_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            System.Diagnostics.Process.Start("http://www.bac-test.com");
+        }
     }
 }
