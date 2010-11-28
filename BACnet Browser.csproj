@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -12,14 +12,18 @@
     <AssemblyName>BACnet Browser</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <ManifestCertificateThumbprint>BBF71D1B57C5A4A7549BBACF0AFFA36136A3D317</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>BC59D3C0F82FC0A53136AEA1C0340C1515DC9BD2</ManifestCertificateThumbprint>
     <ManifestKeyFile>BACnet Browser_1_TemporaryKey.pfx</ManifestKeyFile>
     <GenerateManifests>true</GenerateManifests>
     <SignManifests>true</SignManifests>
     <IsWebBootstrapper>true</IsWebBootstrapper>
     <ApplicationIcon>network_wired.ico</ApplicationIcon>
     <StartupObject>BACnetInteropApp.MainProgram</StartupObject>
-    <PublishUrl>ftp://ftp.bac-test.com/Downloads/</PublishUrl>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation />
+    <PublishUrl>ftp://bac-test.com/Downloads/BACnet Browser/</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Web</InstallFrom>
     <UpdateEnabled>true</UpdateEnabled>
@@ -29,11 +33,14 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <InstallUrl>http://www.bac-test.com/Downloads/</InstallUrl>
+    <InstallUrl>http://www.bac-test.com/Downloads/BACnet Browser/</InstallUrl>
+    <SupportUrl>http://www.bac-test.com</SupportUrl>
+    <ErrorReportUrl>http://www.bac-test.com</ErrorReportUrl>
+    <PublisherName>BACnet Test Suite</PublisherName>
     <MinimumRequiredVersion>1.0.0.7</MinimumRequiredVersion>
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>publish.htm</WebPage>
-    <ApplicationRevision>7</ApplicationRevision>
+    <ApplicationRevision>32</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -80,7 +87,7 @@
     <Compile Include="AboutBox1.Designer.cs">
       <DependentUpon>AboutBox1.cs</DependentUpon>
     </Compile>
-    <Compile Include="Packet.cs" />
+    <Compile Include="OurApplication.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -107,6 +114,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <None Include="BACnet Browser_1_TemporaryKey.pfx" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -126,7 +134,7 @@
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
       <Visible>False</Visible>
-      <ProductName>.NET Framework Client Profile</ProductName>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
     <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
@@ -165,6 +173,14 @@
     <ProjectReference Include="BACnetLibrary\BACnetLibrary.csproj">
       <Project>{8B4EE78E-6C18-4483-A818-2058E210227B}</Project>
       <Name>BACnetLibrary</Name>
+    </ProjectReference>
+    <ProjectReference Include="DiagnosticPrivate\DiagnosticPrivate.csproj">
+      <Project>{A059E716-DBF2-4D95-A3C4-084DCD796F51}</Project>
+      <Name>DiagnosticPrivate</Name>
+    </ProjectReference>
+    <ProjectReference Include="Diagnostics\DiagnosticLib.csproj">
+      <Project>{CA15AB88-2826-409E-9441-4E1B339927CA}</Project>
+      <Name>DiagnosticLib</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

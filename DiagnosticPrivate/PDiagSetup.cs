@@ -40,39 +40,22 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using BACnetLibrary;
+using Diagnostics;
 
-namespace BACnetLibrary
+namespace DiagnosticPrivate
 {
-    public class BACnetNetwork : IComparable<BACnetNetwork>, IEquatable<BACnetNetwork>
+    public class PDiagSetup
     {
-        public uint NetworkNumber;
-        public bool directlyConnected = false ;
-
-        //public BACnetNetwork(int netnum)
-        //{
-        //    NetworkNumber = (uint)netnum;
-        //}
-
-        public int CompareTo(BACnetNetwork d)
+        public static List<Diagnostic> BuildDiagnosticListPrivate(AppManager apm, BACnetManager bnm, myTreeNode deviceNode)
         {
-            if (this.directlyConnected == true && d.directlyConnected == false) return 1;
-            if (this.directlyConnected == false && d.directlyConnected == true) return -1;
+            List<Diagnostic> diagList = new List<Diagnostic>();
 
-            // sort order is relevant...
-            if (this.NetworkNumber > d.NetworkNumber) return 1;
+            // Adding diagnostics 
+            diagList.Add(new PDiag00000example(apm, bnm, deviceNode));
+            // and add more here...
 
-            if (this.NetworkNumber < d.NetworkNumber) return -1;
-
-            // Networks must be equal
-            return 0;
+            return diagList;
         }
-
-        public bool Equals(BACnetNetwork d)
-        {
-            if (this.directlyConnected != d.directlyConnected) return false;
-            if (this.NetworkNumber != d.NetworkNumber ) return false;
-            return true;
-        }
-
     }
 }

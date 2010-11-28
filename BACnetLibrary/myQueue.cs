@@ -43,36 +43,54 @@ using System.Text;
 
 namespace BACnetLibrary
 {
-    public class BACnetNetwork : IComparable<BACnetNetwork>, IEquatable<BACnetNetwork>
-    {
-        public uint NetworkNumber;
-        public bool directlyConnected = false ;
 
-        //public BACnetNetwork(int netnum)
+    // This wrapper provides thread-safe queues for communicating between threads.
+
+    public class myQueue<T> : Queue<T>
+    {
+        public void myEnqueue ( T obed )
+        {
+            lock (this)
+            {
+                base.Enqueue(obed);
+            }
+        }
+
+
+        public T myDequeue()
+        {
+            lock (this)
+            {
+                return base.Dequeue();
+            }
+        }
+
+        public int Count
+        {
+            get
+            {
+                int count;
+                lock (this)
+                {
+                    count = base.Count;
+                }
+                return count;
+            }
+        }
+
+
+        //public T myBlockingDequeue()
         //{
-        //    NetworkNumber = (uint)netnum;
+        //    while ( true )
+        //    {
+        //        lock (this)
+        //        {
+        //            if (base.Count > 0) return base.Dequeue();
+        //        }
+        //        sleep
+        //    }
         //}
 
-        public int CompareTo(BACnetNetwork d)
-        {
-            if (this.directlyConnected == true && d.directlyConnected == false) return 1;
-            if (this.directlyConnected == false && d.directlyConnected == true) return -1;
-
-            // sort order is relevant...
-            if (this.NetworkNumber > d.NetworkNumber) return 1;
-
-            if (this.NetworkNumber < d.NetworkNumber) return -1;
-
-            // Networks must be equal
-            return 0;
-        }
-
-        public bool Equals(BACnetNetwork d)
-        {
-            if (this.directlyConnected != d.directlyConnected) return false;
-            if (this.NetworkNumber != d.NetworkNumber ) return false;
-            return true;
-        }
 
     }
 }

@@ -43,35 +43,27 @@ using System.Text;
 
 namespace BACnetLibrary
 {
-    public class BACnetNetwork : IComparable<BACnetNetwork>, IEquatable<BACnetNetwork>
+    public class VendorID
     {
-        public uint NetworkNumber;
-        public bool directlyConnected = false ;
+        public uint vendorID ;
 
-        //public BACnetNetwork(int netnum)
-        //{
-        //    NetworkNumber = (uint)netnum;
-        //}
-
-        public int CompareTo(BACnetNetwork d)
+        public VendorID( uint vid )
         {
-            if (this.directlyConnected == true && d.directlyConnected == false) return 1;
-            if (this.directlyConnected == false && d.directlyConnected == true) return -1;
-
-            // sort order is relevant...
-            if (this.NetworkNumber > d.NetworkNumber) return 1;
-
-            if (this.NetworkNumber < d.NetworkNumber) return -1;
-
-            // Networks must be equal
-            return 0;
+            vendorID = vid;
         }
 
-        public bool Equals(BACnetNetwork d)
+        public override String ToString()
         {
-            if (this.directlyConnected != d.directlyConnected) return false;
-            if (this.NetworkNumber != d.NetworkNumber ) return false;
-            return true;
+            switch (vendorID)
+            {
+                case 5: return vendorID.ToString() + " Johnson Controls, Inc.";
+                case 162: return vendorID.ToString() + " ASI Controls, Inc.";
+                case 245: return vendorID.ToString() + " Contemporary Controls, Inc.";
+                case 260: return vendorID.ToString() + " SourceForge BACnet Stack.";
+                case 343: return vendorID.ToString() + " BACnet Interoperability Testing Services, Inc.";
+                case 462: return vendorID.ToString() + " ConnectEx, Inc.";
+                default: return vendorID.ToString() + " Unknown Vendor.";
+            }
         }
 
     }

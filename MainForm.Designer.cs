@@ -42,7 +42,6 @@
             this.Quit = new System.Windows.Forms.Button();
             this.whoisrouterbtn = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
-            this.button5 = new System.Windows.Forms.Button();
             this.buttonReadPropertyTest = new System.Windows.Forms.Button();
             this.timerHeartbeatWhoIs = new System.Windows.Forms.Timer(this.components);
             this.buttonSendReadProperty = new System.Windows.Forms.Button();
@@ -50,8 +49,12 @@
             this.mycontextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.whoIsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.readPropertyObjectListToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.tabControlLogs = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.buttonWhoIsLongMAC = new System.Windows.Forms.Button();
+            this.buttonSendIAm = new System.Windows.Forms.Button();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
@@ -59,39 +62,60 @@
             this.radioButtonBAC0 = new System.Windows.Forms.RadioButton();
             this.radioButtonFDT = new System.Windows.Forms.RadioButton();
             this.tabPage3 = new System.Windows.Forms.TabPage();
-            this.textBoxDiagnosticLog = new System.Windows.Forms.TextBox();
-            this.labelLog = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.textBoxDeviceInstance = new System.Windows.Forms.TextBox();
+            this.tabPageErrors = new System.Windows.Forms.TabPage();
+            this.textBoxPanics = new System.Windows.Forms.TextBox();
+            this.tabPageProtocol = new System.Windows.Forms.TabPage();
+            this.buttonClearProtocol = new System.Windows.Forms.Button();
+            this.textBoxProtocol = new System.Windows.Forms.TextBox();
+            this.buttonPrepNewTests = new System.Windows.Forms.Button();
+            this.buttonStartTests = new System.Windows.Forms.Button();
             this.buttonClear = new System.Windows.Forms.Button();
-            this.buttonMinimize = new System.Windows.Forms.Button();
             this.contextMenuStripForRouter = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
             this.readRouterTableToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.contextMenuStripForObject = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.readPresentValueToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.readObjectNameToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.backgroundWorkerDiagnosticManager = new System.ComponentModel.BackgroundWorker();
+            this.contextMenuStripForDiagnostic = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.runDiagnosticToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.diagnosticDescriptionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.cancelToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.buttonDiscover = new System.Windows.Forms.Button();
             this.toolStrip1.SuspendLayout();
             this.mycontextMenuStrip.SuspendLayout();
-            this.tabControl1.SuspendLayout();
+            this.tabControlLogs.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.tabPage3.SuspendLayout();
+            this.tabPageErrors.SuspendLayout();
+            this.tabPageProtocol.SuspendLayout();
             this.contextMenuStripForRouter.SuspendLayout();
+            this.contextMenuStripForObject.SuspendLayout();
+            this.contextMenuStripForDiagnostic.SuspendLayout();
             this.SuspendLayout();
             // 
             // TreeViewDevices
             // 
+            this.TreeViewDevices.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)));
             this.TreeViewDevices.Font = new System.Drawing.Font("Courier New", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.TreeViewDevices.HideSelection = false;
             this.TreeViewDevices.Location = new System.Drawing.Point(12, 45);
             this.TreeViewDevices.Name = "TreeViewDevices";
-            this.TreeViewDevices.Size = new System.Drawing.Size(364, 400);
+            this.TreeViewDevices.Size = new System.Drawing.Size(556, 470);
             this.TreeViewDevices.TabIndex = 2;
             this.TreeViewDevices.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.BACnetInternetworkTreeView_NodeMouseClick);
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(402, 214);
+            this.button2.Location = new System.Drawing.Point(589, 202);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 23);
+            this.button2.Size = new System.Drawing.Size(73, 23);
             this.button2.TabIndex = 3;
             this.button2.Text = "Expand All";
             this.button2.UseVisualStyleBackColor = true;
@@ -99,9 +123,9 @@
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(402, 243);
+            this.button3.Location = new System.Drawing.Point(589, 231);
             this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(75, 23);
+            this.button3.Size = new System.Drawing.Size(73, 23);
             this.button3.TabIndex = 4;
             this.button3.Text = "Collapse All";
             this.button3.UseVisualStyleBackColor = true;
@@ -117,7 +141,7 @@
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
-            this.toolStrip1.Size = new System.Drawing.Size(944, 25);
+            this.toolStrip1.Size = new System.Drawing.Size(1064, 25);
             this.toolStrip1.TabIndex = 6;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -143,7 +167,7 @@
             // 
             // buttonSendWhoIs
             // 
-            this.buttonSendWhoIs.Location = new System.Drawing.Point(402, 57);
+            this.buttonSendWhoIs.Location = new System.Drawing.Point(191, 89);
             this.buttonSendWhoIs.Name = "buttonSendWhoIs";
             this.buttonSendWhoIs.Size = new System.Drawing.Size(127, 23);
             this.buttonSendWhoIs.TabIndex = 10;
@@ -158,9 +182,9 @@
             // 
             // Quit
             // 
-            this.Quit.Location = new System.Drawing.Point(402, 423);
+            this.Quit.Location = new System.Drawing.Point(589, 411);
             this.Quit.Name = "Quit";
-            this.Quit.Size = new System.Drawing.Size(75, 23);
+            this.Quit.Size = new System.Drawing.Size(73, 23);
             this.Quit.TabIndex = 11;
             this.Quit.Text = "Quit";
             this.Quit.UseVisualStyleBackColor = true;
@@ -168,7 +192,7 @@
             // 
             // whoisrouterbtn
             // 
-            this.whoisrouterbtn.Location = new System.Drawing.Point(191, 36);
+            this.whoisrouterbtn.Location = new System.Drawing.Point(191, 119);
             this.whoisrouterbtn.Name = "whoisrouterbtn";
             this.whoisrouterbtn.Size = new System.Drawing.Size(127, 23);
             this.whoisrouterbtn.TabIndex = 12;
@@ -178,24 +202,13 @@
             // 
             // button4
             // 
-            this.button4.Location = new System.Drawing.Point(191, 65);
+            this.button4.Location = new System.Drawing.Point(191, 148);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(127, 23);
             this.button4.TabIndex = 13;
             this.button4.Text = "Query Routing Tables";
             this.button4.UseVisualStyleBackColor = true;
-            this.button4.Visible = false;
             this.button4.Click += new System.EventHandler(this.Initialize_Routing_Table_Click);
-            // 
-            // button5
-            // 
-            this.button5.Location = new System.Drawing.Point(43, 35);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(127, 23);
-            this.button5.TabIndex = 14;
-            this.button5.Text = "Send Short Who-Is ";
-            this.button5.UseVisualStyleBackColor = true;
-            this.button5.Click += new System.EventHandler(this.button5_Click);
             // 
             // buttonReadPropertyTest
             // 
@@ -211,12 +224,13 @@
             // 
             // buttonSendReadProperty
             // 
-            this.buttonSendReadProperty.Location = new System.Drawing.Point(43, 171);
+            this.buttonSendReadProperty.Location = new System.Drawing.Point(191, 176);
             this.buttonSendReadProperty.Name = "buttonSendReadProperty";
             this.buttonSendReadProperty.Size = new System.Drawing.Size(127, 23);
             this.buttonSendReadProperty.TabIndex = 15;
             this.buttonSendReadProperty.Text = "Send ReadProperty";
             this.buttonSendReadProperty.UseVisualStyleBackColor = true;
+            this.buttonSendReadProperty.Visible = false;
             this.buttonSendReadProperty.Click += new System.EventHandler(this.buttonSendReadProperty_Click);
             // 
             // checkBox1
@@ -237,7 +251,6 @@
             this.readPropertyObjectListToolStripMenuItem});
             this.mycontextMenuStrip.Name = "contextMenuStrip1";
             this.mycontextMenuStrip.Size = new System.Drawing.Size(217, 48);
-            this.mycontextMenuStrip.Opening += new System.ComponentModel.CancelEventHandler(this.mycontextMenuStrip_Opening);
             // 
             // whoIsToolStripMenuItem
             // 
@@ -253,30 +266,79 @@
             this.readPropertyObjectListToolStripMenuItem.Text = "Read Property - Object List";
             this.readPropertyObjectListToolStripMenuItem.Click += new System.EventHandler(this.readPropertyObjectListToolStripMenuItem_Click);
             // 
-            // tabControl1
+            // tabControlLogs
             // 
-            this.tabControl1.Controls.Add(this.tabPage1);
-            this.tabControl1.Controls.Add(this.tabPage2);
-            this.tabControl1.Controls.Add(this.tabPage3);
-            this.tabControl1.Location = new System.Drawing.Point(556, 46);
-            this.tabControl1.Name = "tabControl1";
-            this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(349, 262);
-            this.tabControl1.TabIndex = 17;
+            this.tabControlLogs.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.tabControlLogs.Controls.Add(this.tabPage1);
+            this.tabControlLogs.Controls.Add(this.tabPage2);
+            this.tabControlLogs.Controls.Add(this.tabPage3);
+            this.tabControlLogs.Controls.Add(this.tabPageErrors);
+            this.tabControlLogs.Controls.Add(this.tabPageProtocol);
+            this.tabControlLogs.Location = new System.Drawing.Point(695, 45);
+            this.tabControlLogs.Name = "tabControlLogs";
+            this.tabControlLogs.SelectedIndex = 0;
+            this.tabControlLogs.Size = new System.Drawing.Size(334, 470);
+            this.tabControlLogs.TabIndex = 17;
             // 
             // tabPage1
             // 
-            this.tabPage1.Controls.Add(this.button5);
+            this.tabPage1.Controls.Add(this.buttonWhoIsLongMAC);
+            this.tabPage1.Controls.Add(this.buttonSendIAm);
+            this.tabPage1.Controls.Add(this.label2);
+            this.tabPage1.Controls.Add(this.label1);
             this.tabPage1.Controls.Add(this.button4);
             this.tabPage1.Controls.Add(this.whoisrouterbtn);
             this.tabPage1.Controls.Add(this.buttonSendReadProperty);
+            this.tabPage1.Controls.Add(this.buttonSendWhoIs);
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(341, 236);
+            this.tabPage1.Size = new System.Drawing.Size(326, 444);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Test Buttons";
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // buttonWhoIsLongMAC
+            // 
+            this.buttonWhoIsLongMAC.Location = new System.Drawing.Point(191, 235);
+            this.buttonWhoIsLongMAC.Name = "buttonWhoIsLongMAC";
+            this.buttonWhoIsLongMAC.Size = new System.Drawing.Size(127, 23);
+            this.buttonWhoIsLongMAC.TabIndex = 24;
+            this.buttonWhoIsLongMAC.Text = "Who-Is with long MAC";
+            this.buttonWhoIsLongMAC.UseVisualStyleBackColor = true;
+            this.buttonWhoIsLongMAC.Click += new System.EventHandler(this.buttonWhoIsLongMAC_Click);
+            // 
+            // buttonSendIAm
+            // 
+            this.buttonSendIAm.Location = new System.Drawing.Point(191, 206);
+            this.buttonSendIAm.Name = "buttonSendIAm";
+            this.buttonSendIAm.Size = new System.Drawing.Size(127, 23);
+            this.buttonSendIAm.TabIndex = 23;
+            this.buttonSendIAm.Text = "Send I-Am";
+            this.buttonSendIAm.UseVisualStyleBackColor = true;
+            this.buttonSendIAm.Click += new System.EventHandler(this.buttonSendIAm_Click);
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.ForeColor = System.Drawing.Color.Red;
+            this.label2.Location = new System.Drawing.Point(68, 55);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(182, 13);
+            this.label2.TabIndex = 20;
+            this.label2.Text = "unless you know what you are doing.";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.ForeColor = System.Drawing.Color.Red;
+            this.label1.Location = new System.Drawing.Point(68, 33);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(182, 13);
+            this.label1.TabIndex = 19;
+            this.label1.Text = "Diagnostic buttons. Do not use these";
             // 
             // tabPage2
             // 
@@ -284,7 +346,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(341, 236);
+            this.tabPage2.Size = new System.Drawing.Size(326, 444);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Connection";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -343,51 +405,119 @@
             // 
             // tabPage3
             // 
+            this.tabPage3.Controls.Add(this.label3);
+            this.tabPage3.Controls.Add(this.textBoxDeviceInstance);
             this.tabPage3.Controls.Add(this.checkBox1);
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(341, 236);
+            this.tabPage3.Size = new System.Drawing.Size(326, 444);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Settings";
             this.tabPage3.UseVisualStyleBackColor = true;
             // 
-            // textBoxDiagnosticLog
+            // label3
             // 
-            this.textBoxDiagnosticLog.Location = new System.Drawing.Point(556, 340);
-            this.textBoxDiagnosticLog.Multiline = true;
-            this.textBoxDiagnosticLog.Name = "textBoxDiagnosticLog";
-            this.textBoxDiagnosticLog.Size = new System.Drawing.Size(345, 316);
-            this.textBoxDiagnosticLog.TabIndex = 15;
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(36, 84);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(156, 13);
+            this.label3.TabIndex = 18;
+            this.label3.Text = "Device Instance for this Device";
             // 
-            // labelLog
+            // textBoxDeviceInstance
             // 
-            this.labelLog.AutoSize = true;
-            this.labelLog.Location = new System.Drawing.Point(557, 324);
-            this.labelLog.Name = "labelLog";
-            this.labelLog.Size = new System.Drawing.Size(25, 13);
-            this.labelLog.TabIndex = 16;
-            this.labelLog.Text = "Log";
+            this.textBoxDeviceInstance.Location = new System.Drawing.Point(36, 103);
+            this.textBoxDeviceInstance.Name = "textBoxDeviceInstance";
+            this.textBoxDeviceInstance.Size = new System.Drawing.Size(100, 20);
+            this.textBoxDeviceInstance.TabIndex = 17;
+            this.textBoxDeviceInstance.Text = "12346";
+            // 
+            // tabPageErrors
+            // 
+            this.tabPageErrors.Controls.Add(this.textBoxPanics);
+            this.tabPageErrors.Location = new System.Drawing.Point(4, 22);
+            this.tabPageErrors.Name = "tabPageErrors";
+            this.tabPageErrors.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageErrors.Size = new System.Drawing.Size(326, 444);
+            this.tabPageErrors.TabIndex = 4;
+            this.tabPageErrors.Text = "Errors";
+            this.tabPageErrors.UseVisualStyleBackColor = true;
+            // 
+            // textBoxPanics
+            // 
+            this.textBoxPanics.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBoxPanics.Location = new System.Drawing.Point(0, 0);
+            this.textBoxPanics.Multiline = true;
+            this.textBoxPanics.Name = "textBoxPanics";
+            this.textBoxPanics.Size = new System.Drawing.Size(326, 388);
+            this.textBoxPanics.TabIndex = 0;
+            // 
+            // tabPageProtocol
+            // 
+            this.tabPageProtocol.Controls.Add(this.buttonClearProtocol);
+            this.tabPageProtocol.Controls.Add(this.textBoxProtocol);
+            this.tabPageProtocol.Location = new System.Drawing.Point(4, 22);
+            this.tabPageProtocol.Name = "tabPageProtocol";
+            this.tabPageProtocol.Size = new System.Drawing.Size(326, 444);
+            this.tabPageProtocol.TabIndex = 3;
+            this.tabPageProtocol.Text = "Protocol";
+            this.tabPageProtocol.UseVisualStyleBackColor = true;
+            // 
+            // buttonClearProtocol
+            // 
+            this.buttonClearProtocol.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
+            this.buttonClearProtocol.Location = new System.Drawing.Point(129, 408);
+            this.buttonClearProtocol.Name = "buttonClearProtocol";
+            this.buttonClearProtocol.Size = new System.Drawing.Size(75, 23);
+            this.buttonClearProtocol.TabIndex = 1;
+            this.buttonClearProtocol.Text = "Clear";
+            this.buttonClearProtocol.UseVisualStyleBackColor = true;
+            this.buttonClearProtocol.Click += new System.EventHandler(this.buttonClearProtocol_Click);
+            // 
+            // textBoxProtocol
+            // 
+            this.textBoxProtocol.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBoxProtocol.Location = new System.Drawing.Point(0, 0);
+            this.textBoxProtocol.Multiline = true;
+            this.textBoxProtocol.Name = "textBoxProtocol";
+            this.textBoxProtocol.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.textBoxProtocol.Size = new System.Drawing.Size(326, 388);
+            this.textBoxProtocol.TabIndex = 0;
+            // 
+            // buttonPrepNewTests
+            // 
+            this.buttonPrepNewTests.Location = new System.Drawing.Point(589, 104);
+            this.buttonPrepNewTests.Name = "buttonPrepNewTests";
+            this.buttonPrepNewTests.Size = new System.Drawing.Size(89, 23);
+            this.buttonPrepNewTests.TabIndex = 25;
+            this.buttonPrepNewTests.Text = "Prep Tests";
+            this.buttonPrepNewTests.UseVisualStyleBackColor = true;
+            this.buttonPrepNewTests.Click += new System.EventHandler(this.buttonPrepNewTests_Click);
+            // 
+            // buttonStartTests
+            // 
+            this.buttonStartTests.Location = new System.Drawing.Point(589, 132);
+            this.buttonStartTests.Name = "buttonStartTests";
+            this.buttonStartTests.Size = new System.Drawing.Size(89, 23);
+            this.buttonStartTests.TabIndex = 16;
+            this.buttonStartTests.Text = "Start All Tests";
+            this.buttonStartTests.UseVisualStyleBackColor = true;
+            this.buttonStartTests.Click += new System.EventHandler(this.buttonAllTests_Click);
             // 
             // buttonClear
             // 
-            this.buttonClear.Location = new System.Drawing.Point(402, 273);
+            this.buttonClear.Location = new System.Drawing.Point(589, 261);
             this.buttonClear.Name = "buttonClear";
-            this.buttonClear.Size = new System.Drawing.Size(75, 23);
+            this.buttonClear.Size = new System.Drawing.Size(73, 23);
             this.buttonClear.TabIndex = 18;
             this.buttonClear.Text = "Clear";
             this.buttonClear.UseVisualStyleBackColor = true;
             this.buttonClear.Click += new System.EventHandler(this.buttonClear_Click);
-            // 
-            // buttonMinimize
-            // 
-            this.buttonMinimize.Location = new System.Drawing.Point(402, 394);
-            this.buttonMinimize.Name = "buttonMinimize";
-            this.buttonMinimize.Size = new System.Drawing.Size(75, 23);
-            this.buttonMinimize.TabIndex = 19;
-            this.buttonMinimize.Text = "Minimize";
-            this.buttonMinimize.UseVisualStyleBackColor = true;
-            this.buttonMinimize.Click += new System.EventHandler(this.buttonMinimize_Click);
             // 
             // contextMenuStripForRouter
             // 
@@ -419,22 +549,85 @@
             this.readRouterTableToolStripMenuItem.Text = "Read Router Table";
             this.readRouterTableToolStripMenuItem.Click += new System.EventHandler(this.readRouterTableToolStripMenuItem_Click);
             // 
+            // contextMenuStripForObject
+            // 
+            this.contextMenuStripForObject.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.readPresentValueToolStripMenuItem,
+            this.readObjectNameToolStripMenuItem});
+            this.contextMenuStripForObject.Name = "contextMenuStripForObject";
+            this.contextMenuStripForObject.Size = new System.Drawing.Size(180, 48);
+            // 
+            // readPresentValueToolStripMenuItem
+            // 
+            this.readPresentValueToolStripMenuItem.Name = "readPresentValueToolStripMenuItem";
+            this.readPresentValueToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
+            this.readPresentValueToolStripMenuItem.Text = "Read Present Value";
+            // 
+            // readObjectNameToolStripMenuItem
+            // 
+            this.readObjectNameToolStripMenuItem.Name = "readObjectNameToolStripMenuItem";
+            this.readObjectNameToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
+            this.readObjectNameToolStripMenuItem.Text = "Read Object Name";
+            // 
+            // backgroundWorkerDiagnosticManager
+            // 
+            this.backgroundWorkerDiagnosticManager.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorkerDiagnosticManager_DoWork);
+            this.backgroundWorkerDiagnosticManager.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorkerDiagnosticManager_RunWorkerCompleted);
+            // 
+            // contextMenuStripForDiagnostic
+            // 
+            this.contextMenuStripForDiagnostic.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.runDiagnosticToolStripMenuItem,
+            this.diagnosticDescriptionToolStripMenuItem,
+            this.cancelToolStripMenuItem});
+            this.contextMenuStripForDiagnostic.Name = "contextMenuStripForDiagnostic";
+            this.contextMenuStripForDiagnostic.Size = new System.Drawing.Size(204, 70);
+            this.contextMenuStripForDiagnostic.Click += new System.EventHandler(this.contextMenuStripForDiagnostic_Click);
+            this.contextMenuStripForDiagnostic.MouseClick += new System.Windows.Forms.MouseEventHandler(this.contextMenuStripForDiagnostic_MouseClick);
+            // 
+            // runDiagnosticToolStripMenuItem
+            // 
+            this.runDiagnosticToolStripMenuItem.Name = "runDiagnosticToolStripMenuItem";
+            this.runDiagnosticToolStripMenuItem.Size = new System.Drawing.Size(190, 22);
+            this.runDiagnosticToolStripMenuItem.Text = "Run Diagnostic";
+            // 
+            // diagnosticDescriptionToolStripMenuItem
+            // 
+            this.diagnosticDescriptionToolStripMenuItem.Name = "diagnosticDescriptionToolStripMenuItem";
+            this.diagnosticDescriptionToolStripMenuItem.Size = new System.Drawing.Size(203, 22);
+            this.diagnosticDescriptionToolStripMenuItem.Text = "Description of Diagnostic";
+            // 
+            // cancelToolStripMenuItem
+            // 
+            this.cancelToolStripMenuItem.Name = "cancelToolStripMenuItem";
+            this.cancelToolStripMenuItem.Size = new System.Drawing.Size(190, 22);
+            this.cancelToolStripMenuItem.Text = "Cancel";
+            // 
+            // buttonDiscover
+            // 
+            this.buttonDiscover.Location = new System.Drawing.Point(589, 75);
+            this.buttonDiscover.Name = "buttonDiscover";
+            this.buttonDiscover.Size = new System.Drawing.Size(89, 23);
+            this.buttonDiscover.TabIndex = 19;
+            this.buttonDiscover.Text = "Discover";
+            this.buttonDiscover.UseVisualStyleBackColor = true;
+            this.buttonDiscover.Click += new System.EventHandler(this.buttonStartScan_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(944, 668);
-            this.Controls.Add(this.buttonMinimize);
-            this.Controls.Add(this.buttonClear);
-            this.Controls.Add(this.buttonSendWhoIs);
-            this.Controls.Add(this.labelLog);
-            this.Controls.Add(this.tabControl1);
+            this.ClientSize = new System.Drawing.Size(1064, 536);
+            this.Controls.Add(this.buttonPrepNewTests);
+            this.Controls.Add(this.buttonDiscover);
             this.Controls.Add(this.toolStrip1);
-            this.Controls.Add(this.Quit);
             this.Controls.Add(this.TreeViewDevices);
-            this.Controls.Add(this.textBoxDiagnosticLog);
+            this.Controls.Add(this.tabControlLogs);
+            this.Controls.Add(this.buttonClear);
+            this.Controls.Add(this.Quit);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button3);
+            this.Controls.Add(this.buttonStartTests);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MinimumSize = new System.Drawing.Size(522, 465);
             this.Name = "MainForm";
@@ -444,14 +637,21 @@
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
             this.mycontextMenuStrip.ResumeLayout(false);
-            this.tabControl1.ResumeLayout(false);
+            this.tabControlLogs.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
+            this.tabPage1.PerformLayout();
             this.tabPage2.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.tabPage3.ResumeLayout(false);
             this.tabPage3.PerformLayout();
+            this.tabPageErrors.ResumeLayout(false);
+            this.tabPageErrors.PerformLayout();
+            this.tabPageProtocol.ResumeLayout(false);
+            this.tabPageProtocol.PerformLayout();
             this.contextMenuStripForRouter.ResumeLayout(false);
+            this.contextMenuStripForObject.ResumeLayout(false);
+            this.contextMenuStripForDiagnostic.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -472,14 +672,13 @@
         private System.Windows.Forms.Button whoisrouterbtn;
         private System.Windows.Forms.Button button4;
         private System.Windows.Forms.Button buttonReadPropertyTest;
-        private System.Windows.Forms.Button button5;
         private System.Windows.Forms.Timer timerHeartbeatWhoIs;
         private System.Windows.Forms.Button buttonSendReadProperty;
         private System.Windows.Forms.CheckBox checkBox1;
         private System.Windows.Forms.ContextMenuStrip mycontextMenuStrip;
         private System.Windows.Forms.ToolStripMenuItem whoIsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem readPropertyObjectListToolStripMenuItem;
-        private System.Windows.Forms.TabControl tabControl1;
+        private System.Windows.Forms.TabControl tabControlLogs;
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.RadioButton radioButtonBAC1;
@@ -487,15 +686,34 @@
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.ComboBox comboBox1;
         private System.Windows.Forms.RadioButton radioButtonFDT;
-        private System.Windows.Forms.TextBox textBoxDiagnosticLog;
-        private System.Windows.Forms.Label labelLog;
         private System.Windows.Forms.TabPage tabPage3;
         private System.Windows.Forms.Button buttonClear;
-        private System.Windows.Forms.Button buttonMinimize;
         private System.Windows.Forms.ContextMenuStrip contextMenuStripForRouter;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem2;
         private System.Windows.Forms.ToolStripMenuItem readRouterTableToolStripMenuItem;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStripForObject;
+        private System.Windows.Forms.ToolStripMenuItem readPresentValueToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem readObjectNameToolStripMenuItem;
+        private System.Windows.Forms.Button buttonStartTests;
+        private System.ComponentModel.BackgroundWorker backgroundWorkerDiagnosticManager;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStripForDiagnostic;
+        private System.Windows.Forms.TabPage tabPageProtocol;
+        private System.Windows.Forms.TextBox textBoxProtocol;
+        private System.Windows.Forms.Button buttonClearProtocol;
+        private System.Windows.Forms.Button buttonDiscover;
+        private System.Windows.Forms.ToolStripMenuItem runDiagnosticToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem cancelToolStripMenuItem;
+        internal System.Windows.Forms.Label label2;
+        internal System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Button buttonSendIAm;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.TextBox textBoxDeviceInstance;
+        private System.Windows.Forms.Button buttonWhoIsLongMAC;
+        private System.Windows.Forms.TabPage tabPageErrors;
+        private System.Windows.Forms.TextBox textBoxPanics;
+        private System.Windows.Forms.Button buttonPrepNewTests;
+        private System.Windows.Forms.ToolStripMenuItem diagnosticDescriptionToolStripMenuItem;
     }
 }
 

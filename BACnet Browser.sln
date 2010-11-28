@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 10.00
-# Visual Studio 2008
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BACnet Browser", "BACnet Browser.csproj", "{D4EB6E37-C3D0-4083-9CCE-9CB35F58C0AB}"
 	ProjectSection(ProjectDependencies) = postProject
 		{8B4EE78E-6C18-4483-A818-2058E210227B} = {8B4EE78E-6C18-4483-A818-2058E210227B}
@@ -8,7 +8,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BACnet Browser", "BACnet Br
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BACnetLibrary", "BACnetLibrary\BACnetLibrary.csproj", "{8B4EE78E-6C18-4483-A818-2058E210227B}"
 EndProject
-Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "BACnet Browser Setup", "BACnet Browser Setup\BACnet Browser Setup.vdproj", "{4FF0649B-14B6-45C4-98EA-ED2692BB4D6C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiagnosticLib", "Diagnostics\DiagnosticLib.csproj", "{CA15AB88-2826-409E-9441-4E1B339927CA}"
+	ProjectSection(ProjectDependencies) = postProject
+		{A059E716-DBF2-4D95-A3C4-084DCD796F51} = {A059E716-DBF2-4D95-A3C4-084DCD796F51}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiagnosticPrivate", "DiagnosticPrivate\DiagnosticPrivate.csproj", "{A059E716-DBF2-4D95-A3C4-084DCD796F51}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -24,8 +29,14 @@ Global
 		{8B4EE78E-6C18-4483-A818-2058E210227B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8B4EE78E-6C18-4483-A818-2058E210227B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8B4EE78E-6C18-4483-A818-2058E210227B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4FF0649B-14B6-45C4-98EA-ED2692BB4D6C}.Debug|Any CPU.ActiveCfg = Debug
-		{4FF0649B-14B6-45C4-98EA-ED2692BB4D6C}.Release|Any CPU.ActiveCfg = Release
+		{CA15AB88-2826-409E-9441-4E1B339927CA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CA15AB88-2826-409E-9441-4E1B339927CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CA15AB88-2826-409E-9441-4E1B339927CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CA15AB88-2826-409E-9441-4E1B339927CA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A059E716-DBF2-4D95-A3C4-084DCD796F51}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A059E716-DBF2-4D95-A3C4-084DCD796F51}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A059E716-DBF2-4D95-A3C4-084DCD796F51}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A059E716-DBF2-4D95-A3C4-084DCD796F51}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

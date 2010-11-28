@@ -1,8 +1,46 @@
+/*
+ * The MIT License
+ * 
+ * Copyright (c) 2010 BACnet Iteroperability Testing Services, Inc.
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ * 
+ *  BACnet Interoperability Testing Services, Inc.
+ *      http://www.bac-test.com
+ * 
+ * BACnet Wiki
+ *      http://www.bacnetwiki.com
+ * 
+ * MIT License - OSI (Open Source Initiative) Approved License
+ *      http://www.opensource.org/licenses/mit-license.php
+ * 
+*/
+
+/*
+ * 28 Nov 10    EKH Releasing under MIT license
+ */
+
+
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace BACnetLibraryNS
+namespace BACnetLibrary
 {
     public class BACnetEnums
     {
@@ -43,6 +81,8 @@ namespace BACnetLibraryNS
         {
             NetworkNumber = 33,
             LastAccessTime,
+            BACnetObject,
+            Device,
         }
 
 
@@ -144,7 +184,7 @@ namespace BACnetLibraryNS
             PROP_PROGRAM_STATE = 92,
             PROP_PROPORTIONAL_CONSTANT = 93,
             PROP_PROPORTIONAL_CONSTANT_UNITS = 94,
-            PROP_PROTOCOL_CONFORMANCE_CLASS = 95,       /* deleted in version 1 revision 2 */
+            PROP_PROTOCOL_CONFORMANCE_CLASS = 95, 
             PROP_PROTOCOL_OBJECT_TYPES_SUPPORTED = 96,
             PROP_PROTOCOL_SERVICES_SUPPORTED = 97,
             PROP_PROTOCOL_VERSION = 98,
@@ -182,8 +222,6 @@ namespace BACnetLibraryNS
             PROP_EVENT_TIME_STAMPS = 130,
             PROP_LOG_BUFFER = 131,
             PROP_LOG_DEVICE_OBJECT = 132,
-            /* The enable property is renamed from log-enable in
-               Addendum b to ANSI/ASHRAE 135-2004(135b-2) */
             PROP_ENABLE = 133,
             PROP_LOG_INTERVAL = 134,
             PROP_MAXIMUM_VALUE = 135,
@@ -265,26 +303,20 @@ namespace BACnetLibraryNS
             PROP_STRUCTURED_OBJECT_LIST = 209,
             PROP_SUBORDINATE_ANNOTATIONS = 210,
             PROP_SUBORDINATE_LIST = 211,
-            /* enumerations 212-225 are used in Addendum e to ANSI/ASHRAE 135-2004 */
             PROP_ACTUAL_SHED_LEVEL = 212,
             PROP_DUTY_WINDOW = 213,
             PROP_EXPECTED_SHED_LEVEL = 214,
             PROP_FULL_DUTY_BASELINE = 215,
-            /* enumerations 216-217 are used in Addendum i to ANSI/ASHRAE 135-2004 */
             PROP_BLINK_PRIORITY_THRESHOLD = 216,
             PROP_BLINK_TIME = 217,
-            /* enumerations 212-225 are used in Addendum e to ANSI/ASHRAE 135-2004 */
             PROP_REQUESTED_SHED_LEVEL = 218,
             PROP_SHED_DURATION = 219,
             PROP_SHED_LEVEL_DESCRIPTIONS = 220,
             PROP_SHED_LEVELS = 221,
             PROP_STATE_DESCRIPTION = 222,
-            /* enumerations 223-225 are used in Addendum i to ANSI/ASHRAE 135-2004 */
             PROP_FADE_TIME = 223,
             PROP_LIGHTING_COMMAND = 224,
             PROP_LIGHTING_COMMAND_PRIORITY = 225,
-            /* enumerations 226-235 are used in Addendum f to ANSI/ASHRAE 135-2004 */
-            /* enumerations 236-243 are used in Addendum i to ANSI/ASHRAE 135-2004 */
             PROP_OFF_DELAY = 236,
             PROP_ON_DELAY = 237,
             PROP_POWER = 238,
@@ -293,13 +325,8 @@ namespace BACnetLibraryNS
             PROP_RAMP_RATE = 241,
             PROP_STEP_INCREMENT = 242,
             PROP_SYSTEM_FAILURE_VALUE = 243
-                /* The special property identifiers all, optional, and required  */
-                /* are reserved for use in the ReadPropertyConditional and */
-                /* ReadPropertyMultiple services or services not defined in this standard. */
-                /* Enumerated values 0-511 are reserved for definition by ASHRAE.  */
-                /* Enumerated values 512-4194303 may be used by others subject to the  */
-                /* procedures and constraints described in Clause 23.  */
         }
+
         public const int MAX_BACNET_PROPERTY_ID = 4194303;
 
         public enum BACNET_ACTION 
@@ -310,11 +337,11 @@ namespace BACnetLibraryNS
 
         public enum  BACNET_BINARY_PV
         {
-            MIN_BINARY_PV = 0,  /* for validating incoming values */
+            MIN_BINARY_PV = 0, 
             BINARY_INACTIVE = 0,
             BINARY_ACTIVE = 1,
-            MAX_BINARY_PV = 1,  /* for validating incoming values */
-            BINARY_NULL = 2     /* our homemade way of storing this info */
+            MAX_BINARY_PV = 1, 
+            BINARY_NULL = 2   
         }
 
         public enum BACNET_ACTION_VALUE_TYPE 
@@ -345,14 +372,11 @@ namespace BACnetLibraryNS
 
         public enum BACNET_ENGINEERING_UNITS 
         {
-            /* Acceleration */
             UNITS_METERS_PER_SECOND_PER_SECOND = 166,
-            /* Area */
             UNITS_SQUARE_METERS = 0,
             UNITS_SQUARE_CENTIMETERS = 116,
             UNITS_SQUARE_FEET = 1,
             UNITS_SQUARE_INCHES = 115,
-            /* Currency */
             UNITS_CURRENCY1 = 105,
             UNITS_CURRENCY2 = 106,
             UNITS_CURRENCY3 = 107,
@@ -363,7 +387,6 @@ namespace BACnetLibraryNS
             UNITS_CURRENCY8 = 112,
             UNITS_CURRENCY9 = 113,
             UNITS_CURRENCY10 = 114,
-            /* Electrical */
             UNITS_MILLIAMPERES = 2,
             UNITS_AMPERES = 3,
             UNITS_AMPERES_PER_METER = 167,
@@ -376,7 +399,7 @@ namespace BACnetLibraryNS
             UNITS_MILLIOHMS = 145,
             UNITS_KILOHMS = 122,
             UNITS_MEGOHMS = 123,
-            UNITS_SIEMENS = 173,        /* 1 mho equals 1 siemens */
+            UNITS_SIEMENS = 173,
             UNITS_SIEMENS_PER_METER = 174,
             UNITS_TESLAS = 175,
             UNITS_VOLTS = 5,
@@ -407,36 +430,29 @@ namespace BACnetLibraryNS
             UNITS_MEGA_BTUS = 148,
             UNITS_THERMS = 21,
             UNITS_TON_HOURS = 22,
-            /* Enthalpy */
             UNITS_JOULES_PER_KILOGRAM_DRY_AIR = 23,
             UNITS_KILOJOULES_PER_KILOGRAM_DRY_AIR = 149,
             UNITS_MEGAJOULES_PER_KILOGRAM_DRY_AIR = 150,
             UNITS_BTUS_PER_POUND_DRY_AIR = 24,
             UNITS_BTUS_PER_POUND = 117,
-            /* Entropy */
             UNITS_JOULES_PER_DEGREE_KELVIN = 127,
             UNITS_KILOJOULES_PER_DEGREE_KELVIN = 151,
             UNITS_MEGAJOULES_PER_DEGREE_KELVIN = 152,
             UNITS_JOULES_PER_KILOGRAM_DEGREE_KELVIN = 128,
-            /* Force */
             UNITS_NEWTON = 153,
-            /* Frequency */
             UNITS_CYCLES_PER_HOUR = 25,
             UNITS_CYCLES_PER_MINUTE = 26,
             UNITS_HERTZ = 27,
             UNITS_KILOHERTZ = 129,
             UNITS_MEGAHERTZ = 130,
             UNITS_PER_HOUR = 131,
-            /* Humidity */
             UNITS_GRAMS_OF_WATER_PER_KILOGRAM_DRY_AIR = 28,
             UNITS_PERCENT_RELATIVE_HUMIDITY = 29,
-            /* Length */
             UNITS_MILLIMETERS = 30,
             UNITS_CENTIMETERS = 118,
             UNITS_METERS = 31,
             UNITS_INCHES = 32,
             UNITS_FEET = 33,
-            /* Light */
             UNITS_CANDELAS = 179,
             UNITS_CANDELAS_PER_SQUARE_METER = 180,
             UNITS_WATTS_PER_SQUARE_FOOT = 34,
@@ -444,11 +460,9 @@ namespace BACnetLibraryNS
             UNITS_LUMENS = 36,
             UNITS_LUXES = 37,
             UNITS_FOOT_CANDLES = 38,
-            /* Mass */
             UNITS_KILOGRAMS = 39,
             UNITS_POUNDS_MASS = 40,
             UNITS_TONS = 41,
-            /* Mass Flow */
             UNITS_GRAMS_PER_SECOND = 154,
             UNITS_GRAMS_PER_MINUTE = 155,
             UNITS_KILOGRAMS_PER_SECOND = 42,
@@ -458,7 +472,6 @@ namespace BACnetLibraryNS
             UNITS_POUNDS_MASS_PER_MINUTE = 45,
             UNITS_POUNDS_MASS_PER_HOUR = 46,
             UNITS_TONS_PER_HOUR = 156,
-            /* Power */
             UNITS_MILLIWATTS = 132,
             UNITS_WATTS = 47,
             UNITS_KILOWATTS = 48,
@@ -467,7 +480,6 @@ namespace BACnetLibraryNS
             UNITS_KILO_BTUS_PER_HOUR = 157,
             UNITS_HORSEPOWER = 51,
             UNITS_TONS_REFRIGERATION = 52,
-            /* Pressure */
             UNITS_PASCALS = 53,
             UNITS_HECTOPASCALS = 133,
             UNITS_KILOPASCALS = 54,
@@ -479,7 +491,6 @@ namespace BACnetLibraryNS
             UNITS_MILLIMETERS_OF_MERCURY = 59,
             UNITS_CENTIMETERS_OF_MERCURY = 60,
             UNITS_INCHES_OF_MERCURY = 61,
-            /* Temperature */
             UNITS_DEGREES_CELSIUS = 62,
             UNITS_DEGREES_KELVIN = 63,
             UNITS_DEGREES_KELVIN_PER_HOUR = 181,
@@ -489,7 +500,6 @@ namespace BACnetLibraryNS
             UNITS_DEGREE_DAYS_FAHRENHEIT = 66,
             UNITS_DELTA_DEGREES_FAHRENHEIT = 120,
             UNITS_DELTA_DEGREES_KELVIN = 121,
-            /* Time */
             UNITS_YEARS = 67,
             UNITS_MONTHS = 68,
             UNITS_WEEKS = 69,
@@ -499,9 +509,7 @@ namespace BACnetLibraryNS
             UNITS_SECONDS = 73,
             UNITS_HUNDREDTHS_SECONDS = 158,
             UNITS_MILLISECONDS = 159,
-            /* Torque */
             UNITS_NEWTON_METERS = 160,
-            /* Velocity */
             UNITS_MILLIMETERS_PER_SECOND = 161,
             UNITS_MILLIMETERS_PER_MINUTE = 162,
             UNITS_METERS_PER_SECOND = 74,
@@ -511,13 +519,11 @@ namespace BACnetLibraryNS
             UNITS_FEET_PER_SECOND = 76,
             UNITS_FEET_PER_MINUTE = 77,
             UNITS_MILES_PER_HOUR = 78,
-            /* Volume */
             UNITS_CUBIC_FEET = 79,
             UNITS_CUBIC_METERS = 80,
             UNITS_IMPERIAL_GALLONS = 81,
             UNITS_LITERS = 82,
             UNITS_US_GALLONS = 83,
-            /* Volumetric Flow */
             UNITS_CUBIC_FEET_PER_SECOND = 142,
             UNITS_CUBIC_FEET_PER_MINUTE = 84,
             UNITS_CUBIC_METERS_PER_SECOND = 85,
@@ -528,7 +534,6 @@ namespace BACnetLibraryNS
             UNITS_LITERS_PER_MINUTE = 88,
             UNITS_LITERS_PER_HOUR = 136,
             UNITS_US_GALLONS_PER_MINUTE = 89,
-            /* Other */
             UNITS_DEGREES_ANGULAR = 90,
             UNITS_DEGREES_CELSIUS_PER_HOUR = 91,
             UNITS_DEGREES_CELSIUS_PER_MINUTE = 92,
@@ -558,10 +563,6 @@ namespace BACnetLibraryNS
             UNITS_SQUARE_METERS_PER_NEWTON = 185,
             UNITS_WATTS_PER_METER_PER_DEGREE_KELVIN = 189,
             UNITS_WATTS_PER_SQUARE_METER_DEGREE_KELVIN = 141
-                /* Enumerated values 0-255 are reserved for definition by ASHRAE. */
-                /* Enumerated values 256-65535 may be used by others subject to */
-                /* the procedures and constraints described in Clause 23. */
-                /* The last enumeration used in this version is 189. */
         }
 
         public enum BACNET_POLARITY 
@@ -597,9 +598,6 @@ namespace BACnetLibraryNS
             PROGRAM_ERROR_INTERNAL = 2,
             PROGRAM_ERROR_PROGRAM = 3,
             PROGRAM_ERROR_OTHER = 4
-                /* Enumerated values 0-63 are reserved for definition by ASHRAE.  */
-                /* Enumerated values 64-65535 may be used by others subject to  */
-                /* the procedures and constraints described in Clause 23. */
         }
 
         public enum BACNET_RELIABILITY
@@ -617,9 +615,6 @@ namespace BACnetLibraryNS
             RELIABILITY_CONFIGURATION_ERROR = 10,
             RELIABILITY_COMMUNICATION_FAILURE = 12,
             RELIABILITY_TRIPPED = 13
-                /* Enumerated values 0-63 are reserved for definition by ASHRAE.  */
-                /* Enumerated values 64-65535 may be used by others subject to  */
-                /* the procedures and constraints described in Clause 23. */
         }
 
         public enum BACNET_EVENT_TYPE {
@@ -629,19 +624,10 @@ namespace BACnetLibraryNS
             EVENT_COMMAND_FAILURE = 3,
             EVENT_FLOATING_LIMIT = 4,
             EVENT_OUT_OF_RANGE = 5,
-            /*  complex-event-type        (6), -- see comment below */
-            /*  event-buffer-ready   (7), -- context tag 7 is deprecated */
             EVENT_CHANGE_OF_LIFE_SAFETY = 8,
             EVENT_EXTENDED = 9,
             EVENT_BUFFER_READY = 10,
             EVENT_UNSIGNED_RANGE = 11
-                /* Enumerated values 0-63 are reserved for definition by ASHRAE.  */
-                /* Enumerated values 64-65535 may be used by others subject to  */
-                /* the procedures and constraints described in Clause 23.  */
-                /* It is expected that these enumerated values will correspond to  */
-                /* the use of the complex-event-type CHOICE [6] of the  */
-                /* BACnetNotificationParameters production. */
-                /* The last enumeration used in this version is 11. */
         }
 
         public enum BACNET_FILE_ACCESS_METHOD 
@@ -670,9 +656,6 @@ namespace BACnetLibraryNS
             LIFE_SAFETY_MODE_AUTOMATIC_RELEASE_DISABLED = 13,
             LIFE_SAFETY_MODE_DEFAULT = 14,
             MAX_LIFE_SAFETY_MODE = 14
-                /* Enumerated values 0-255 are reserved for definition by ASHRAE.  */
-                /* Enumerated values 256-65535 may be used by others subject to  */
-                /* procedures and constraints described in Clause 23. */
         }
 
         public enum BACNET_LIFE_SAFETY_OPERATION 
@@ -687,9 +670,6 @@ namespace BACnetLibraryNS
             LIFE_SAFETY_OP_UNSILENCE = 7,
             LIFE_SAFETY_OP_UNSILENCE_AUDIBLE = 8,
             LIFE_SAFETY_OP_UNSILENCE_VISUAL = 9
-                /* Enumerated values 0-63 are reserved for definition by ASHRAE.  */
-                /* Enumerated values 64-65535 may be used by others subject to  */
-                /* procedures and constraints described in Clause 23. */
         }
 
         public enum BACNET_LIFE_SAFETY_STATE 
@@ -720,9 +700,6 @@ namespace BACnetLibraryNS
             LIFE_SAFETY_STATE_SUPERVISORY = 22,
             LIFE_SAFETY_STATE_TEST_SUPERVISORY = 23,
             MAX_LIFE_SAFETY_STATE = 0
-                /* Enumerated values 0-255 are reserved for definition by ASHRAE.  */
-                /* Enumerated values 256-65535 may be used by others subject to  */
-                /* procedures and constraints described in Clause 23. */
         }
 
         public enum BACNET_SILENCED_STATE
@@ -731,9 +708,6 @@ namespace BACnetLibraryNS
             SILENCED_STATE_AUDIBLE_SILENCED = 1,
             SILENCED_STATE_VISIBLE_SILENCED = 2,
             SILENCED_STATE_ALL_SILENCED = 3
-                /* Enumerated values 0-63 are reserved for definition by ASHRAE. */
-                /* Enumerated values 64-65535 may be used by others subject to */
-                /* procedures and constraints described in Clause 23. */
         }
 
         public enum BACNET_MAINTENANCE 
@@ -742,9 +716,6 @@ namespace BACnetLibraryNS
             MAINTENANCE_PERIODIC_TEST = 1,
             AINTENANCE_NEED_SERVICE_OPERATIONAL = 2,
             MAINTENANCE_NEED_SERVICE_INOPERATIVE = 3
-                /* Enumerated values 0-255 are reserved for definition by ASHRAE.  */
-                /* Enumerated values 256-65535 may be used by others subject to  */
-                /* procedures and constraints described in Clause 23. */
         }
 
         public enum BACNET_NOTIFY_TYPE 
@@ -786,12 +757,8 @@ namespace BACnetLibraryNS
             OBJECT_TREND_LOG_MULTIPLE = 27,
             OBJECT_LOAD_CONTROL = 28,
             OBJECT_STRUCTURED_VIEW = 29,
-            /* what is object type 30? */
             OBJECT_LIGHTING_OUTPUT = 31,
-            /* Enumerated values 0-127 are reserved for definition by ASHRAE. */
-            /* Enumerated values 128-1023 may be used by others subject to  */
-            /* the procedures and constraints described in Clause 23. */
-            MAX_ASHRAE_OBJECT_TYPE = 32,        /* used for bit string loop */
+            MAX_ASHRAE_OBJECT_TYPE = 32,
             MAX_BACNET_OBJECT_TYPE = 1023
         }
 
@@ -807,15 +774,10 @@ namespace BACnetLibraryNS
         public enum BACNET_VT_CLASS
         {
             VT_CLASS_DEFAULT = 0,
-            VT_CLASS_ANSI_X34 = 1,      /* real name is ANSI X3.64 */
+            VT_CLASS_ANSI_X34 = 1,    
             VT_CLASS_DEC_VT52 = 2,
             VT_CLASS_DEC_VT100 = 3,
             VT_CLASS_DEC_VT220 = 4,
-            VT_CLASS_HP_700_94 = 5,     /* real name is HP 700/94 */
-            VT_CLASS_IBM_3130 = 6
-                /* Enumerated values 0-63 are reserved for definition by ASHRAE.  */
-                /* Enumerated values 64-65535 may be used by others subject to  */
-                /* the procedures and constraints described in Clause 23. */
         }
 
         public enum BACNET_CHARACTER_STRING_ENCODING {
@@ -867,7 +829,6 @@ namespace BACnetLibraryNS
 
         public enum BACNET_CONFIRMED_SERVICE
         {
-            /* Alarm and Event Services */
             SERVICE_CONFIRMED_ACKNOWLEDGE_ALARM = 0,
             SERVICE_CONFIRMED_COV_NOTIFICATION = 1,
             SERVICE_CONFIRMED_EVENT_NOTIFICATION = 2,
@@ -877,10 +838,8 @@ namespace BACnetLibraryNS
             SERVICE_CONFIRMED_SUBSCRIBE_COV = 5,
             SERVICE_CONFIRMED_SUBSCRIBE_COV_PROPERTY = 28,
             SERVICE_CONFIRMED_LIFE_SAFETY_OPERATION = 27,
-            /* File Access Services */
             SERVICE_CONFIRMED_ATOMIC_READ_FILE = 6,
             SERVICE_CONFIRMED_ATOMIC_WRITE_FILE = 7,
-            /* Object Access Services */
             SERVICE_CONFIRMED_ADD_LIST_ELEMENT = 8,
             SERVICE_CONFIRMED_REMOVE_LIST_ELEMENT = 9,
             SERVICE_CONFIRMED_CREATE_OBJECT = 10,
@@ -891,23 +850,15 @@ namespace BACnetLibraryNS
             SERVICE_CONFIRMED_READ_RANGE = 26,
             SERVICE_CONFIRMED_WRITE_PROPERTY = 15,
             SERVICE_CONFIRMED_WRITE_PROP_MULTIPLE = 16,
-            /* Remote Device Management Services */
             SERVICE_CONFIRMED_DEVICE_COMMUNICATION_CONTROL = 17,
             SERVICE_CONFIRMED_PRIVATE_TRANSFER = 18,
             SERVICE_CONFIRMED_TEXT_MESSAGE = 19,
             SERVICE_CONFIRMED_REINITIALIZE_DEVICE = 20,
-            /* Virtual Terminal Services */
             SERVICE_CONFIRMED_VT_OPEN = 21,
             SERVICE_CONFIRMED_VT_CLOSE = 22,
             SERVICE_CONFIRMED_VT_DATA = 23,
-            /* Security Services */
             SERVICE_CONFIRMED_AUTHENTICATE = 24,
             SERVICE_CONFIRMED_REQUEST_KEY = 25,
-            /* Services added after 1995 */
-            /* readRange (26) see Object Access Services */
-            /* lifeSafetyOperation (27) see Alarm and Event Services */
-            /* subscribeCOVProperty (28) see Alarm and Event Services */
-            /* getEventInformation (29) see Alarm and Event Services */
             MAX_BACNET_CONFIRMED_SERVICE = 30
         }
 
@@ -923,18 +874,11 @@ namespace BACnetLibraryNS
             SERVICE_UNCONFIRMED_WHO_HAS = 7,
             SERVICE_UNCONFIRMED_WHO_IS = 8,
             SERVICE_UNCONFIRMED_UTC_TIME_SYNCHRONIZATION = 9,
-            /* Other services to be added as they are defined. */
-            /* All choice values in this production are reserved */
-            /* for definition by ASHRAE. */
-            /* Proprietary extensions are made by using the */
-            /* UnconfirmedPrivateTransfer service. See Clause 23. */
             MAX_BACNET_UNCONFIRMED_SERVICE = 10
         }
 
-        /* Bit String Enumerations */
         public enum BACNET_SERVICES_SUPPORTED
         {
-            /* Alarm and Event Services */
             SERVICE_SUPPORTED_ACKNOWLEDGE_ALARM = 0,
             SERVICE_SUPPORTED_CONFIRMED_COV_NOTIFICATION = 1,
             SERVICE_SUPPORTED_CONFIRMED_EVENT_NOTIFICATION = 2,
@@ -944,10 +888,8 @@ namespace BACnetLibraryNS
             SERVICE_SUPPORTED_SUBSCRIBE_COV = 5,
             SERVICE_SUPPORTED_SUBSCRIBE_COV_PROPERTY = 38,
             SERVICE_SUPPORTED_LIFE_SAFETY_OPERATION = 37,
-            /* File Access Services */
             SERVICE_SUPPORTED_ATOMIC_READ_FILE = 6,
             SERVICE_SUPPORTED_ATOMIC_WRITE_FILE = 7,
-            /* Object Access Services */
             SERVICE_SUPPORTED_ADD_LIST_ELEMENT = 8,
             SERVICE_SUPPORTED_REMOVE_LIST_ELEMENT = 9,
             SERVICE_SUPPORTED_CREATE_OBJECT = 10,
@@ -958,16 +900,13 @@ namespace BACnetLibraryNS
             SERVICE_SUPPORTED_READ_RANGE = 35,
             SERVICE_SUPPORTED_WRITE_PROPERTY = 15,
             SERVICE_SUPPORTED_WRITE_PROP_MULTIPLE = 16,
-            /* Remote Device Management Services */
             SERVICE_SUPPORTED_DEVICE_COMMUNICATION_CONTROL = 17,
             SERVICE_SUPPORTED_PRIVATE_TRANSFER = 18,
             SERVICE_SUPPORTED_TEXT_MESSAGE = 19,
             SERVICE_SUPPORTED_REINITIALIZE_DEVICE = 20,
-            /* Virtual Terminal Services */
             SERVICE_SUPPORTED_VT_OPEN = 21,
             SERVICE_SUPPORTED_VT_CLOSE = 22,
             SERVICE_SUPPORTED_VT_DATA = 23,
-            /* Security Services */
             SERVICE_SUPPORTED_AUTHENTICATE = 24,
             SERVICE_SUPPORTED_REQUEST_KEY = 25,
             SERVICE_SUPPORTED_I_AM = 26,
@@ -980,9 +919,6 @@ namespace BACnetLibraryNS
             SERVICE_SUPPORTED_UTC_TIME_SYNCHRONIZATION = 36,
             SERVICE_SUPPORTED_WHO_HAS = 33,
             SERVICE_SUPPORTED_WHO_IS = 34,
-            /* Other services to be added as they are defined. */
-            /* All values in this production are reserved */
-            /* for definition by ASHRAE. */
             MAX_BACNET_SERVICES_SUPPORTED = 40
         }
 
@@ -1074,9 +1010,6 @@ namespace BACnetLibraryNS
         } 
 
         /*Network Layer Message Type */
-        /*If Bit 7 of the control octet described in 6.2.2 is 1, */
-        /* a message type octet shall be present as shown in Figure 6-1. */
-        /* The following message types are indicated: */
 
         // http://www.bacnetwiki.com/wiki/index.php?title=Network_Layer_Message_Type
 
@@ -1092,8 +1025,6 @@ namespace BACnetLibraryNS
             NETWORK_MESSAGE_INIT_RT_TABLE_ACK = 7,
             NETWORK_MESSAGE_ESTABLISH_CONNECTION_TO_NETWORK = 8,
             NETWORK_MESSAGE_DISCONNECT_CONNECTION_TO_NETWORK = 9,
-            /* X'0A' to X'7F': Reserved for use by ASHRAE, */
-            /* X'80' to X'FF': Available for vendor proprietary messages */
             NETWORK_MESSAGE_INVALID = 0x100
         }
 
@@ -1117,9 +1048,6 @@ namespace BACnetLibraryNS
             ABORT_REASON_INVALID_APDU_IN_THIS_STATE = 2,
             ABORT_REASON_PREEMPTED_BY_HIGHER_PRIORITY_TASK = 3,
             ABORT_REASON_SEGMENTATION_NOT_SUPPORTED = 4,
-            /* Enumerated values 0-63 are reserved for definition by ASHRAE. */
-            /* Enumerated values 64-65535 may be used by others subject to */
-            /* the procedures and constraints described in Clause 23. */
             MAX_BACNET_ABORT_REASON = 5,
             FIRST_PROPRIETARY_ABORT_REASON = 64,
             LAST_PROPRIETARY_ABORT_REASON = 65535
@@ -1137,9 +1065,6 @@ namespace BACnetLibraryNS
             REJECT_REASON_TOO_MANY_ARGUMENTS = 7,
             REJECT_REASON_UNDEFINED_ENUMERATION = 8,
             REJECT_REASON_UNRECOGNIZED_SERVICE = 9,
-            /* Enumerated values 0-63 are reserved for definition by ASHRAE. */
-            /* Enumerated values 64-65535 may be used by others subject to */
-            /* the procedures and constraints described in Clause 23. */
             MAX_BACNET_REJECT_REASON = 10,
             FIRST_PROPRIETARY_REJECT_REASON = 64,
             LAST_PROPRIETARY_REJECT_REASON = 65535
@@ -1154,29 +1079,17 @@ namespace BACnetLibraryNS
             ERROR_CLASS_SECURITY = 4,
             ERROR_CLASS_SERVICES = 5,
             ERROR_CLASS_VT = 6,
-            /* Enumerated values 0-63 are reserved for definition by ASHRAE. */
-            /* Enumerated values 64-65535 may be used by others subject to */
-            /* the procedures and constraints described in Clause 23. */
             MAX_BACNET_ERROR_CLASS = 7,
             FIRST_PROPRIETARY_ERROR_CLASS = 64,
             LAST_PROPRIETARY_ERROR_CLASS = 65535
         } 
 
-        /* These are sorted in the order given in
-           Clause 18. ERROR, REJECT AND ABORT CODES
-           The Class and Code pairings are required
-           to be used in accordance with Clause 18. */
         public enum BACNET_ERROR_CODE 
         {
-            /* valid for all classes */
             ERROR_CODE_OTHER = 0,
-
-            /* Error Class - Device */
             ERROR_CODE_DEVICE_BUSY = 3,
             ERROR_CODE_CONFIGURATION_IN_PROGRESS = 2,
             ERROR_CODE_OPERATIONAL_PROBLEM = 25,
-
-            /* Error Class - Object */
             ERROR_CODE_DYNAMIC_CREATION_NOT_SUPPORTED = 4,
             ERROR_CODE_NO_OBJECTS_OF_SPECIFIED_TYPE = 17,
             ERROR_CODE_OBJECT_DELETION_NOT_PERMITTED = 23,
@@ -1184,8 +1097,6 @@ namespace BACnetLibraryNS
             ERROR_CODE_READ_ACCESS_DENIED = 27,
             ERROR_CODE_UNKNOWN_OBJECT = 31,
             ERROR_CODE_UNSUPPORTED_OBJECT_TYPE = 36,
-
-            /* Error Class - Property */
             ERROR_CODE_CHARACTER_SET_NOT_SUPPORTED = 41,
             ERROR_CODE_DATATYPE_NOT_SUPPORTED = 47,
             ERROR_CODE_INCONSISTENT_SELECTION_CRITERION = 8,
@@ -1194,28 +1105,19 @@ namespace BACnetLibraryNS
             ERROR_CODE_NOT_COV_PROPERTY = 44,
             ERROR_CODE_OPTIONAL_FUNCTIONALITY_NOT_SUPPORTED = 45,
             ERROR_CODE_PROPERTY_IS_NOT_AN_ARRAY = 50,
-            /* ERROR_CODE_READ_ACCESS_DENIED = 27, */
             ERROR_CODE_UNKNOWN_PROPERTY = 32,
             ERROR_CODE_VALUE_OUT_OF_RANGE = 37,
             ERROR_CODE_WRITE_ACCESS_DENIED = 40,
-
-            /* Error Class - Resources */
             ERROR_CODE_NO_SPACE_FOR_OBJECT = 18,
             ERROR_CODE_NO_SPACE_TO_ADD_LIST_ELEMENT = 19,
             ERROR_CODE_NO_SPACE_TO_WRITE_PROPERTY = 20,
-
-            /* Error Class - Security */
             ERROR_CODE_AUTHENTICATION_FAILED = 1,
-            /* ERROR_CODE_CHARACTER_SET_NOT_SUPPORTED = 41, */
             ERROR_CODE_INCOMPATIBLE_SECURITY_LEVELS = 6,
             ERROR_CODE_INVALID_OPERATOR_NAME = 12,
             ERROR_CODE_KEY_GENERATION_ERROR = 15,
             ERROR_CODE_PASSWORD_FAILURE = 26,
             ERROR_CODE_SECURITY_NOT_SUPPORTED = 28,
             ERROR_CODE_TIMEOUT = 30,
-
-            /* Error Class - Services */
-            /* ERROR_CODE_CHARACTER_SET_NOT_SUPPORTED = 41, */
             ERROR_CODE_COV_SUBSCRIPTION_FAILED = 43,
             ERROR_CODE_DUPLICATE_NAME = 48,
             ERROR_CODE_DUPLICATE_OBJECT_ID = 49,
@@ -1227,23 +1129,14 @@ namespace BACnetLibraryNS
             ERROR_CODE_INVALID_PARAMETER_DATA_TYPE = 13,
             ERROR_CODE_INVALID_TIME_STAMP = 14,
             ERROR_CODE_MISSING_REQUIRED_PARAMETER = 16,
-            /* ERROR_CODE_OPTIONAL_FUNCTIONALITY_NOT_SUPPORTED = 45, */
             ERROR_CODE_PROPERTY_IS_NOT_A_LIST = 22,
             ERROR_CODE_SERVICE_REQUEST_DENIED = 29,
-
-            /* Error Class - VT */
             ERROR_CODE_UNKNOWN_VT_CLASS = 34,
             ERROR_CODE_UNKNOWN_VT_SESSION = 35,
             ERROR_CODE_NO_VT_SESSIONS_AVAILABLE = 21,
             ERROR_CODE_VT_SESSION_ALREADY_CLOSED = 38,
             ERROR_CODE_VT_SESSION_TERMINATION_FAILURE = 39,
-
-            /* unused */
             ERROR_CODE_RESERVED1 = 33,
-            /* Enumerated values 0-255 are reserved for definition by ASHRAE. */
-            /* Enumerated values 256-65535 may be used by others subject to */
-            /* the procedures and constraints described in Clause 23. */
-            /* The last enumeration used in this version is 50. */
             MAX_BACNET_ERROR_CODE = 51,
             FIRST_PROPRIETARY_ERROR_CODE = 256,
             LAST_PROPRIETARY_ERROR_CODE = 65535
@@ -1304,8 +1197,6 @@ namespace BACnetLibraryNS
             BACNET_LIGHTS_RELINQUISH = 14
         } 
 
-        /* NOTE: BACNET_DAYS_OF_WEEK is different than BACNET_WEEKDAY */
-        /* 0=Monday-6=Sunday */
         public enum BACNET_DAYS_OF_WEEK 
         {
             BACNET_DAYS_OF_WEEK_MONDAY = 0,
