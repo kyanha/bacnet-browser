@@ -1,7 +1,8 @@
-﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <PublishUrlHistory>ftp://ftp.bac-test.com/Downloads/|ftp://bac-test.com/Downloads/|http://www.bac-test.com/Downloads/|http://www.bac-test/Downloads/|ftp://bac-test.com/Download/</PublishUrlHistory>
-    <InstallUrlHistory>http://www.bac-test.com/Downloads/|http://bac-test.com/Downloads/|http://www.bac-test.com/download.php/</InstallUrlHistory>
+    <PublishUrlHistory>ftp://yoursite.com/downloads/|ftp://bac-test.com/Downloads/BACnet Browser for SourceForge/|ftp://bac-test.com/Downloads/BACnet Browser/|ftp://ftp.bac-test.com/Downloads/|ftp://bac-test.com/Downloads/</PublishUrlHistory>
+    <InstallUrlHistory>http://www.yoursite.com/downloads/|http://www.bac-test.com/Downloads/BACnet Browser/|http://www.bac-test.com/Downloads/|http://bac-test.com/Downloads/|http://www.bac-test.com/download.php/</InstallUrlHistory>
     <SupportUrlHistory>
     </SupportUrlHistory>
     <UpdateUrlHistory>

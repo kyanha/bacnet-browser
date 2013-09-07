@@ -6,12 +6,12 @@ using System.Resources;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("BACnet Browser")]
+[assembly: AssemblyTitle("BACnet Browser on SourceForge")]
 [assembly: AssemblyDescription("BACnet Browser - Used for testing BACnet Devices")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("BACnet Interoperability Testing Services, Inc.")]
-[assembly: AssemblyProduct("BACnet Browser")]
-[assembly: AssemblyCopyright("(c) 2010 BACnet Interoperability Testing Services, Inc.")]
+[assembly: AssemblyProduct("BACnet Browser on SourceForge")]
+[assembly: AssemblyCopyright("(c) 2009-2013 BACnet Interoperability Testing Services, Inc.")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -33,6 +33,6 @@ using System.Resources;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("0.0.0.25")]
-[assembly: AssemblyFileVersion("0.0.0.26")]
+[assembly: AssemblyVersion("1.2.0.27")]
+[assembly: AssemblyFileVersion("1.2.0.27")]
 [assembly: NeutralResourcesLanguageAttribute("")]
