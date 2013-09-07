@@ -115,7 +115,7 @@ namespace BACnetLibrary
                     //packet.srcDevice.adr = new ADR ( packet.directlyConnectedIPEndPointOfDevice ) ;
 
                     // Make an undecoded copy of the packet for the application layer. This is to ease debugging in the asynch application layer.
-                    BACnetPacket appPkt = (BACnetPacket) packet.Clone();
+                    BACnetPacket appPkt = (BACnetPacket)packet.Clone();
 
                     // packet.buffer = received;
                     packet.DecodeBACnet();
@@ -162,9 +162,14 @@ namespace BACnetLibrary
                 {
                     pe.DumpException(_apm);
                 }
-                catch (Exception efe)
+                catch (SocketException)
                 {
                     // need to catch the inevitable exception when this blocking call is cancelled by the shutdown code
+                    // ignore, they will happen on shutdown
+                }
+                catch (Exception efe)
+                {
+                    // unexpected exception, let's log.
                     Console.WriteLine(efe);
                     _apm.MessagePanic(efe.ToString());
                 }

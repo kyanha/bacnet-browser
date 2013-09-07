@@ -9,13 +9,13 @@
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>BACnetInteropApp</RootNamespace>
-    <AssemblyName>BACnet Browser</AssemblyName>
+    <AssemblyName>BACnet Browser on SourceForge</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ManifestCertificateThumbprint>BC59D3C0F82FC0A53136AEA1C0340C1515DC9BD2</ManifestCertificateThumbprint>
     <ManifestKeyFile>BACnet Browser_1_TemporaryKey.pfx</ManifestKeyFile>
-    <GenerateManifests>true</GenerateManifests>
-    <SignManifests>true</SignManifests>
+    <GenerateManifests>false</GenerateManifests>
+    <SignManifests>false</SignManifests>
     <IsWebBootstrapper>true</IsWebBootstrapper>
     <ApplicationIcon>network_wired.ico</ApplicationIcon>
     <StartupObject>BACnetInteropApp.MainProgram</StartupObject>
@@ -23,7 +23,7 @@
     </FileUpgradeFlags>
     <OldToolsVersion>3.5</OldToolsVersion>
     <UpgradeBackupLocation />
-    <PublishUrl>ftp://bac-test.com/Downloads/BACnet Browser/</PublishUrl>
+    <PublishUrl>ftp://yoursite.com/downloads/</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Web</InstallFrom>
     <UpdateEnabled>true</UpdateEnabled>
@@ -33,7 +33,7 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <InstallUrl>http://www.bac-test.com/Downloads/BACnet Browser/</InstallUrl>
+    <InstallUrl>http://www.yoursite.com/downloads/</InstallUrl>
     <SupportUrl>http://www.bac-test.com</SupportUrl>
     <ErrorReportUrl>http://www.bac-test.com</ErrorReportUrl>
     <PublisherName>BACnet Test Suite</PublisherName>
@@ -63,6 +63,12 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <TargetZone>LocalIntranet</TargetZone>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core">
@@ -87,6 +93,12 @@
     <Compile Include="AboutBox1.Designer.cs">
       <DependentUpon>AboutBox1.cs</DependentUpon>
     </Compile>
+    <Compile Include="BACnet Browser - DE\WarningBox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="BACnet Browser - DE\WarningBox.designer.cs">
+      <DependentUpon>WarningBox.cs</DependentUpon>
+    </Compile>
     <Compile Include="OurApplication.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
@@ -99,6 +111,9 @@
     <EmbeddedResource Include="AboutBox1.resx">
       <DependentUpon>AboutBox1.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BACnet Browser - DE\WarningBox.resx">
+      <DependentUpon>WarningBox.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
@@ -114,7 +129,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <None Include="BACnet Browser_1_TemporaryKey.pfx" />
+    <None Include="Properties\app.manifest" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -128,7 +143,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="BACnet Browser_TemporaryKey.pfx" />
     <None Include="Resources\view_refresh.ico" />
   </ItemGroup>
   <ItemGroup>

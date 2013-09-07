@@ -68,6 +68,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\BaseLib\NetworkProtocol.cs">
+      <Link>NetworkProtocol.cs</Link>
+    </Compile>
+    <Compile Include="..\BaseLib\UtilityFunctions.cs">
+      <Link>UtilityFunctions.cs</Link>
+    </Compile>
+    <Compile Include="..\Reporters\Reports.cs">
+      <Link>Reports.cs</Link>
+    </Compile>
     <Compile Include="ADR.cs" />
     <Compile Include="AppManager.cs" />
     <Compile Include="BACnetEnums.cs" />

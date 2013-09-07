@@ -101,8 +101,8 @@
             // 
             // TreeViewDevices
             // 
-            this.TreeViewDevices.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)));
+            this.TreeViewDevices.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
             this.TreeViewDevices.Font = new System.Drawing.Font("Courier New", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.TreeViewDevices.HideSelection = false;
             this.TreeViewDevices.Location = new System.Drawing.Point(12, 45);
@@ -268,9 +268,9 @@
             // 
             // tabControlLogs
             // 
-            this.tabControlLogs.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.tabControlLogs.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.tabControlLogs.Controls.Add(this.tabPage1);
             this.tabControlLogs.Controls.Add(this.tabPage2);
             this.tabControlLogs.Controls.Add(this.tabPage3);
@@ -446,9 +446,9 @@
             // 
             // textBoxPanics
             // 
-            this.textBoxPanics.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBoxPanics.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.textBoxPanics.Location = new System.Drawing.Point(0, 0);
             this.textBoxPanics.Multiline = true;
             this.textBoxPanics.Name = "textBoxPanics";
@@ -479,9 +479,9 @@
             // 
             // textBoxProtocol
             // 
-            this.textBoxProtocol.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBoxProtocol.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.textBoxProtocol.Location = new System.Drawing.Point(0, 0);
             this.textBoxProtocol.Multiline = true;
             this.textBoxProtocol.Name = "textBoxProtocol";
@@ -633,6 +633,7 @@
             this.Name = "MainForm";
             this.Text = "BACnet Browser";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.mainform_closing);
+            this.Load += new System.EventHandler(this.FormMain_Load);
             this.Resize += new System.EventHandler(this.MainForm_Resize);
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();

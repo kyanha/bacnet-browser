@@ -39,21 +39,16 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
+using System.Drawing;
 using System.Net;
 using System.Net.Sockets;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Windows;
-using System.Windows.Forms;
 using System.Threading;
-using System.Diagnostics;
-
+using System.Windows.Forms;
 using BACnetLibrary;
 using Diagnostics;
-using DiagnosticPrivate;
-
+using BaseLibrary;
+using BACnetTestClient;
 
 namespace BACnetInteropApp
 {
@@ -615,6 +610,23 @@ namespace BACnetInteropApp
         private void buttonPrepNewTests_Click(object sender, EventArgs e)
         {
             SetupDiagnosticsNew();
+        }
+
+        private void FormMain_Load(object sender, EventArgs e)
+        {
+
+
+            // get presets
+
+            if (! Properties.Settings.Default.LegalAcknowledged )
+            {
+                WarningBox wb = new WarningBox();
+                wb.ShowDialog();
+            }
+
+            Reporters.Reports.SendDebugString(Reporters.Reports.MESSAGE_TYPE.Startup, Application.ProductName);
+
+			 UserManagement.UpdateTitle(this);
         }
     }
 }
