@@ -1,4 +1,4 @@
-﻿/*
+/*
  * The MIT License
  * 
  * Copyright (c) 2010 BACnet Iteroperability Testing Services, Inc.
@@ -140,7 +140,7 @@ namespace BACnetLibrary
             if (networkNumber < 1 || networkNumber > 0xfffe)
             {
                 // these are illegal network numbers
-                throw new ProtocolException ("m0204 - Illegal Network Number " + networkNumber.ToString() );
+                throw new ProtocolException ("m0527 - Illegal Network Number " + networkNumber.ToString() );
             }
 
             // do we already have such an entry, create it if not

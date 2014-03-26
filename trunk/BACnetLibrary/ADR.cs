@@ -1,4 +1,4 @@
-﻿/*
+/*
  * The MIT License
  * 
  * Copyright (c) 2010 BACnet Iteroperability Testing Services, Inc.
@@ -70,7 +70,7 @@ namespace BACnetLibrary
 
         public ADR(UInt16 networkNumber, myIPEndPoint ipep)
         {
-            // todo if (networkNumber == 0) throw new Exception("m0160-Network Number of 0 is illegal");
+            // todo if (networkNumber == 0) throw new Exception("m0507-Network Number of 0 is illegal");
             this.networkNumber = networkNumber;
             this.MACaddress = new BACnetMACaddress(ipep);
         }
@@ -122,7 +122,7 @@ namespace BACnetLibrary
             {
                 case 0:
                     // illegal for sadr
-                    throw new Exception("m0178-MAC length of 0 illegal for SADR");
+                    throw new Exception("m0506-MAC length of 0 illegal for SADR");
                     // break;
                 case 1:
                     MACaddress = new BACnetMACaddress(buffer[pos++]);
@@ -263,7 +263,7 @@ namespace BACnetLibrary
             switch (adrtyp)
             {
                 case BACnetPacket.ADDRESS_TYPE.LOCAL_BROADCAST:
-                    throw new Exception("m0205-A local broadcast requires an IP address, network number, cannot use this constructor for this");
+                    throw new Exception("m0509-A local broadcast requires an IP address, network number, cannot use this constructor for this");
                 case BACnetPacket.ADDRESS_TYPE.GLOBAL_BROADCAST:
                     this.networkNumber = 0xffff;
                     isBroadcast = true;
@@ -299,7 +299,7 @@ namespace BACnetLibrary
                     isLocalBroadcast = false;
                     throw new Exception("m0167-A remote broadcast requires an IP address, network number, cannot use this constructor for this");
                 default:
-                    throw new Exception("m0168-Bad parameter");
+                    throw new Exception("m0508-Bad parameter");
             }
         }
 

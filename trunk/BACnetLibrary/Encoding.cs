@@ -1,4 +1,4 @@
-﻿/*
+/*
  * The MIT License
  * 
  * Copyright (c) 2010 BACnet Iteroperability Testing Services, Inc.
@@ -56,7 +56,7 @@ namespace BACnetLibrary
         //    if ((buf[offset] & 0xf0) != (expectedTagValue << 4))
         //    {
         //        // we have an unexpected context tag, sort this out
-        //        throw new Exception ("m0035 - Unexpected context tag index");
+        //        throw new Exception ("m0526 - Unexpected context tag index");
         //        // todo, now is there a way to avoid creating the object? Have to flag it at least...
         //    }
 

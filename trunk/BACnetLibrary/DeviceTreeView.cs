@@ -1,4 +1,4 @@
-﻿/*
+/*
  * The MIT License
  * 
  * Copyright (c) 2010 BACnet Iteroperability Testing Services, Inc.
@@ -497,7 +497,7 @@ namespace BACnetLibrary
                                         if (mtn != null)
                                         {
                                             // for now, just add the object.
-                                            // _apm.MessageTodo("m0073");
+                                            // _apm.MessageTodo("m0524");
                                             //myTreeNode ntn = new myTreeNode();
                                             //ntn.type = myTreeNode.TREENODE_OBJ_TYPE.BACnetObject;
                                             //ntn.Text = pkt.propertyID.ToString();

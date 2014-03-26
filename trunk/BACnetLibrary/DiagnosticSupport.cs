@@ -42,6 +42,7 @@ using System.Text;
 using System.Threading;
 using System.Drawing;
 using BACnetLibrary;
+using Reporters;
 
 namespace Diagnostics
 {
@@ -235,43 +236,43 @@ namespace Diagnostics
     }
 
 
-    public class HexdumpException : Exception
-    {
-        int len;
-        byte[] buf;
-        string message;
+    //public class HexdumpException : Exception
+    //{
+    //    int len;
+    //    byte[] buf;
+    //    string message;
 
-        public HexdumpException()
-            : base()
-        { }
+    //    public HexdumpException()
+    //        : base()
+    //    { }
 
-        public HexdumpException(string message, byte[] buf, int len)
-            : base(message)
-        {
-            this.message = message;
-            this.len = len;
-            this.buf = buf;
-        }
+    //    public HexdumpException(string message, byte[] buf, int len)
+    //        : base(message)
+    //    {
+    //        this.message = message;
+    //        this.len = len;
+    //        this.buf = buf;
+    //    }
 
-        public HexdumpException(string message, System.Exception inner)
-            : base(message, inner)
-        { }
+    //    public HexdumpException(string message, System.Exception inner)
+    //        : base(message, inner)
+    //    { }
 
-        public void DumpException()
-        {
-            string ms = message + Environment.NewLine + "CRP: ";
-            for (int i = 0; i < 32; i++)
-            {
-                ms += String.Format("{0:x2} ", buf[i]);
-            }
-            ms += Environment.NewLine + "BAC: ";
-            for (int i = 0; i < 64; i++)
-            {
-                ms += String.Format("{0:x2} ", buf[32 + i]);
-            }
-            BACnetUtil.SendDebugString(ms);
-        }
-    }
+    //    public void DumpException()
+    //    {
+    //        string ms = message + Environment.NewLine + "CRP: ";
+    //        for (int i = 0; i < 32; i++)
+    //        {
+    //            ms += String.Format("{0:x2} ", buf[i]);
+    //        }
+    //        ms += Environment.NewLine + "BAC: ";
+    //        for (int i = 0; i < 64; i++)
+    //        {
+    //            ms += String.Format("{0:x2} ", buf[32 + i]);
+    //        }
+    //        Reports.SendDebugString(ms);
+    //    }
+    //}
 
 
 
