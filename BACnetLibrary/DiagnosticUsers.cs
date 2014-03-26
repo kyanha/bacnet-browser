@@ -1,4 +1,4 @@
-﻿/*
+/*
  * The MIT License
  * 
  * Copyright (c) 2010 BACnet Iteroperability Testing Services, Inc.
@@ -84,7 +84,7 @@ namespace Diagnostics
                     Console.WriteLine("Failed this time around");
                     // test fails, impossible count
                     return;
-                    //throw new Exception("m0162-Totally bogus router table entry count");
+                    //throw new Exception("m0525-Totally bogus router table entry count");
                 }
 
                 RoutingTableEntry rtDupe = incomingPkt.routerTableList[entrycount - 1];
@@ -835,7 +835,7 @@ namespace Diagnostics
                 BACnetUtil.SendOffPacket(_apm, _bnm, pkt, pkt.buffer, pkt.optr);
 
                 // wait for _our_ device to respond
-                do
+                while ( true )
                 {
                     try
                     {
@@ -852,7 +852,6 @@ namespace Diagnostics
                         return;
                     }
                 }
-                while (true);
             }
             catch (Exception ex)
             {
@@ -891,7 +890,7 @@ namespace Diagnostics
                 BACnetUtil.SendOffPacket(_apm, _bnm, pkt, pkt.buffer, pkt.optr);
 
                 // wait for _our_ device to respond
-                do
+                while(true)
                 {
                     try
                     {
@@ -908,7 +907,6 @@ namespace Diagnostics
                         return;
                     }
                 }
-                while (true);
             }
             catch (Exception ex)
             {
@@ -948,7 +946,7 @@ namespace Diagnostics
                 BACnetUtil.SendOffPacket(_apm, _bnm, pkt, pkt.buffer, pkt.optr);
 
                 // wait for _our_ device to respond
-                do
+                while ( true )
                 {
                     try
                     {
@@ -965,7 +963,6 @@ namespace Diagnostics
                         return;
                     }
                 }
-                while (true);
             }
             catch (Exception ex)
             {

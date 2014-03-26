@@ -25,10 +25,13 @@ namespace Reporters
 
         public static void SendDebugString(MESSAGE_TYPE mt, string msg)
         {
-            
-            
-            UdpClient newsock = new UdpClient();
+            // ask permission to report this message.
 
+            var rc = MessageBox.Show("Please help improve this program and report this error. The information to be sent is this: " + Environment.NewLine + Environment.NewLine + msg, "An error has been detected, will you supply permission to report?", MessageBoxButtons.YesNo);
+
+            if (rc != DialogResult.Yes) return;
+
+            UdpClient newsock = new UdpClient();
             byte[] data = new byte[10000];
 
             Encoding.ASCII.GetBytes("Eddie", 0, 5, data, 0);

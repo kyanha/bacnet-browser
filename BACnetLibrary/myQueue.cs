@@ -65,7 +65,7 @@ namespace BACnetLibrary
             }
         }
 
-        public int Count
+        public new int Count
         {
             get
             {
@@ -77,20 +77,5 @@ namespace BACnetLibrary
                 return count;
             }
         }
-
-
-        //public T myBlockingDequeue()
-        //{
-        //    while ( true )
-        //    {
-        //        lock (this)
-        //        {
-        //            if (base.Count > 0) return base.Dequeue();
-        //        }
-        //        sleep
-        //    }
-        //}
-
-
     }
 }

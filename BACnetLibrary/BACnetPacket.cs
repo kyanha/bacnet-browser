@@ -1,4 +1,4 @@
-﻿/*
+/*
  * The MIT License
  * 
  * Copyright (c) 2010 BACnet Iteroperability Testing Services, Inc.
@@ -61,7 +61,6 @@ namespace BACnetLibrary
         }
 
         bool flagBVLLencoded ;
-        bool flagNPCIencoded;
 
         AppManager _apm;
         BACnetManager _bnm;
@@ -257,7 +256,7 @@ namespace BACnetLibrary
                 if (tLen != length)
                 {
                     // disconnect between Ethernet Packet Lenght and BACnet Packet length. We are not going to tolerate..
-                    throw new Exception("m0166-BACnet length mismatch");
+                    throw new Exception("m0522-BACnet length mismatch");
                 }
 
                 switch (bvlcFunction)
@@ -517,7 +516,7 @@ namespace BACnetLibrary
             }
             catch (Exception ex)
             {
-                throw new Exception("m0001 - BACnet Decode Failed " + ex.ToString());
+                throw new ProtocolException("m0001 - BACnet Decode Failed " + ex.ToString());
             }
             return true;
         }
@@ -570,7 +569,7 @@ namespace BACnetLibrary
 
             if ((apdu_buf[0] & 0x0f) != 0)
             {
-                _apm.MessageProtocolError("m0025 this nibble should be zero for Unconfirmed services");
+                _apm.MessageProtocolError("m0523 this nibble should be zero for Unconfirmed services");
                 return false;
             }
 
@@ -883,7 +882,7 @@ namespace BACnetLibrary
         public void EncodeBVLL(DADR dAdr, BACnetEnums.BACNET_BVLC_FUNCTION bvlcFunc)
         {
             bacnetBVLCfunc = bvlcFunc;
-            dAdr = dAdr;
+            this.dAdr = dAdr;
             EncodeBVLL();
         }
 

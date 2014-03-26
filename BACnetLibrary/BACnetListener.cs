@@ -41,6 +41,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Net;
 using System.Net.Sockets;
+using System.Threading;
 
 namespace BACnetLibrary
 {
@@ -167,10 +168,11 @@ namespace BACnetLibrary
                     // need to catch the inevitable exception when this blocking call is cancelled by the shutdown code
                     // ignore, they will happen on shutdown
                 }
+                catch (ThreadAbortException)
+                {
+                }
                 catch (Exception efe)
                 {
-                    // unexpected exception, let's log.
-                    Console.WriteLine(efe);
                     _apm.MessagePanic(efe.ToString());
                 }
             }

@@ -1,4 +1,4 @@
-﻿/*
+/*
  * The MIT License
  * 
  * Copyright (c) 2010 BACnet Iteroperability Testing Services, Inc.
@@ -285,7 +285,7 @@ namespace BACnetLibrary
                 case 6:
                     return ipMACaddress.ToString();
                 default:
-                    throw new Exception("m0174-Illegal MAC length");
+                    throw new Exception("m0516-Illegal MAC length");
                 // return "Illegal MAC address";
             }
         }
@@ -344,7 +344,7 @@ namespace BACnetLibrary
     //                MACaddress = new BACnetMACaddress ( ) ;
     //                break;
     //            case BACnetPacket.ADDRESS_TYPE.REMOTE_BROADCAST:
-    //                throw new Exception("m0167-A remote broadcast requires an IP address, network number, cannot use this constructor for this");
+    //                throw new Exception("m0510-A remote broadcast requires an IP address, network number, cannot use this constructor for this");
     //            default:
     //                throw new Exception("m0168-Bad parameter");
     //        }
@@ -362,7 +362,7 @@ namespace BACnetLibrary
     //                break;
     //            case BACnetPacket.ADDRESS_TYPE.LOCAL_BROADCAST:
     //            case BACnetPacket.ADDRESS_TYPE.GLOBAL_BROADCAST:
-    //                throw new Exception("m0169-cannot use this constructor for this");
+    //                throw new Exception("m0511-cannot use this constructor for this");
     //            default:
     //                throw new Exception("m0168-Bad parameter");
     //        }
@@ -405,7 +405,7 @@ namespace BACnetLibrary
     //    {
     //        networkNumber = BACnetLibrary.ExtractUInt16(buffer, ref pos);
 
-    //        if (networkNumber == 0) throw new Exception("m0161-Illegal network number of 0 in decode");
+    //        if (networkNumber == 0) throw new Exception("m0512-Illegal network number of 0 in decode");
 
     //        MACaddress.length = buffer[pos++];
 
@@ -426,7 +426,7 @@ namespace BACnetLibrary
     //                pos += 6;
     //                break;
     //            default:
-    //                throw new Exception("m0175-Illegal MAC address length??");
+    //                throw new Exception("m0517-Illegal MAC address length??");
     //                break;
     //        }
     //    }
@@ -436,7 +436,7 @@ namespace BACnetLibrary
     //    {
     //        if (isLocalBroadcast) return;   // local broadcasts dont have dnet, dmac...
 
-    //        if (networkNumber == 0) throw new Exception("m0145 - Illegal Network Number of 0");
+    //        if (networkNumber == 0) throw new Exception("m0513 - Illegal Network Number of 0");
 
     //        buffer[pos++] = (byte)(this.networkNumber >> 8);
     //        buffer[pos++] = (byte)(this.networkNumber & 0xff);
@@ -455,7 +455,7 @@ namespace BACnetLibrary
     //                MACaddress.ipMACaddress.Encode(buffer, ref pos);
     //                break;
     //            default:
-    //                throw new Exception("m0146 - Illegal MAC address length");
+    //                throw new Exception("m0514 - Illegal MAC address length");
     //        }
     //    }
 
@@ -556,7 +556,7 @@ namespace BACnetLibrary
             if ((buf[offset] & 0x08) != 0x00)
             {
                 // we have an unexpected context tag, sort this out
-                throw new Exception("m0176-Not a context tag");
+                throw new Exception("m0515-Not a context tag");
                 // todo, now is there a way to avoid creating the object? Have to flag it at least...
                 //return;
             }
@@ -564,7 +564,7 @@ namespace BACnetLibrary
             if ((BACnetEnums.BACNET_APPLICATION_TAG)(((buf[offset] & 0xf0) >> 4)) != appTag)
             {
                 // we have an unexpected context tag, sort this out
-                throw new Exception("m0075 - Unexpected application tag xxx , expecting " + appTag.ToString());
+                throw new Exception("m0519 - Unexpected application tag xxx , expecting " + appTag.ToString());
             }
 
             int contextTagSize = buf[offset] & 0x07;
@@ -706,7 +706,7 @@ namespace BACnetLibrary
 
             if (cl != 0xc4)
             {
-                throw new Exception("m0041 - Missing Application Tag for Object Identifier");
+                throw new Exception("m0518 - Missing Application Tag for Object Identifier");
             }
 
             this.objectType = (BACnetEnums.BACNET_OBJECT_TYPE)(((uint)buffer[pos] << 2) | ((uint)buffer[pos + 1] >> 6));
@@ -743,7 +743,6 @@ namespace BACnetLibrary
 
     public class BACnetUtil
     {
-
         public static void SendDebugString(String msg)
         {
             UdpClient newsock = new UdpClient();
@@ -836,7 +835,7 @@ namespace BACnetLibrary
 
         static public uint ExtractApplicationTagUint(byte[] buffer, ref int optr)
         {
-            if ((buffer[optr] & 0x08) == 0x08) throw new Exception("m0079 - Not an application tag");
+            if ((buffer[optr] & 0x08) == 0x08) throw new Exception("m0520 - Not an application tag");
 
             int length = buffer[optr] & 0x07;
             int retval = 0;
@@ -845,7 +844,7 @@ namespace BACnetLibrary
 
             if ((buffer[optr++] >> 4) != (int)BACnetEnums.BACNET_APPLICATION_TAG.BACNET_APPLICATION_TAG_UNSIGNED_INT)
             {
-                throw new Exception("m0076 - Application tag type not uint");
+                throw new Exception("m0521 - Application tag type not uint");
             }
             for (int i = 0; i < length; i++)
             {

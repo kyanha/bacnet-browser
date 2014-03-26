@@ -35,12 +35,6 @@
  * 28 Nov 10    EKH Releasing under MIT license
  */
 
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 using BACnetLibrary;
 
 namespace BACnetInteropApp
@@ -56,7 +50,6 @@ namespace BACnetInteropApp
             _bnm = bnm;
         }
 
-
         public void OurApplicationThread()
         {
             // order of business
@@ -69,31 +62,11 @@ namespace BACnetInteropApp
             //          get object type, name, pv etc.
             // repeat
 
-
-            _apm.MessageProtocolError("Sending Who-Is-Router");
             BACnetLibrary.BACnetUtil.SendWhoIsRouter(_apm, _bnm, BACnetPacket.ADDRESS_TYPE.GLOBAL_BROADCAST);
             System.Threading.Thread.Sleep(500);
 
-            _apm.MessageProtocolError("Sending Who-Is");
             BACnetLibrary.BACnetUtil.SendWhoIs(_apm, _bnm, BACnetPacket.ADDRESS_TYPE.GLOBAL_BROADCAST);
             System.Threading.Thread.Sleep(1000);
-
-            // going to have to issue a invoke to the UI for this... move to MVC in future. Todo.
-            // BACnetLibrary.Diagnostic.();
-
-// todo            SetupDiagnostics();
-
-            _apm.MessageProtocolError("Scan complete");
-        }
-
-
-
-        public void ASCtest()
-        {
-            // there is a potential read property, AI, status flags issue with ASC controls. 
-
-
-
         }
     }
 }

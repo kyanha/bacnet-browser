@@ -275,10 +275,6 @@ namespace BACnetInteropApp
             }
         }
 
-        private void mycontextMenuStrip1_Opening(object sender, CancelEventArgs e)
-        {
-
-        }
 
         Device menuDevice;
         BACnetObjectIdentifier BACnetOID;
@@ -383,21 +379,11 @@ namespace BACnetInteropApp
             BACnetInteropApp.Properties.Settings.Default.Save();
         }
 
-        private void buttonMinimize_Click(object sender, EventArgs e)
-        {
-            this.ShowInTaskbar = false;  // Removes the application from the taskbar
-            Hide();
-        }
 
         private void MainForm_Resize(object sender, EventArgs e)
         {
         }
 
-        private void notifyIcon1_DoubleClick(object sender, EventArgs e)
-        {
-            Show();
-            WindowState = FormWindowState.Normal;
-        }
 
         private void readRouterTableToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -449,7 +435,6 @@ namespace BACnetInteropApp
 
             bacnet_master_socket.SendTo(data, optr, SocketFlags.None, ipep);
         }
-
 
         private void backgroundWorkerDiagnosticManager_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
@@ -509,7 +494,6 @@ namespace BACnetInteropApp
             }
         }
 
-
         static public void AddDiagnosticsTomyTreeNodeDiagnosticListAll(AppManager apm, BACnetManager bnm, myTreeNode deviceTreeNode, myTreeNode mtnDiagnosticList)
         {
             List<Diagnostic> diagList;
@@ -533,8 +517,6 @@ namespace BACnetInteropApp
                     {
                         myTreeNode mtn = deviceNode.EnsureMyTreeNodeObject(myTreeNode.TREENODE_OBJ_TYPE.ScheduledDiagnostics, "Scheduled Diagnostics");
                         // Add our new test
-                        //Diagnostic_deprecated.AddDiagnosticsTomyTreeNodeDiagnosticListAll(_apm, _bnm, deviceNode, mtn);
-                        //Diagnostics.di
                         AddDiagnosticsTomyTreeNodeDiagnosticListAll(_apm, _bnm, deviceNode, mtn);
                     }
                 }
@@ -546,11 +528,6 @@ namespace BACnetInteropApp
         {
             textBoxProtocol.Clear();
             tabPageProtocol.Text = "Protocol";
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            _apm.MessageProtocolError("m0025 this nibble should be zero for Unconfirmed services");
         }
 
         private void contextMenuStripForDiagnostic_MouseClick(object sender, MouseEventArgs e)
@@ -592,7 +569,7 @@ namespace BACnetInteropApp
 
         private void buttonSendIAm_Click(object sender, EventArgs e)
         {
-            BACnetUtil.SendIAm(_apm, _bnm, BACnetPacket.ADDRESS_TYPE.GLOBAL_BROADCAST, (uint) Convert.ToDecimal (textBoxDeviceInstance.Text));
+            BACnetUtil.SendIAm(_apm, _bnm, BACnetPacket.ADDRESS_TYPE.GLOBAL_BROADCAST, (uint)Convert.ToDecimal(textBoxDeviceInstance.Text));
 
         }
 
@@ -614,19 +591,13 @@ namespace BACnetInteropApp
 
         private void FormMain_Load(object sender, EventArgs e)
         {
-
-
-            // get presets
-
-            if (! Properties.Settings.Default.LegalAcknowledged )
+            // Show the warning box at least once !
+            if (!Properties.Settings.Default.LegalAcknowledged)
             {
                 WarningBox wb = new WarningBox();
                 wb.ShowDialog();
             }
-
-            Reporters.Reports.SendDebugString(Reporters.Reports.MESSAGE_TYPE.Startup, Application.ProductName);
-
-			 UserManagement.UpdateTitle(this);
+            UserManagement.UpdateTitle(this);
         }
     }
 }

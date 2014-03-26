@@ -42,6 +42,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Diagnostics;
+using Reporters;
 
 namespace BACnetLibrary
 {
@@ -87,7 +88,7 @@ namespace BACnetLibrary
         {
             // These messages indicate an error in the protocol..
             DiagnosticLogProtocol.myEnqueue(msg + Environment.NewLine);
-            BACnetUtil.SendDebugString(msg);
+            Reports.SendDebugString(Reports.MESSAGE_TYPE.Notification, msg);
         }
 
 
@@ -112,7 +113,7 @@ namespace BACnetLibrary
 
             panicList.Add(panicmessage);
             DiagnosticLogPanic.myEnqueue(panicmessage + Environment.NewLine + Environment.NewLine);
-            BACnetUtil.SendDebugString(panicmessage);
+            Reports.SendDebugString( Reports.MESSAGE_TYPE.Panic, panicmessage);
         }
     }
 }
